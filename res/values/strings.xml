@@ -4,5 +4,7 @@
     <string name="app_name">DashClock Feedly Extension</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="app_short_name">FeedlyEx</string>
+    <string name="extension_description">View the count of unread items in your favorite feeds</string>
 
 </resources>

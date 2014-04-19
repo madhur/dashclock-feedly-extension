@@ -27,6 +27,29 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+         <activity
+            android:name=".LoginActivity"
+            android:label="@string/app_name" >
+            
+        </activity>
+        
+        
+        <service android:name=".FeedlyExtensionService"
+     android:icon="@drawable/ic_launcher"
+     android:label="@string/app_short_name"
+     android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA">
+     <intent-filter>
+         <action android:name="com.google.android.apps.dashclock.Extension" />
+     </intent-filter>
+     <meta-data android:name="protocolVersion" android:value="2" />
+     <meta-data android:name="worldReadable" android:value="true" />
+     <meta-data android:name="description"
+         android:value="@string/extension_description" />
+     <!-- A settings activity is optional -->
+     <meta-data android:name="settingsActivity"
+         android:value=".MainActivity" />
+ </service>
     </application>
 
 </manifest>
