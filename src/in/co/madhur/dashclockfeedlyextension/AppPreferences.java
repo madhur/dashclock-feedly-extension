@@ -39,6 +39,13 @@ public class AppPreferences
 		
 	}
 	
+	public String GetToken()
+	{
+		String accessToken=sharedPreferences.getString(context.getString(R.string.feedly_api_access_token), "");
+		return accessToken;
+		
+	}
+	
 	
 
 }
