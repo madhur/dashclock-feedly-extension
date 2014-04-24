@@ -13,7 +13,7 @@ public final class FeedlyContract
 	
 	public static abstract class FeedlyUser implements BaseColumns
 	{
-		public static final String TABLE_NAME = "feedly";
+		public static final String TABLE_NAME = "feedlyuser";
 		
 		public static final String EMAIL="email";
 		

@@ -13,6 +13,7 @@ import in.co.madhur.dashclockfeedlyextension.db.DbHelper;
 
 import com.infospace.android.oauth2.WebApiHelper;
 
+import android.opengl.Visibility;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
@@ -20,19 +21,27 @@ import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.ExpandableListView;
+import android.widget.ProgressBar;
 
 public class MainActivity extends Activity
 {
 
 	WebApiHelper apiHelper;
 	AppPreferences appPreferences;
-	Feedly feedly;
+	
+	ProgressBar progressBar;
+	ExpandableListView listView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		progressBar = (ProgressBar) findViewById(R.id.pbHeaderProgress);
+		listView=(ExpandableListView) findViewById(R.id.listview);
 
 		appPreferences = new AppPreferences(this);
 		if (!appPreferences.IsTokenPresent())
@@ -51,15 +60,36 @@ public class MainActivity extends Activity
 
 				apiHelper.refreshAccessTokenIfNeeded();
 			}
+			
+			GetFeedlyData();
 
-			String token = appPreferences.GetToken();
-
-			feedly = Feedly.getInstance(token);
-
-			new GetFeedlyDataTask().execute(0);
-
+			
 		}
 
+	}
+	
+	private void GetFeedlyData()
+	{
+		
+		String token = appPreferences.GetToken();
+
+		Feedly feedly = Feedly.getInstance(token);
+
+		new GetFeedlyDataTask(feedly).execute(0);
+
+		
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (resultCode == 1 && requestCode == 1)
+		{
+			GetFeedlyData();
+
+		}
 	}
 
 	@Override
@@ -69,79 +99,119 @@ public class MainActivity extends Activity
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-	
-	private class GetFeedlyDataTask extends AsyncTask<Integer, Integer, Integer>
+
+	private class GetFeedlyDataTask extends
+			AsyncTask<Integer, Integer, FeedlyData>
 	{
 		DbHelper dbHelper;
+		Feedly feedly;
+		
+		public GetFeedlyDataTask(Feedly feedly)
+		{
+			this.feedly=feedly;
+		}
+
 		@Override
 		protected void onPreExecute()
 		{
+
 			super.onPreExecute();
+			progressBar.setVisibility(View.VISIBLE);
 		}
-		
 
 		@Override
-		protected Integer doInBackground(Integer... params)
+		protected FeedlyData doInBackground(Integer... params)
 		{
+			List<Category> categories;
+			Profile profile;
+			List<Subscription> subscriptions;
+			Markers markers ;
+			
 			try
 			{
-				dbHelper=DbHelper.getInstance(MainActivity.this);
+				dbHelper = DbHelper.getInstance(MainActivity.this);
 				
-				Profile profile=feedly.GetProfile();
-				
-				Log.v(App.TAG, profile.getId());
-				Log.v(App.TAG, profile.getEmail());
-				
-				dbHelper.WriteProfile(profile);
-				
-				List<Category> categories = feedly.GetCategories();
-				
-				dbHelper.WriteCategories(categories);
-				
-				List<Subscription> subscriptions=feedly.GetSubscriptions();
-				
-				dbHelper.WriteSubscriptions(subscriptions);
-				
-				Markers markers=feedly.GetUnreadCounts();
-				
-				dbHelper.WriteMarkers(markers);
-				
-				for (Category category : categories)
+				if(dbHelper.IsFetchRequired())
 				{
-					Log.v("Tag", category.getLabel());
+					
+    				 profile = feedly.GetProfile();
+					dbHelper.WriteProfile(profile);
+
+					categories = feedly.GetCategories();
+					dbHelper.WriteCategories(categories);
+
+					subscriptions = feedly.GetSubscriptions();
+					dbHelper.WriteSubscriptions(subscriptions);
+
+					markers = feedly.GetUnreadCounts();
+					dbHelper.WriteMarkers(markers);
+
+					for (Category category : categories)
+					{
+						Log.v("Tag", category.getLabel());
+					}
+
+					for (Subscription sub : subscriptions)
+					{
+						if (sub.getWebsite() != null)
+							Log.v("Tag", sub.getWebsite());
+					}
+
+					List<Marker> markerList = markers.getUnreadcounts();
+
+					for (Marker marker : markerList)
+					{
+						Log.v("Tag", String.valueOf(marker.getCount()));
+					}
+				}
+				else
+				{
+					profile=dbHelper.GetProfile();
+					
+					categories=dbHelper.GetCategories();
+					
+					subscriptions=dbHelper.GetSubscriptions();
+					
+					markers=dbHelper.GetUnreadCounts();
+					
 				}
 				
 
-				for (Subscription sub : subscriptions)
-				{
-					if(sub.getWebsite() != null)
-					Log.v("Tag", sub.getWebsite());
-				}
-				
-				List<Marker> markerList=markers.getUnreadcounts();
-				
-				for (Marker marker : markerList)
-				{
-					Log.v("Tag", String.valueOf(marker.getCount()));
-				}
-				
+				return new FeedlyData(profile, categories, subscriptions, markers);
+
 			}
-			catch(Exception e)
+			catch (Exception e)
 			{
-				//Log.e(App.TAG, e.getMessage());
+				Log.e(App.TAG, e.getMessage());
 				e.printStackTrace();
+				return new FeedlyData(e.getMessage());
 			}
-			
-			return null;
 		}
-		
+
 		@Override
-		protected void onPostExecute(Integer result)
+		protected void onPostExecute(FeedlyData result)
 		{
 			super.onPostExecute(result);
+			progressBar.setVisibility(View.GONE);
+				UpdateUI(result);
+
+
+		}
+
+	}
+
+	private void UpdateUI(FeedlyData result)
+	{
+		if(result.isError())
+		{
+			// Show error
+			return;
 		}
 		
+		FeedlyListViewAdapter adapter=new FeedlyListViewAdapter(result);
 		
+		listView.setAdapter(adapter);
+
 	}
 
 }
