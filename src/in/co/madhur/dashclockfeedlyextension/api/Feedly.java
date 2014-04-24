@@ -46,5 +46,10 @@ public class Feedly
 		
 		return feedlyApi.GetMarkerCounts(token);
 	}
+	
+	public Profile GetProfile()
+	{
+		return feedlyApi.GetProfile(token);
+	}
 
 }

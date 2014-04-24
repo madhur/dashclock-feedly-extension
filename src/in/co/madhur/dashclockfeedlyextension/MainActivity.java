@@ -5,9 +5,12 @@ import java.util.List;
 import in.co.madhur.dashclockfeedlyextension.api.Category;
 import in.co.madhur.dashclockfeedlyextension.api.Feedly;
 import in.co.madhur.dashclockfeedlyextension.api.FeedlyApi;
+import in.co.madhur.dashclockfeedlyextension.api.Profile;
+import in.co.madhur.dashclockfeedlyextension.db.DbHelper;
 
 import com.infospace.android.oauth2.WebApiHelper;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -50,22 +53,7 @@ public class MainActivity extends Activity
 
 			feedly = Feedly.getInstance(token);
 
-			Thread thread = new Thread()
-			{
-				@Override
-				public void run()
-				{
-					List<Category> categories = feedly.GetCategories();
-
-					for (Category category : categories)
-					{
-						Log.v("Tag", category.getLabel());
-
-					}
-				}
-			};
-
-			thread.start();
+			new GetFeedlyDataTask().execute(0);
 
 		}
 
@@ -77,6 +65,58 @@ public class MainActivity extends Activity
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
+	}
+	
+	private class GetFeedlyDataTask extends AsyncTask<Integer, Integer, Integer>
+	{
+		DbHelper dbHelper;
+		@Override
+		protected void onPreExecute()
+		{
+			super.onPreExecute();
+		}
+		
+
+		@Override
+		protected Integer doInBackground(Integer... params)
+		{
+			try
+			{
+				dbHelper=DbHelper.getInstance(MainActivity.this);
+				
+				Profile profile=feedly.GetProfile();
+				
+				Log.v(App.TAG, profile.getId());
+				Log.v(App.TAG, profile.getEmail());
+				
+				dbHelper.WriteProfile(profile);
+				
+				List<Category> categories = feedly.GetCategories();
+				
+				dbHelper.WriteCategories(categories);
+				
+				for (Category category : categories)
+				{
+					Log.v("Tag", category.getLabel());
+				}
+				
+			}
+			catch(Exception e)
+			{
+				Log.e(App.TAG, e.getMessage());
+				e.printStackTrace();
+			}
+			
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Integer result)
+		{
+			super.onPostExecute(result);
+		}
+		
+		
 	}
 
 }
