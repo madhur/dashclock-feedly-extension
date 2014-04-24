@@ -40,7 +40,7 @@ public class Profile
 	@JsonProperty("paymentSubscriptionId")
 	private PaymentSubscriptionId paymentSubscriptionId;
 	@JsonProperty("created")
-	private Integer created;
+	private Long created;
 	@JsonProperty("windowsLiveConnected")
 	private Boolean windowsLiveConnected;
 	@JsonProperty("facebookConnected")
@@ -192,13 +192,13 @@ public class Profile
 	}
 
 	@JsonProperty("created")
-	public Integer getCreated()
+	public Long getCreated()
 	{
 		return created;
 	}
 
 	@JsonProperty("created")
-	public void setCreated(Integer created)
+	public void setCreated(Long created)
 	{
 		this.created = created;
 	}

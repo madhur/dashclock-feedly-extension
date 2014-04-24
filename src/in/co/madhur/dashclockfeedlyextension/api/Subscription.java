@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import android.text.TextUtils;
+
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -13,21 +16,21 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({ "id", "added", "sortid", "title", "updated", "categories",
 		"visualUrl", "website" })
-public class Subscriptions
+public class Subscription
 {
 
 	@JsonProperty("id")
 	private String id;
 	@JsonProperty("added")
-	private Integer added;
+	private Long added;
 	@JsonProperty("sortid")
 	private String sortid;
 	@JsonProperty("title")
 	private String title;
 	@JsonProperty("updated")
-	private Integer updated;
+	private Long updated;
 	@JsonProperty("categories")
-	private List<Object> categories = new ArrayList<Object>();
+	private List<Category> categories = new ArrayList<Category>();
 	@JsonProperty("visualUrl")
 	private String visualUrl;
 	@JsonProperty("website")
@@ -47,13 +50,13 @@ public class Subscriptions
 	}
 
 	@JsonProperty("added")
-	public Integer getAdded()
+	public Long getAdded()
 	{
 		return added;
 	}
 
 	@JsonProperty("added")
-	public void setAdded(Integer added)
+	public void setAdded(Long added)
 	{
 		this.added = added;
 	}
@@ -83,25 +86,28 @@ public class Subscriptions
 	}
 
 	@JsonProperty("updated")
-	public Integer getUpdated()
+	public Long getUpdated()
 	{
+		// Updated can be absent sometimes in json
+		if(updated==null)
+			return (long) 0;
 		return updated;
 	}
 
 	@JsonProperty("updated")
-	public void setUpdated(Integer updated)
+	public void setUpdated(Long updated)
 	{
 		this.updated = updated;
 	}
 
 	@JsonProperty("categories")
-	public List<Object> getCategories()
+	public List<Category> getCategories()
 	{
 		return categories;
 	}
 
 	@JsonProperty("categories")
-	public void setCategories(List<Object> categories)
+	public void setCategories(List<Category> categories)
 	{
 		this.categories = categories;
 	}
@@ -121,7 +127,10 @@ public class Subscriptions
 	@JsonProperty("website")
 	public String getWebsite()
 	{
-		return website;
+		if(!TextUtils.isEmpty(website))
+			return website;
+		else
+			return "";
 	}
 
 	@JsonProperty("website")

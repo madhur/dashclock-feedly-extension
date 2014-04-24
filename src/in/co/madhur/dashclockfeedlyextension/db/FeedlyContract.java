@@ -49,7 +49,7 @@ public final class FeedlyContract
 	public static abstract class UnreadCounts implements BaseColumns
 	{
 		public static final String TABLE_NAME = "unreadcounts";
-		public static final String SUBSCRIPTION_OR_CATEGORY_ID = "sub_or_category_id";
+		//public static final String SUBSCRIPTION_OR_CATEGORY_ID = "sub_or_category_id";
 		public static final String COUNT="count";
 		public static final String UPDATED = "updated";
 		

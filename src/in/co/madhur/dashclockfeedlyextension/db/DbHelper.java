@@ -1,9 +1,15 @@
 package in.co.madhur.dashclockfeedlyextension.db;
 
 import in.co.madhur.dashclockfeedlyextension.api.Category;
+import in.co.madhur.dashclockfeedlyextension.api.Marker;
+import in.co.madhur.dashclockfeedlyextension.api.Markers;
 import in.co.madhur.dashclockfeedlyextension.api.Profile;
+import in.co.madhur.dashclockfeedlyextension.api.Subscription;
 import in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.Categories;
 import in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.FeedlyUser;
+import in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.SubscriptionCategory;
+import in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.Subscriptions;
+import in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.UnreadCounts;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,6 +120,7 @@ public class DbHelper
 		}
 
 	}
+
 	// public void WriteWunderTasks(List<WTask> tasks) throws Exception
 	// {
 	// SQLiteDatabase database = db.getWritableDatabase();
@@ -693,5 +700,112 @@ public class DbHelper
 	// }
 	//
 	// }
+
+	public void WriteSubscriptions(List<Subscription> subscriptions)
+			throws Exception
+	{
+
+		SQLiteDatabase database = db.getWritableDatabase();
+
+		try
+
+		{
+			String sql = "INSERT OR REPLACE INTO " + Subscriptions.TABLE_NAME
+					+ "(" + Subscriptions._ID + "," + Subscriptions.TITLE + ","
+					+ Subscriptions.WEBSITE + "," + Subscriptions.UPDATED
+					+ ") " + " VALUES (?, ? , ? , ?)";
+
+			SQLiteStatement statement = database.compileStatement(sql);
+			database.beginTransaction();
+
+			for (int i = 0; i < subscriptions.size(); i++)
+			{
+				statement.clearBindings();
+
+				statement.bindString(1, subscriptions.get(i).getId());
+
+				statement.bindString(2, subscriptions.get(i).getTitle());
+
+				statement.bindString(3, subscriptions.get(i).getWebsite());
+
+				statement.bindLong(4, subscriptions.get(i).getUpdated());
+
+				AddSubscriptionCategory(subscriptions.get(i).getId(), subscriptions.get(i).getCategories());
+
+				statement.execute();
+			}
+
+			database.setTransactionSuccessful();
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
+		finally
+		{
+
+			database.endTransaction();
+			database.close();
+		}
+
+	}
+
+	private void AddSubscriptionCategory(String subscriptionId, List<Category> categories)
+	{
+		SQLiteDatabase database = db.getWritableDatabase();
+		ContentValues values = new ContentValues();
+		for (Category category : categories)
+		{
+			values.put(SubscriptionCategory.SUBSCRIPTION_ID, subscriptionId);
+			values.put(SubscriptionCategory.CATEGORY_ID, category.getId());
+		}
+		
+		if(categories.size()>0)
+			database.insert(SubscriptionCategory.TABLE_NAME, null, values);
+
+	}
+
+	public void WriteMarkers(Markers markers) throws Exception
+	{
+		SQLiteDatabase database = db.getWritableDatabase();
+
+		try
+
+		{
+			String sql = "INSERT OR REPLACE INTO " + UnreadCounts.TABLE_NAME
+					+ "(" + UnreadCounts._ID + "," + UnreadCounts.COUNT + ","
+					+ UnreadCounts.UPDATED + ") " + " VALUES (?, ?  , ?)";
+
+			SQLiteStatement statement = database.compileStatement(sql);
+			database.beginTransaction();
+
+			List<Marker> listMarkers = markers.getUnreadcounts();
+			for (int i = 0; i < markers.getUnreadcounts().size(); i++)
+			{
+				statement.clearBindings();
+
+				statement.bindString(1, listMarkers.get(i).getId());
+
+				statement.bindLong(2, listMarkers.get(i).getCount());
+
+				statement.bindLong(3, listMarkers.get(i).getUpdated());
+
+				statement.execute();
+			}
+
+			database.setTransactionSuccessful();
+		}
+		catch (Exception e)
+		{
+			throw e;
+		}
+		finally
+		{
+
+			database.endTransaction();
+			database.close();
+		}
+
+	}
 
 }

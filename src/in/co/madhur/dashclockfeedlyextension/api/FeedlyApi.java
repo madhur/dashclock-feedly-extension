@@ -14,7 +14,7 @@ public interface FeedlyApi
 	Markers GetMarkerCounts(@Header("Authorization") String authorization);
 	
 	@GET("/v3/subscriptions")
-	List<Subscriptions> GetSubscriptions(@Header("Authorization") String authorization);
+	List<Subscription> GetSubscriptions(@Header("Authorization") String authorization);
 	
 	@GET("/v3/profile")
 	Profile GetProfile(@Header("Authorization") String authorization);

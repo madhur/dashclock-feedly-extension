@@ -56,7 +56,7 @@ public class FeedlyDB extends SQLiteOpenHelper
 	
 	private static final String SQL_CREATE_UnreadCounts = "CREATE TABLE " + "%s"
 			+ " ("
-			+ UnreadCounts.SUBSCRIPTION_OR_CATEGORY_ID
+			+ UnreadCounts._ID
 			+  TEXT_TYPE + COMMA_SEP
 			+ UnreadCounts.COUNT
 			+ INTEGER_TYPE + COMMA_SEP

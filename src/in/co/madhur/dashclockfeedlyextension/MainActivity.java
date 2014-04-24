@@ -5,7 +5,10 @@ import java.util.List;
 import in.co.madhur.dashclockfeedlyextension.api.Category;
 import in.co.madhur.dashclockfeedlyextension.api.Feedly;
 import in.co.madhur.dashclockfeedlyextension.api.FeedlyApi;
+import in.co.madhur.dashclockfeedlyextension.api.Marker;
+import in.co.madhur.dashclockfeedlyextension.api.Markers;
 import in.co.madhur.dashclockfeedlyextension.api.Profile;
+import in.co.madhur.dashclockfeedlyextension.api.Subscription;
 import in.co.madhur.dashclockfeedlyextension.db.DbHelper;
 
 import com.infospace.android.oauth2.WebApiHelper;
@@ -95,15 +98,37 @@ public class MainActivity extends Activity
 				
 				dbHelper.WriteCategories(categories);
 				
+				List<Subscription> subscriptions=feedly.GetSubscriptions();
+				
+				dbHelper.WriteSubscriptions(subscriptions);
+				
+				Markers markers=feedly.GetUnreadCounts();
+				
+				dbHelper.WriteMarkers(markers);
+				
 				for (Category category : categories)
 				{
 					Log.v("Tag", category.getLabel());
 				}
 				
+
+				for (Subscription sub : subscriptions)
+				{
+					if(sub.getWebsite() != null)
+					Log.v("Tag", sub.getWebsite());
+				}
+				
+				List<Marker> markerList=markers.getUnreadcounts();
+				
+				for (Marker marker : markerList)
+				{
+					Log.v("Tag", String.valueOf(marker.getCount()));
+				}
+				
 			}
 			catch(Exception e)
 			{
-				Log.e(App.TAG, e.getMessage());
+				//Log.e(App.TAG, e.getMessage());
 				e.printStackTrace();
 			}
 			

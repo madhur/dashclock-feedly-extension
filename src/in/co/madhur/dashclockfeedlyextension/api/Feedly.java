@@ -51,5 +51,10 @@ public class Feedly
 	{
 		return feedlyApi.GetProfile(token);
 	}
+	
+	public List<Subscription> GetSubscriptions()
+	{
+		return feedlyApi.GetSubscriptions(token);
+	}
 
 }

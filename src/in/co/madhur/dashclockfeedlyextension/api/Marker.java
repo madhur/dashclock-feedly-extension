@@ -19,7 +19,7 @@ public class Marker
 	@JsonProperty("id")
 	private String id;
 	@JsonProperty("updated")
-	private int updated;
+	private Long updated;
 	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
 	@JsonProperty("count")
@@ -47,13 +47,13 @@ public class Marker
 	}
 
 	@JsonProperty("updated")
-	public int getUpdated()
+	public Long getUpdated()
 	{
 		return updated;
 	}
 
 	@JsonProperty("updated")
-	public void setUpdated(int updated)
+	public void setUpdated(Long updated)
 	{
 		this.updated = updated;
 	}
