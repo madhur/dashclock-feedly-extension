@@ -241,26 +241,27 @@ public class DbHelper
 				null, // don't filter by row groups
 				null // The sort order
 		);
-		
-		if(c.moveToFirst())
+
+		if (c.moveToFirst())
 		{
-			Profile profile=new Profile();
+			Profile profile = new Profile();
 			profile.setId(c.getString(c.getColumnIndexOrThrow(FeedlyUser._ID)));
 			profile.setEmail(c.getString(c.getColumnIndexOrThrow(FeedlyUser.EMAIL)));
-			
+
 			return profile;
-			
+
 		}
 		
-		
+		c.close();
+
 		return null;
 	}
 
 	public List<Category> GetCategories()
 	{
 		SQLiteDatabase database = db.getReadableDatabase();
-		List<Category> categories=new ArrayList<Category>();
-		
+		List<Category> categories = new ArrayList<Category>();
+
 		Cursor c = database.query(Categories.TABLE_NAME, // The table to
 				// query
 				null, // The columns to return
@@ -270,26 +271,32 @@ public class DbHelper
 				null, // don't filter by row groups
 				null // The sort order
 		);
-		
-		if(c.moveToFirst())
+
+		if (c.moveToFirst())
 		{
-			Category category=new Category();
-			category.setId(c.getString(c.getColumnIndexOrThrow(Categories._ID)));
-			category.setLabel(c.getString(c.getColumnIndexOrThrow(Categories.LABEL)));
-			
-			categories.add(category);
+			do
+			{
+				Category category = new Category();
+				category.setId(c.getString(c.getColumnIndexOrThrow(Categories._ID)));
+				category.setLabel(c.getString(c.getColumnIndexOrThrow(Categories.LABEL)));
+
+				categories.add(category);
+			}
+			while (c.moveToNext());
 		}
 		
+		c.close();
+
 		return categories;
-		
+
 	}
 
 	public List<Subscription> GetSubscriptions()
 	{
 		SQLiteDatabase database = db.getReadableDatabase();
-		List<Subscription> subscriptions=new ArrayList<Subscription>();
-		
-		Cursor c = database.query(Categories.TABLE_NAME, // The table to
+		List<Subscription> subscriptions = new ArrayList<Subscription>();
+
+		Cursor c = database.query(Subscriptions.TABLE_NAME, // The table to
 				// query
 				null, // The columns to return
 				null, // The columns for the WHERE clause
@@ -298,28 +305,34 @@ public class DbHelper
 				null, // don't filter by row groups
 				null // The sort order
 		);
-		
-		if(c.moveToFirst())
+
+		if (c.moveToFirst())
 		{
-			Subscription subscription=new Subscription();
-			subscription.setId(c.getString(c.getColumnIndexOrThrow(Subscriptions._ID)));
-			subscription.setTitle(c.getString(c.getColumnIndexOrThrow(Subscriptions.TITLE)));
-			subscription.setWebsite(c.getString(c.getColumnIndexOrThrow(Subscriptions.WEBSITE)));
-			subscription.setUpdated(c.getLong(c.getColumnIndexOrThrow(Subscriptions.UPDATED)));
-			//subscription.setVisualUrl(c.getString(c.getColumnIndexOrThrow(Subscriptions.)));
-			
-			subscriptions.add(subscription);
+			do
+			{
+				Subscription subscription = new Subscription();
+				subscription.setId(c.getString(c.getColumnIndexOrThrow(Subscriptions._ID)));
+				subscription.setTitle(c.getString(c.getColumnIndexOrThrow(Subscriptions.TITLE)));
+				subscription.setWebsite(c.getString(c.getColumnIndexOrThrow(Subscriptions.WEBSITE)));
+				subscription.setUpdated(c.getLong(c.getColumnIndexOrThrow(Subscriptions.UPDATED)));
+				// subscription.setVisualUrl(c.getString(c.getColumnIndexOrThrow(Subscriptions.)));
+
+				subscriptions.add(subscription);
+			}
+			while (c.moveToNext());
 		}
 		
+		c.close();
+
 		return subscriptions;
 	}
 
 	public Markers GetUnreadCounts()
 	{
 		SQLiteDatabase database = db.getReadableDatabase();
-		Markers markers=new Markers();
-		List<Marker> listMarkers=new ArrayList<Marker>();
-		
+		Markers markers = new Markers();
+		List<Marker> listMarkers = new ArrayList<Marker>();
+
 		Cursor c = database.query(UnreadCounts.TABLE_NAME, // The table to
 				// query
 				null, // The columns to return
@@ -329,81 +342,96 @@ public class DbHelper
 				null, // don't filter by row groups
 				null // The sort order
 		);
-		
-		if(c.moveToFirst())
+
+		if (c.moveToFirst())
 		{
-			Marker marker=new Marker();
-			marker.setCount(c.getInt(c.getColumnIndexOrThrow(UnreadCounts.COUNT)));
-			marker.setId(c.getString(c.getColumnIndexOrThrow(UnreadCounts._ID)));
-			marker.setUpdated(c.getLong(c.getColumnIndexOrThrow(UnreadCounts.UPDATED)));
-			
-			
-			listMarkers.add(marker);
+			do
+			{
+				Marker marker = new Marker();
+				marker.setCount(c.getInt(c.getColumnIndexOrThrow(UnreadCounts.COUNT)));
+				marker.setId(c.getString(c.getColumnIndexOrThrow(UnreadCounts._ID)));
+				marker.setUpdated(c.getLong(c.getColumnIndexOrThrow(UnreadCounts.UPDATED)));
+
+				listMarkers.add(marker);
+			}
+			while (c.moveToNext());
 		}
 		
+		c.close();
+
 		markers.setUnreadcounts(listMarkers);
-		
+
 		return markers;
 	}
-	
+
 	public List<Subscription> GetSubScriptionsForCategory(String categoryId)
 	{
 		SQLiteDatabase database = db.getReadableDatabase();
-		List<Subscription> subscriptions=new ArrayList<Subscription>();
-		
-		Cursor c = database.query(SubscriptionCategory.TABLE_NAME, // The table to
+		List<Subscription> subscriptions = new ArrayList<Subscription>();
+
+		Cursor c = database.query(SubscriptionCategory.TABLE_NAME, // The table
+																	// to
 				// query
 				null, // The columns to return
-				SubscriptionCategory.CATEGORY_ID, // The columns for the WHERE clause
-				new String[] {categoryId}, // The values for the WHERE clause
+				SubscriptionCategory.CATEGORY_ID + "=?", // The columns for the
+															// WHERE clause
+				new String[] { categoryId }, // The values for the WHERE clause
 				null, // don't group the rows
 				null, // don't filter by row groups
 				null // The sort order
 		);
-		
-		if(c.moveToFirst())
+
+		if (c.moveToFirst())
 		{
-			Subscription sub=GetSubscription(c.getString(c.getColumnIndexOrThrow(SubscriptionCategory.SUBSCRIPTION_ID)));
-			if(sub!=null)
-				subscriptions.add(sub);
+			do
+			{
+				Subscription sub = GetSubscription(c.getString(c.getColumnIndexOrThrow(SubscriptionCategory.SUBSCRIPTION_ID)));
+				if (sub != null)
+					subscriptions.add(sub);
+			}
+			while (c.moveToNext());
 		}
 		
+		c.close();
+
 		return subscriptions;
 	}
-	
+
 	private Subscription GetSubscription(String subscriptionId)
 	{
 		SQLiteDatabase database = db.getReadableDatabase();
-		Subscription sub=new Subscription();
+		Subscription sub = new Subscription();
 		Cursor c = database.query(Subscriptions.TABLE_NAME, // The table to
 				// query
 				null, // The columns to return
-				Subscriptions._ID, // The columns for the WHERE clause
-				new String[] {subscriptionId}, // The values for the WHERE clause
+				Subscriptions._ID+"=?", // The columns for the WHERE clause
+				new String[] { subscriptionId }, // The values for the WHERE
+													// clause
 				null, // don't group the rows
 				null, // don't filter by row groups
 				null // The sort order
 		);
-		
-		if(c.moveToFirst())
+
+		if (c.moveToFirst())
 		{
-			
+
 			sub.setId(c.getString(c.getColumnIndexOrThrow(Subscriptions._ID)));
 			sub.setTitle(c.getString(c.getColumnIndexOrThrow(Subscriptions.TITLE)));
 			sub.setUpdated(c.getLong(c.getColumnIndexOrThrow(Subscriptions.UPDATED)));
 			sub.setWebsite(c.getString(c.getColumnIndexOrThrow(Subscriptions.WEBSITE)));
 		}
 		
+		c.close();
+
 		return sub;
-		
-		
+
 	}
-	
+
 	public boolean IsFetchRequired()
 	{
-		if(GetSubscriptions().size() >0)
+		if (GetSubscriptions().size() > 0)
 			return false;
-		
+
 		return true;
 	}
 

@@ -28,11 +28,11 @@ import android.widget.ProgressBar;
 public class MainActivity extends Activity
 {
 
-	WebApiHelper apiHelper;
-	AppPreferences appPreferences;
+	private WebApiHelper apiHelper;
+	private AppPreferences appPreferences;
 	
-	ProgressBar progressBar;
-	ExpandableListView listView;
+	private ProgressBar progressBar;
+	private ExpandableListView listView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -138,16 +138,19 @@ public class MainActivity extends Activity
 					dbHelper.WriteProfile(profile);
 
 					categories = feedly.GetCategories();
-					dbHelper.WriteCategories(categories);
+					dbHelper.WriteCategories(categories);										
 
 					subscriptions = feedly.GetSubscriptions();
 					dbHelper.WriteSubscriptions(subscriptions);
+					
+					
 
 					markers = feedly.GetUnreadCounts();
 					dbHelper.WriteMarkers(markers);
 
 					for (Category category : categories)
 					{
+						category.setSubscriptions(dbHelper.GetSubScriptionsForCategory(category.getId()));
 						Log.v("Tag", category.getLabel());
 					}
 
@@ -208,7 +211,7 @@ public class MainActivity extends Activity
 			return;
 		}
 		
-		FeedlyListViewAdapter adapter=new FeedlyListViewAdapter(result);
+		FeedlyListViewAdapter adapter=new FeedlyListViewAdapter(result, this);
 		
 		listView.setAdapter(adapter);
 

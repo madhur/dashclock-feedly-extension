@@ -1,6 +1,8 @@
 package in.co.madhur.dashclockfeedlyextension.api;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -12,6 +14,8 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({ "id", "label" })
 public class Category
 {
+	
+	private List<Subscription> subscriptions;
 
 	@JsonProperty("id")
 	private String id;
@@ -53,6 +57,16 @@ public class Category
 	public void setAdditionalProperty(String name, Object value)
 	{
 		this.additionalProperties.put(name, value);
+	}
+
+	public List<Subscription> getSubscriptions()
+	{
+		return subscriptions;
+	}
+
+	public void setSubscriptions(List<Subscription> subscriptions)
+	{
+		this.subscriptions = subscriptions;
 	}
 
 }
