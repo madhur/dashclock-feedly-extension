@@ -1,5 +1,6 @@
 package in.co.madhur.dashclockfeedlyextension.db;
 
+import in.co.madhur.dashclockfeedlyextension.App;
 import in.co.madhur.dashclockfeedlyextension.api.Category;
 import in.co.madhur.dashclockfeedlyextension.api.Marker;
 import in.co.madhur.dashclockfeedlyextension.api.Markers;
@@ -430,9 +431,64 @@ public class DbHelper
 	public boolean IsFetchRequired()
 	{
 		if (GetSubscriptions().size() > 0)
+		{
+			
 			return false;
-
+		}
+		
+		Log.v(App.TAG, "Fetch is required");
 		return true;
+	}
+
+	private void TruncateTable(String tableName) throws Exception
+	{
+		SQLiteDatabase database = db.getWritableDatabase();
+
+		try
+		{
+
+			String sql1 = String.format("delete from %s", tableName);
+
+			database.beginTransaction();
+			database.execSQL(sql1);
+			database.setTransactionSuccessful();
+		}
+		catch (Exception e)
+		{
+			Log.e(App.TAG, e.getMessage());
+			throw e;
+		}
+		finally
+		{
+			database.endTransaction();
+			database.close();
+		}
+		
+	}
+
+	public void TruncateProfile() throws Exception
+	{
+		TruncateTable(FeedlyUser.TABLE_NAME);
+		
+	}
+
+	public void TruncateCategories() throws Exception
+	{
+		TruncateTable(Categories.TABLE_NAME);
+		
+	}
+
+	public void TruncateSubscriptions() throws Exception
+	{
+		TruncateTable(Subscriptions.TABLE_NAME);;
+		TruncateTable(SubscriptionCategory.TABLE_NAME);;
+		
+	}
+
+	public void TruncateMarkers() throws Exception
+	{
+		TruncateTable(UnreadCounts.TABLE_NAME);;
+		
 	}
 
 }
