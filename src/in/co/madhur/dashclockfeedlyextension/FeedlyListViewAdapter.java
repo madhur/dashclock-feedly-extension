@@ -22,6 +22,8 @@ public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements
 	private FeedlyData result;
 	private DbHelper dbHelper;
 	private Context context;
+	ViewHolderItem item;
+	ViewHolderGroup groupItem;
 
 	// Hashmap for keeping track of our checkbox check states
 	private HashMap<Integer, boolean[]> mChildCheckStates;
@@ -37,9 +39,9 @@ public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements
 		this.result = result;
 		dbHelper = DbHelper.getInstance(context);
 		this.context = context;
-		
-		 // Initialize our hashmap containing our check states here
-        mChildCheckStates = new HashMap<Integer, boolean[]>();
+
+		// Initialize our hashmap containing our check states here
+		mChildCheckStates = new HashMap<Integer, boolean[]>();
 	}
 
 	@Override
@@ -53,7 +55,7 @@ public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements
 	public int getChildrenCount(int groupPosition)
 	{
 		Category category = result.getCategories().get(groupPosition);
-		//return dbHelper.GetSubScriptionsForCategory(category.getId()).size();
+		// return dbHelper.GetSubScriptionsForCategory(category.getId()).size();
 		return category.getSubscriptions().size();
 
 	}
@@ -68,7 +70,8 @@ public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements
 	public Object getChild(int groupPosition, int childPosition)
 	{
 		Category category = (Category) getGroup(groupPosition);
-		//return dbHelper.GetSubScriptionsForCategory(category.getId()).get(childPosition);
+		// return
+		// dbHelper.GetSubScriptionsForCategory(category.getId()).get(childPosition);
 		return category.getSubscriptions().get(childPosition);
 
 	}
@@ -99,14 +102,24 @@ public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements
 		{
 			LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = infalInflater.inflate(R.layout.list_group, null);
+			
+			groupItem=new ViewHolderGroup();
+			
+			groupItem.textViewItem=(TextView) convertView.findViewById(R.id.lblListHeader);
+			groupItem.checked=(CheckBox) convertView.findViewById(R.id.GroupCheckBox);
+			
+			convertView.setTag(groupItem);
+		}
+		else
+		{
+			
+			groupItem=(ViewHolderGroup) convertView.getTag();
 		}
 
-		TextView lblListHeader = (TextView) convertView.findViewById(R.id.lblListHeader);
-		CheckBox groupCheckBox = (CheckBox) convertView.findViewById(R.id.GroupCheckBox);
-		groupCheckBox.setOnClickListener(this);
+		//groupCheckBox.setOnClickListener(this);
 
-		lblListHeader.setTypeface(null, Typeface.BOLD);
-		lblListHeader.setText(headerTitle);
+		//groupItem.textViewItem.setTypeface(null, Typeface.BOLD);
+		groupItem.textViewItem.setText(headerTitle);
 
 		return convertView;
 	}
@@ -114,19 +127,35 @@ public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements
 	@Override
 	public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent)
 	{
-		final String childText = ((Subscription) getChild(groupPosition, childPosition)).getTitle();
+		// final String childText = ((Subscription) getChild(groupPosition,
+		// childPosition)).getTitle();
+		Subscription subscription = (Subscription) getChild(groupPosition, childPosition);
 
 		if (convertView == null)
 		{
 			LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = infalInflater.inflate(R.layout.list_item, null);
+
+			item = new ViewHolderItem();
+
+			item.title = (TextView) convertView.findViewById(R.id.lblListItem);
+			item.checked = (CheckBox) convertView.findViewById(R.id.ChildCheckBox);
+			item.website = (TextView) convertView.findViewById(R.id.WebsiteLabel);
+
+			convertView.setTag(item);
+
+		}
+		else
+		{
+			item = (ViewHolderItem) convertView.getTag();
+
 		}
 
-		TextView txtListChild = (TextView) convertView.findViewById(R.id.lblListItem);
-		CheckBox childCheckBox = (CheckBox) convertView.findViewById(R.id.ChildCheckBox);
-		childCheckBox.setOnClickListener(this);
+		// childCheckBox.setOnClickListener(this);
 
-		txtListChild.setText(childText);
+		item.title.setText(subscription.getTitle());
+		item.website.setText(subscription.getWebsite());
+
 		return convertView;
 	}
 
@@ -153,6 +182,19 @@ public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements
 
 		TextView mChildText;
 		CheckBox mCheckBox;
+	}
+
+	 static class ViewHolderGroup
+	{
+		TextView textViewItem;
+		CheckBox checked;
+	}
+
+	 static class ViewHolderItem
+	{
+		TextView title;
+		TextView website;
+		CheckBox checked;
 	}
 
 }
