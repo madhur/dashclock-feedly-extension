@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp" 
+    android:paddingTop="10dp" android:paddingBottom="10dp" 
    >
 
 
@@ -11,9 +11,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
-        android:textSize="17dp" android:layout_alignParentLeft="true"
+        android:textSize="17sp" android:layout_alignParentLeft="true"
         />
     
-    <CheckBox android:id="@+id/GroupCheckBox" android:focusable="false" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_alignParentRight="true" />
+    <CheckBox android:id="@+id/GroupCheckBox" android:scaleX="2" android:scaleY="2"  android:paddingRight="10dp"  android:focusable="false" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_alignParentRight="true" />
 
 </RelativeLayout>

@@ -1,20 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="55dip"
-    android:orientation="vertical" >
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="10dp"
+    android:paddingTop="10dp" >
 
     <TextView
         android:id="@+id/lblListItem"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_toLeftOf="@+id/ChildCheckBox"
+        android:layout_alignParentLeft="true"
+        android:ellipsize="marquee"
+        android:paddingRight="20dp"
+        android:maxLines="3"
+        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+        android:textSize="17sp" />
+
+    <TextView
+        android:id="@+id/WebsiteLabel"
+        android:maxLines="3"
+        android:paddingRight="20dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="17dip"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft" android:layout_alignParentLeft="true" />
-    
-    <TextView  android:id="@+id/WebsiteLabel" android:layout_width="fill_parent" android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"  android:layout_height="wrap_content" android:layout_below="@id/lblListItem"/>
-    
-    <CheckBox android:id="@+id/ChildCheckBox" android:focusable="false"  android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentRight="true" />
+        android:layout_below="@id/lblListItem"
+        android:layout_toLeftOf="@+id/ChildCheckBox"
+         android:layout_alignParentLeft="true"
+        android:ellipsize="marquee"
+        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft" />
+
+    <CheckBox
+        android:id="@+id/ChildCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:focusable="false"
+        android:paddingRight="10dp"
+        android:scaleX="2.0"
+        android:scaleY="2.0" />
 
 </RelativeLayout>
