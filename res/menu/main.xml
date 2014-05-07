@@ -14,13 +14,6 @@
         android:icon="@drawable/navigation_refresh"
         android:title="@string/action_refresh"/>
      
-      <item
-        android:id="@+id/action_save"
-        android:orderInCategory="100"
-        android:showAsAction="always"
-        android:icon="@drawable/content_save"
-        android:title="@string/action_refresh"/>
-    
 
             <item
         android:id="@+id/action_accept"

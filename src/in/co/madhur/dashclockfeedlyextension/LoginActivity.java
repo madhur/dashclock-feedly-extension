@@ -2,7 +2,6 @@ package in.co.madhur.dashclockfeedlyextension;
 
 import com.infospace.android.oauth2.WebApiHelper;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;

@@ -4,7 +4,6 @@ import java.util.List;
 
 import in.co.madhur.dashclockfeedlyextension.api.Category;
 import in.co.madhur.dashclockfeedlyextension.api.Feedly;
-import in.co.madhur.dashclockfeedlyextension.api.FeedlyApi;
 import in.co.madhur.dashclockfeedlyextension.api.Marker;
 import in.co.madhur.dashclockfeedlyextension.api.Markers;
 import in.co.madhur.dashclockfeedlyextension.api.Profile;
@@ -13,13 +12,11 @@ import in.co.madhur.dashclockfeedlyextension.db.DbHelper;
 
 import com.infospace.android.oauth2.WebApiHelper;
 
-import android.opengl.Visibility;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -115,10 +112,16 @@ public class MainActivity extends Activity
 		{
 			case R.id.action_refresh:
 				Refresh();
+				
 				break;
 			
 			case R.id.action_settings:
 				
+				break;
+				
+			case R.id.action_accept:
+				SaveSelectedCategories();
+				finish();
 				break;
 				
 			default:
@@ -129,6 +132,18 @@ public class MainActivity extends Activity
 		
 	}
 	
+	private void SaveSelectedCategories()
+	{
+		FeedlyListViewAdapter listAdapter= (FeedlyListViewAdapter) listView.getExpandableListAdapter();
+		
+		if(listAdapter!=null)
+		{
+			listAdapter.SaveSelectedValuestoPreferences();			
+		}
+		else
+			Log.e(App.TAG, "Adapter is null while saving selected values");
+	}
+
 	private void Refresh()
 	{
 		GetFeedlyData(true);
@@ -197,14 +212,14 @@ public class MainActivity extends Activity
 					for (Category category : categories)
 					{
 						category.setSubscriptions(dbHelper.GetSubScriptionsForCategory(category.getId()));
-						Log.v("Tag", category.getLabel());
+						//Log.v("Tag", category.getLabel());
 					}
 
-					for (Subscription sub : subscriptions)
-					{
-						if (sub.getWebsite() != null)
-							Log.v("Tag", sub.getWebsite());
-					}
+//					for (Subscription sub : subscriptions)
+//					{
+//						if (sub.getWebsite() != null)
+//							//Log.v("Tag", sub.getWebsite());
+//					}
 
 					List<Marker> markerList = markers.getUnreadcounts();
 
@@ -222,7 +237,7 @@ public class MainActivity extends Activity
 					for (Category category : categories)
 					{
 						category.setSubscriptions(dbHelper.GetSubScriptionsForCategory(category.getId()));
-						Log.v("Tag", category.getLabel());
+						//Log.v("Tag", category.getLabel());
 					}
 
 

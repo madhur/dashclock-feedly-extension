@@ -1,13 +1,11 @@
 package in.co.madhur.dashclockfeedlyextension;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import in.co.madhur.dashclockfeedlyextension.api.Category;
 import in.co.madhur.dashclockfeedlyextension.api.Subscription;
-import in.co.madhur.dashclockfeedlyextension.db.DbHelper;
 import android.content.Context;
-import android.graphics.Typeface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,38 +14,27 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements
-		OnClickListener
+public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements ISaveable
+
 {
 	private FeedlyData result;
-	private DbHelper dbHelper;
 	private Context context;
-	ViewHolderItem item;
-	ViewHolderGroup groupItem;
+	private ViewHolderItem item;
+	private ViewHolderGroup groupItem;
+	private final HashMap<String, Boolean> check_states = new HashMap<String, Boolean>();
 
-	// Hashmap for keeping track of our checkbox check states
-	private HashMap<Integer, boolean[]> mChildCheckStates;
-
-	// Our getChildView & getGroupView use the viewholder patter
-	// Here are the viewholders defined, the inner classes are
-	// at the bottom
-	private ChildViewHolder childViewHolder;
-	private GroupViewHolder groupViewHolder;
 
 	public FeedlyListViewAdapter(FeedlyData result, Context context)
 	{
 		this.result = result;
-		dbHelper = DbHelper.getInstance(context);
 		this.context = context;
-
-		// Initialize our hashmap containing our check states here
-		mChildCheckStates = new HashMap<Integer, boolean[]>();
+		GetSelectedValuesFromPreferences();
+		
 	}
 
 	@Override
 	public int getGroupCount()
 	{
-		// Log.v(App.TAG, String.valueOf(result.getCategories().size()));
 		return result.getCategories().size();
 	}
 
@@ -55,7 +42,6 @@ public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements
 	public int getChildrenCount(int groupPosition)
 	{
 		Category category = result.getCategories().get(groupPosition);
-		// return dbHelper.GetSubScriptionsForCategory(category.getId()).size();
 		return category.getSubscriptions().size();
 
 	}
@@ -70,8 +56,6 @@ public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements
 	public Object getChild(int groupPosition, int childPosition)
 	{
 		Category category = (Category) getGroup(groupPosition);
-		// return
-		// dbHelper.GetSubScriptionsForCategory(category.getId()).get(childPosition);
 		return category.getSubscriptions().get(childPosition);
 
 	}
@@ -97,29 +81,47 @@ public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements
 	@Override
 	public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent)
 	{
-		String headerTitle = ((Category) getGroup(groupPosition)).getLabel();
+		final Category category=(Category) getGroup(groupPosition);
 		if (convertView == null)
 		{
 			LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = infalInflater.inflate(R.layout.list_group, null);
-			
-			groupItem=new ViewHolderGroup();
-			
-			groupItem.textViewItem=(TextView) convertView.findViewById(R.id.lblListHeader);
-			groupItem.checked=(CheckBox) convertView.findViewById(R.id.GroupCheckBox);
+
+			groupItem = new ViewHolderGroup();
+
+			groupItem.textViewItem = (TextView) convertView.findViewById(R.id.lblListHeader);
+			groupItem.checked = (CheckBox) convertView.findViewById(R.id.GroupCheckBox);
 			
 			convertView.setTag(groupItem);
 		}
 		else
 		{
-			
-			groupItem=(ViewHolderGroup) convertView.getTag();
+
+			groupItem = (ViewHolderGroup) convertView.getTag();
 		}
 
-		//groupCheckBox.setOnClickListener(this);
-
-		//groupItem.textViewItem.setTypeface(null, Typeface.BOLD);
-		groupItem.textViewItem.setText(headerTitle);
+		groupItem.checked.setOnClickListener(new OnClickListener()
+		{
+			
+			@Override
+			public void onClick(View v)
+			{
+				CheckBox checkbox=(CheckBox) v;
+				check_states.put(category.getId(), checkbox.isChecked());
+			}
+		});
+		
+		groupItem.textViewItem.setText(category.getLabel());
+		
+		if(check_states.containsKey(category.getId()))
+		{
+			groupItem.checked.setChecked(check_states.get(category.getId()));
+		}
+		else
+		{
+			groupItem.checked.setChecked(false);
+			
+		}
 
 		return convertView;
 	}
@@ -127,9 +129,7 @@ public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements
 	@Override
 	public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent)
 	{
-		// final String childText = ((Subscription) getChild(groupPosition,
-		// childPosition)).getTitle();
-		Subscription subscription = (Subscription) getChild(groupPosition, childPosition);
+		final Subscription subscription = (Subscription) getChild(groupPosition, childPosition);
 
 		if (convertView == null)
 		{
@@ -150,11 +150,29 @@ public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements
 			item = (ViewHolderItem) convertView.getTag();
 
 		}
-
-		// childCheckBox.setOnClickListener(this);
+		
+		item.checked.setOnClickListener(new OnClickListener()
+		{
+			
+			@Override
+			public void onClick(View v)
+			{
+				CheckBox checkbox=(CheckBox) v;
+				check_states.put(subscription.getId(), checkbox.isChecked());
+				
+			}
+		});
 
 		item.title.setText(subscription.getTitle());
 		item.website.setText(subscription.getWebsite());
+		
+		if(check_states.containsKey(subscription.getId()))
+		{
+			item.checked.setChecked(check_states.get(subscription.getId()));
+		}
+		else
+			item.checked.setChecked(false);
+		
 
 		return convertView;
 	}
@@ -165,36 +183,37 @@ public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements
 		return true;
 	}
 
-	@Override
-	public void onClick(View v)
-	{
-
-	}
-
-	public final class GroupViewHolder
-	{
-
-		TextView mGroupText;
-	}
-
-	public final class ChildViewHolder
-	{
-
-		TextView mChildText;
-		CheckBox mCheckBox;
-	}
-
-	 static class ViewHolderGroup
+	private final static class ViewHolderGroup
 	{
 		TextView textViewItem;
 		CheckBox checked;
 	}
 
-	 static class ViewHolderItem
+	private final static class ViewHolderItem
 	{
 		TextView title;
 		TextView website;
 		CheckBox checked;
+	}
+
+	@Override
+	public void SaveSelectedValuestoPreferences()
+	{
+		AppPreferences appPreferences=new AppPreferences(context);
+		appPreferences.SaveSelectedValues(check_states);
+		
+	}
+
+	@Override
+	public void GetSelectedValuesFromPreferences()
+	{
+		AppPreferences appPreferences=new AppPreferences(context);
+		ArrayList<String> selectedValues=appPreferences.GetSelectedValues();
+		
+		for(String s : selectedValues)
+		{
+			check_states.put(s, true);
+		}
 	}
 
 }
