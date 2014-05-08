@@ -12,9 +12,11 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckBox;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
-public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements ISaveable
+public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements ISaveable, Filterable
 
 {
 	private FeedlyData result;
@@ -214,6 +216,28 @@ public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements 
 		{
 			check_states.put(s, true);
 		}
+	}
+
+	@Override
+	public Filter getFilter()
+	{
+		return new Filter()
+		{
+			
+			@Override
+			protected void publishResults(CharSequence constraint, FilterResults results)
+			{
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			protected FilterResults performFiltering(CharSequence constraint)
+			{
+				// TODO Auto-generated method stub
+				return null;
+			}
+		};
 	}
 
 }

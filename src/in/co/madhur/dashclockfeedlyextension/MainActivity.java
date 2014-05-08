@@ -16,6 +16,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
@@ -23,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 
 public class MainActivity extends Activity
 {
@@ -44,7 +47,8 @@ public class MainActivity extends Activity
 																																// problems
 		.penaltyLog().build());
 
-	//	StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects().detectLeakedClosableObjects().penaltyLog().penaltyDeath().build());
+		// StrictMode.setVmPolicy(new
+		// StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects().detectLeakedClosableObjects().penaltyLog().penaltyDeath().build());
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
@@ -86,12 +90,11 @@ public class MainActivity extends Activity
 		new GetFeedlyDataTask(feedly, forceRefresh).execute(0);
 
 	}
-	
+
 	private void GetFeedlyData()
 	{
 		GetFeedlyData(false);
 	}
-
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -104,42 +107,42 @@ public class MainActivity extends Activity
 
 		}
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
-		switch(item.getItemId())
+		switch (item.getItemId())
 		{
 			case R.id.action_refresh:
 				Refresh();
-				
+
 				break;
-			
+
 			case R.id.action_settings:
-				Intent prefIntent=new Intent(this, FeedlyPreferenceActivity.class);
+				Intent prefIntent = new Intent(this, FeedlyPreferenceActivity.class);
 				startActivity(prefIntent);
 				break;
-				
+
 			case R.id.action_accept:
 				SaveSelectedCategories();
 				finish();
 				break;
-				
+
 			default:
 				return super.onOptionsItemSelected(item);
 		}
-		
+
 		return super.onOptionsItemSelected(item);
-		
+
 	}
-	
+
 	private void SaveSelectedCategories()
 	{
-		FeedlyListViewAdapter listAdapter= (FeedlyListViewAdapter) listView.getExpandableListAdapter();
-		
-		if(listAdapter!=null)
+		FeedlyListViewAdapter listAdapter = (FeedlyListViewAdapter) listView.getExpandableListAdapter();
+
+		if (listAdapter != null)
 		{
-			listAdapter.SaveSelectedValuestoPreferences();			
+			listAdapter.SaveSelectedValuestoPreferences();
 		}
 		else
 			Log.e(App.TAG, "Adapter is null while saving selected values");
@@ -155,6 +158,34 @@ public class MainActivity extends Activity
 	{
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
+
+		// Associate searchable configuration with the SearchView
+		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+		SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+		searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+		
+		SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener()
+        {
+            @Override
+            public boolean onQueryTextChange(String newText)
+            {
+                // this is your adapter that will be filtered
+               // myAdapter.getFilter().filter(newText);
+              //  listView.getExpandableListAdapter().
+                System.out.println("on text chnge text: "+newText);
+                return true;
+            }
+            @Override
+            public boolean onQueryTextSubmit(String query)
+            {
+                // this is your adapter that will be filtered
+              //  myAdapter.getFilter().filter(query);
+                System.out.println("on query submit: "+query);
+                return true;
+            }
+        };
+        searchView.setOnQueryTextListener(textChangeListener);
+
 		return true;
 	}
 
@@ -168,7 +199,7 @@ public class MainActivity extends Activity
 		public GetFeedlyDataTask(Feedly feedly, boolean forceRefresh)
 		{
 			this.feedly = feedly;
-			this.forceRefresh=forceRefresh;
+			this.forceRefresh = forceRefresh;
 		}
 
 		@Override
@@ -213,14 +244,14 @@ public class MainActivity extends Activity
 					for (Category category : categories)
 					{
 						category.setSubscriptions(dbHelper.GetSubScriptionsForCategory(category.getId()));
-						//Log.v("Tag", category.getLabel());
+						// Log.v("Tag", category.getLabel());
 					}
 
-//					for (Subscription sub : subscriptions)
-//					{
-//						if (sub.getWebsite() != null)
-//							//Log.v("Tag", sub.getWebsite());
-//					}
+					// for (Subscription sub : subscriptions)
+					// {
+					// if (sub.getWebsite() != null)
+					// //Log.v("Tag", sub.getWebsite());
+					// }
 
 					List<Marker> markerList = markers.getUnreadcounts();
 
@@ -234,13 +265,12 @@ public class MainActivity extends Activity
 					profile = dbHelper.GetProfile();
 
 					categories = dbHelper.GetCategories();
-					
+
 					for (Category category : categories)
 					{
 						category.setSubscriptions(dbHelper.GetSubScriptionsForCategory(category.getId()));
-						//Log.v("Tag", category.getLabel());
+						// Log.v("Tag", category.getLabel());
 					}
-
 
 					subscriptions = dbHelper.GetSubscriptions();
 
