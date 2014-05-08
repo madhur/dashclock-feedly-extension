@@ -116,7 +116,8 @@ public class MainActivity extends Activity
 				break;
 			
 			case R.id.action_settings:
-				
+				Intent prefIntent=new Intent(this, FeedlyPreferenceActivity.class);
+				startActivity(prefIntent);
 				break;
 				
 			case R.id.action_accept:

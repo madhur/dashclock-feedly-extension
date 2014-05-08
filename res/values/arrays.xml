@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string-array name="sync_interval">
+        <item>@string/every1hour</item>
+        <item>@string/every2hour</item>
+        <item>@string/every4hour</item>
+        <item>@string/every6hour</item>
+        <item>@string/every12hour</item>
+        <item>@string/every24hour</item>
+    </string-array>
+    
+     <string-array name="sync_interval_values">
+        <item>1</item>
+        <item>2</item>
+        <item>4</item>
+        <item>6</item>
+        <item>12</item>
+        <item>24</item>
+        
+    </string-array>
+
+</resources>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/synchronization" >
+        <CheckBoxPreference
+            android:key="enable_autosync"
+            android:defaultValue="true"
+            android:summary="@string/enable_autosync_desc"
+            android:title="@string/enable_autosync" />
+
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@array/sync_interval"
+            android:entryValues="@array/sync_interval_values"
+            android:key="sync_interval"
+            android:summary="@string/sync_interval_desc"
+            android:title="@string/sync_interval" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/notifications" >
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="enable_notifications"
+            android:summary="@string/enable_notifications_desc"
+            android:title="@string/enable_notifications" >
+        </CheckBoxPreference>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="enable_sound"
+            android:summary="@string/enable_sound_desc"
+            android:dependency="enable_notifications"
+            android:title="@string/enable_sound" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="enable_vibrate"
+            android:dependency="enable_notifications"
+            android:summary="@string/enable_vibrate_desc"
+            android:title="@string/enable_vibrate" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="enable_led"
+            android:dependency="enable_notifications"
+            android:summary="@string/enable_led_desc"
+            android:title="@string/enable_led" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

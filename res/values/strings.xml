@@ -6,5 +6,29 @@
     <string name="action_refresh">Refresh</string>
     <string name="app_short_name">FeedlyEx</string>
     <string name="extension_description">View the count of unread items in your favorite feeds</string>
+    <string name="synchronization">Synchronization</string>
+    <string name="enable_autosync_desc"></string>
+    <string name="enable_autosync"></string>
+    <string name="sync_interval"></string>
+    <string name="sync_interval_desc"></string>
+    <string name="notifications">Notifications</string>
+    <string name="enable_notifications">Enable notifications</string>
+    <string name="enable_notifications_desc">Enable notification information message</string>
+    <string name="enable_sound_desc">Play sound on notification</string>
+    <string name="enable_sound">Play sound</string>
+    <string name="enable_vibrate_desc">Vibrate phone on notification</string>
+    <string name="enable_vibrate">Vibrate phone</string>
+    <string name="enable_led_desc">Flash lights on notification</string>
+    <string name="enable_led">LED</string>
+    <string name="action_accept">Accept</string>
+    <string name="action_logout">Logout</string>
+     <string name="action_about">About</string>
+      <string name="action_search">Search</string>
+    <string name="every1hour">Every 1 hour</string>
+    <string name="every2hour">Every 2 hours</string>
+    <string name="every4hour">Every 4 hours</string>
+    <string name="every6hour">Every 6 hours</string>
+    <string name="every12hour">Every 12 hours</string>
+    <string name="every24hour">Every 24 hours</string>
 
 </resources>
