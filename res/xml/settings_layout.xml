@@ -42,5 +42,13 @@
             android:summary="@string/enable_led_desc"
             android:title="@string/enable_led" />
     </PreferenceCategory>
+    
+    <PreferenceCategory android:title="@string/widget_configuration" >
+           <com.google.android.apps.dashclock.configuration.AppChooserPreference
+            android:key="click_intent"
+            android:title="@string/click_behave_title" />
+
+    </PreferenceCategory>
+        
 
 </PreferenceScreen>

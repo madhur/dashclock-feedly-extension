@@ -7,10 +7,10 @@
     <string name="app_short_name">FeedlyEx</string>
     <string name="extension_description">View the count of unread items in your favorite feeds</string>
     <string name="synchronization">Synchronization</string>
-    <string name="enable_autosync_desc"></string>
-    <string name="enable_autosync"></string>
-    <string name="sync_interval"></string>
-    <string name="sync_interval_desc"></string>
+    <string name="enable_autosync_desc">Automatically Update feed counts</string>
+    <string name="enable_autosync">Auto Update</string>
+    <string name="sync_interval">Sync interval</string>
+    <string name="sync_interval_desc">How often should synchronize?</string>
     <string name="notifications">Notifications</string>
     <string name="enable_notifications">Enable notifications</string>
     <string name="enable_notifications_desc">Enable notification information message</string>
@@ -30,5 +30,12 @@
     <string name="every6hour">Every 6 hours</string>
     <string name="every12hour">Every 12 hours</string>
     <string name="every24hour">Every 24 hours</string>
+    
+    
+	    <string name="click_behave_title">Click behavior</string>
+	      <string name="title_apps">Apps</string>
+    <string name="title_shortcuts">Shortcuts</string>
+    	 <string name="pref_shortcut_default">Default</string>
+    	 <string name="widget_configuration">Widget Configuration</string>
 
 </resources>
