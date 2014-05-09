@@ -4,6 +4,7 @@ import java.util.List;
 
 import in.co.madhur.dashclockfeedlyextension.api.Category;
 import in.co.madhur.dashclockfeedlyextension.api.Feedly;
+import in.co.madhur.dashclockfeedlyextension.api.FeedlyData;
 import in.co.madhur.dashclockfeedlyextension.api.Marker;
 import in.co.madhur.dashclockfeedlyextension.api.Markers;
 import in.co.madhur.dashclockfeedlyextension.api.Profile;

@@ -1,4 +1,4 @@
-package in.co.madhur.dashclockfeedlyextension;
+package in.co.madhur.dashclockfeedlyextension.service;
 
 import com.google.android.apps.dashclock.api.DashClockExtension;
 

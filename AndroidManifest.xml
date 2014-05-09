@@ -54,7 +54,7 @@
         </receiver>
 
         <service
-            android:name=".FeedlyExtensionService"
+            android:name="in.co.madhur.dashclockfeedlyextension.service.FeedlyExtensionService"
             android:icon="@drawable/ic_launcher"
             android:label="@string/app_short_name"
             android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA" >

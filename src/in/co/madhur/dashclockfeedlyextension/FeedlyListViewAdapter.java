@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import in.co.madhur.dashclockfeedlyextension.api.Category;
+import in.co.madhur.dashclockfeedlyextension.api.FeedlyData;
 import in.co.madhur.dashclockfeedlyextension.api.Subscription;
 import android.content.Context;
 import android.view.LayoutInflater;

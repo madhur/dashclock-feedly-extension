@@ -1,11 +1,7 @@
-package in.co.madhur.dashclockfeedlyextension;
+package in.co.madhur.dashclockfeedlyextension.api;
 
 import java.util.List;
 
-import in.co.madhur.dashclockfeedlyextension.api.Category;
-import in.co.madhur.dashclockfeedlyextension.api.Markers;
-import in.co.madhur.dashclockfeedlyextension.api.Profile;
-import in.co.madhur.dashclockfeedlyextension.api.Subscription;
 
 public class FeedlyData
 {
