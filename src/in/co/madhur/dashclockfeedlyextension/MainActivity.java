@@ -170,17 +170,17 @@ public class MainActivity extends Activity
             @Override
             public boolean onQueryTextChange(String newText)
             {
-                // this is your adapter that will be filtered
-               // myAdapter.getFilter().filter(newText);
-              //  listView.getExpandableListAdapter().
+            	FeedlyListViewAdapter adapter= (FeedlyListViewAdapter) listView.getExpandableListAdapter();
+            	adapter.getFilter().filter(newText);
                 System.out.println("on text chnge text: "+newText);
                 return true;
             }
             @Override
             public boolean onQueryTextSubmit(String query)
             {
-                // this is your adapter that will be filtered
-              //  myAdapter.getFilter().filter(query);
+            	FeedlyListViewAdapter adapter= (FeedlyListViewAdapter) listView.getExpandableListAdapter();
+            	adapter.getFilter().filter(query);
+            	
                 System.out.println("on query submit: "+query);
                 return true;
             }

@@ -7,6 +7,7 @@ import in.co.madhur.dashclockfeedlyextension.api.Category;
 import in.co.madhur.dashclockfeedlyextension.api.FeedlyData;
 import in.co.madhur.dashclockfeedlyextension.api.Subscription;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,22 +18,23 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
-public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements ISaveable, Filterable
+public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements
+		ISaveable, Filterable
 
 {
-	private FeedlyData result;
+	private FeedlyData result, savedResult;
 	private Context context;
 	private ViewHolderItem item;
 	private ViewHolderGroup groupItem;
 	private final HashMap<String, Boolean> check_states = new HashMap<String, Boolean>();
 
-
 	public FeedlyListViewAdapter(FeedlyData result, Context context)
 	{
 		this.result = result;
+		this.savedResult = result;
 		this.context = context;
 		GetSelectedValuesFromPreferences();
-		
+
 	}
 
 	@Override
@@ -84,7 +86,7 @@ public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements 
 	@Override
 	public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent)
 	{
-		final Category category=(Category) getGroup(groupPosition);
+		final Category category = (Category) getGroup(groupPosition);
 		if (convertView == null)
 		{
 			LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -94,7 +96,7 @@ public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements 
 
 			groupItem.textViewItem = (TextView) convertView.findViewById(R.id.lblListHeader);
 			groupItem.checked = (CheckBox) convertView.findViewById(R.id.GroupCheckBox);
-			
+
 			convertView.setTag(groupItem);
 		}
 		else
@@ -105,25 +107,25 @@ public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements 
 
 		groupItem.checked.setOnClickListener(new OnClickListener()
 		{
-			
+
 			@Override
 			public void onClick(View v)
 			{
-				CheckBox checkbox=(CheckBox) v;
+				CheckBox checkbox = (CheckBox) v;
 				check_states.put(category.getId(), checkbox.isChecked());
 			}
 		});
-		
+
 		groupItem.textViewItem.setText(category.getLabel());
-		
-		if(check_states.containsKey(category.getId()))
+
+		if (check_states.containsKey(category.getId()))
 		{
 			groupItem.checked.setChecked(check_states.get(category.getId()));
 		}
 		else
 		{
 			groupItem.checked.setChecked(false);
-			
+
 		}
 
 		return convertView;
@@ -153,29 +155,28 @@ public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements 
 			item = (ViewHolderItem) convertView.getTag();
 
 		}
-		
+
 		item.checked.setOnClickListener(new OnClickListener()
 		{
-			
+
 			@Override
 			public void onClick(View v)
 			{
-				CheckBox checkbox=(CheckBox) v;
+				CheckBox checkbox = (CheckBox) v;
 				check_states.put(subscription.getId(), checkbox.isChecked());
-				
+
 			}
 		});
 
 		item.title.setText(subscription.getTitle());
 		item.website.setText(subscription.getWebsite());
-		
-		if(check_states.containsKey(subscription.getId()))
+
+		if (check_states.containsKey(subscription.getId()))
 		{
 			item.checked.setChecked(check_states.get(subscription.getId()));
 		}
 		else
 			item.checked.setChecked(false);
-		
 
 		return convertView;
 	}
@@ -202,18 +203,18 @@ public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements 
 	@Override
 	public void SaveSelectedValuestoPreferences()
 	{
-		AppPreferences appPreferences=new AppPreferences(context);
+		AppPreferences appPreferences = new AppPreferences(context);
 		appPreferences.SaveSelectedValues(check_states);
-		
+
 	}
 
 	@Override
 	public void GetSelectedValuesFromPreferences()
 	{
-		AppPreferences appPreferences=new AppPreferences(context);
-		ArrayList<String> selectedValues=appPreferences.GetSelectedValues();
-		
-		for(String s : selectedValues)
+		AppPreferences appPreferences = new AppPreferences(context);
+		ArrayList<String> selectedValues = appPreferences.GetSelectedValues();
+
+		for (String s : selectedValues)
 		{
 			check_states.put(s, true);
 		}
@@ -224,20 +225,75 @@ public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements 
 	{
 		return new Filter()
 		{
-			
+
 			@Override
 			protected void publishResults(CharSequence constraint, FilterResults results)
 			{
-				// TODO Auto-generated method stub
-				
+
+				FeedlyData filteredData = (FeedlyData) results.values;
+
+				if (results.count > 0)
+				{
+					Log.println(Log.INFO, "Results", "FOUND");
+					result = filteredData;
+
+					notifyDataSetChanged();
+				}
+				else
+				{
+					Log.println(Log.INFO, "Results", "-");
+					notifyDataSetInvalidated();
+				}
 			}
-			
+
 			@Override
 			protected FilterResults performFiltering(CharSequence constraint)
 			{
-				// TODO Auto-generated method stub
-				return null;
+				FilterResults results = new FilterResults();
+
+				ArrayList<Category> categories = (ArrayList<Category>) result.getCategories();
+				ArrayList<Subscription> filteredsubs = new ArrayList<Subscription>();
+				ArrayList<Category> filteredcategories = new ArrayList<Category>();
+
+				if (constraint != null)
+				{
+
+					for (Category category : categories)
+					{
+						ArrayList<Subscription> subs = (ArrayList<Subscription>) category.getSubscriptions();
+
+						for (Subscription sub : subs)
+						{
+
+							if (sub.getTitle().contains(constraint))
+							{
+								if(!filteredcategories.contains(category))
+									filteredcategories.add(category);
+								
+								filteredsubs.add(sub);
+							}
+						}
+					}
+				}
+				else
+				{
+					
+					filteredcategories=(ArrayList<Category>) result.getCategories();
+					filteredsubs=(ArrayList<Subscription>) result.getSubscriptions();
+				}
+
+				FeedlyData filteredData = new FeedlyData(result.getProfile(), filteredcategories, filteredsubs, result.getMarkers());
+
+				synchronized (this)
+				{
+					results.values = filteredData;
+					results.count = filteredsubs.size();
+				}
+			
+				return results;
+
 			}
+
 		};
 	}
 
