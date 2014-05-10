@@ -40,5 +40,7 @@
     <string name="action_selectallcategories">Select All Categories</string>
     <string name="action_selectallfeeds">Select All feeds</string>
     <string name="action_selectnone">Select None</string>
+    <string name="notification_configuration">Notification configuration</string>
+    <string name="switch_theme">Theme</string>
 
 </resources>

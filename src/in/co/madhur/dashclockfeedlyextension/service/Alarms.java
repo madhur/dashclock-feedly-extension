@@ -1,18 +1,19 @@
 package in.co.madhur.dashclockfeedlyextension.service;
 
-import java.util.prefs.Preferences;
+import in.co.madhur.dashclockfeedlyextension.AppPreferences;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 
 public class Alarms
 {
 	
 	private Context context;
-	private Preferences appPreferences;
+	private AppPreferences appPreferences;
 	
-	public Alarms(Context context, Preferences appPreferences)
+	public Alarms(Context context, AppPreferences appPreferences)
 	{
 		
 		this.context=context;
@@ -23,30 +24,20 @@ public class Alarms
 	{
 		
 		this.context=context;
-		this.appPreferences=new Preferences(context);
+		this.appPreferences=new AppPreferences(context);
 	}
 	
 	public void Schedule()
 	{
 		
 		AlarmManager alarmManager=GetAlarmManager(context);
-		int recurTime=appPreferences.getFBInterval();
-		long recurInterval=recurTime*1000;
-		
+		long recurInterval=1000;
 		alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 10000, recurInterval, GetPendingIntent(context) );
-		// alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 10000, 15000, GetPendingIntent(context) );
 	}
 	
 	public void cancel()
 	{
 		GetAlarmManager(context).cancel(GetPendingIntent(context));
-		
-	}
-	
-	public boolean shouldSchedule()
-	{
-		boolean liveTrackEanbled=appPreferences.isLiveTrackEnabled();
-		return liveTrackEanbled;
 	}
 	
 	
@@ -58,12 +49,10 @@ public class Alarms
 	
 	private PendingIntent GetPendingIntent(Context context)
 	{
-		Intent fbIntent=new Intent();
-		fbIntent.setAction(Consts.FB_POST_ACTION);
-		// fbIntent.setClass(context , LiveTrackService.class);
-		fbIntent.setClass(context, LiveTrackWakefulService.class);
+		Intent serviceIntent=new Intent();
+		serviceIntent.setClass(context, UpdateFeedCountService.class);
 		
-		return PendingIntent.getService(context , 0, fbIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		return PendingIntent.getService(context , 0, serviceIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		
 	}
 	

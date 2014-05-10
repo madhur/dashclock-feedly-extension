@@ -1,5 +1,7 @@
 package in.co.madhur.dashclockfeedlyextension;
 
+import in.co.madhur.dashclockfeedlyextension.AppPreferences.Keys;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -28,7 +30,9 @@ public class AppPreferences
 		ENABLE_NOTIFICATIONS("enable_notifications"),
 		ENABLE_SOUND("enable_sound"),
 		ENABLE_VIBRATE("enable_vibrate"),
-		ENABLE_LED("enable_led");
+		ENABLE_LED("enable_led"),
+		CLICK_INTENT("click_intent"),
+		SYNC_INTERVAL("sync_interval");
 		
 		
 		public final String key;
@@ -97,6 +101,11 @@ public class AppPreferences
 		return values;
 		
 		
+	}
+
+	public String getMetadata(Keys key)
+	{
+		return sharedPreferences.getString(key.key, "");
 	}
 	
 	

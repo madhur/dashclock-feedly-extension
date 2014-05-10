@@ -16,14 +16,14 @@ import com.infospace.android.oauth2.WebApiHelper;
 import android.content.Intent;
 import android.util.Log;
 
-public class UpdateFeedCount extends WakefulIntentService
+public class UpdateFeedCountService extends WakefulIntentService
 {
 	private WebApiHelper apiHelper;
 	private DbHelper dbHelper;
 	private AppPreferences appPreferences;
 	private Markers markers;
 
-	public UpdateFeedCount(String name)
+	public UpdateFeedCountService(String name)
 	{
 		super(name);
 	}

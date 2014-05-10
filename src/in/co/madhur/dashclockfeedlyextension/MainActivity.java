@@ -23,12 +23,15 @@ import android.app.SearchableInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBar.OnNavigationListener;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.Filter.FilterListener;
 import android.widget.ProgressBar;
@@ -36,7 +39,8 @@ import android.widget.Toast;
 
 //import android.support.v7
 
-public class MainActivity extends ActionBarActivity
+public class MainActivity extends ActionBarActivity implements
+		OnNavigationListener
 {
 
 	private WebApiHelper apiHelper;
@@ -48,22 +52,28 @@ public class MainActivity extends ActionBarActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork() // or
-																																// .detectAll()
-																																// for
-																																// all
-																																// detectable
-																																// problems
-		.penaltyLog().build());
-
-		// StrictMode.setVmPolicy(new
-		// StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects().detectLeakedClosableObjects().penaltyLog().penaltyDeath().build());
-
+		SetupStrictMode();
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
 		progressBar = (ProgressBar) findViewById(R.id.pbHeaderProgress);
 		listView = (ExpandableListView) findViewById(R.id.listview);
+
+		getSupportActionBar().setDisplayUseLogoEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+		getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+		final String[] dropdownValues = getResources().getStringArray(R.array.dropdown);
+
+		// Specify a SpinnerAdapter to populate the dropdown list.
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getSupportActionBar().getThemedContext(), android.R.layout.simple_spinner_item, android.R.id.text1, dropdownValues);
+
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+		// Set up the dropdown list navigation in the action bar.
+		getSupportActionBar().setListNavigationCallbacks(adapter, this);
 
 		appPreferences = new AppPreferences(this);
 		if (!appPreferences.IsTokenPresent())
@@ -86,6 +96,21 @@ public class MainActivity extends ActionBarActivity
 			GetFeedlyData();
 
 		}
+
+	}
+
+	private void SetupStrictMode()
+	{
+		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork() // or
+		// .detectAll()
+		// for
+		// all
+		// detectable
+		// problems
+		.penaltyLog().build());
+
+		// StrictMode.setVmPolicy(new
+		// StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects().detectLeakedClosableObjects().penaltyLog().penaltyDeath().build());
 
 	}
 
@@ -121,7 +146,7 @@ public class MainActivity extends ActionBarActivity
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
 		FeedlyListViewAdapter adapter = (FeedlyListViewAdapter) listView.getExpandableListAdapter();
-		
+
 		switch (item.getItemId())
 		{
 			case R.id.action_refresh:
@@ -151,7 +176,7 @@ public class MainActivity extends ActionBarActivity
 			case R.id.action_selectallfeeds:
 				adapter.selectAllFeeds();
 				break;
-				
+
 			case R.id.action_selectnone:
 				adapter.selectNone();
 				break;
@@ -189,56 +214,57 @@ public class MainActivity extends ActionBarActivity
 
 		// Associate searchable configuration with the SearchView
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		//SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-		MenuItem searchitem=menu.findItem(R.id.action_search);
-		SearchView searchView=(SearchView) MenuItemCompat.getActionView(searchitem);
+		// SearchView searchView = (SearchView)
+		// menu.findItem(R.id.action_search).getActionView();
+		MenuItem searchitem = menu.findItem(R.id.action_search);
+		SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchitem);
 		SearchableInfo info = searchManager.getSearchableInfo(getComponentName());
-//	//	if (info != null && searchView != null)
-//		{
-			searchView.setSearchableInfo(info);
+		// // if (info != null && searchView != null)
+		// {
+		searchView.setSearchableInfo(info);
 
-			SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener()
+		SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener()
+		{
+			@Override
+			public boolean onQueryTextChange(String newText)
 			{
-				@Override
-				public boolean onQueryTextChange(String newText)
+				FeedlyListViewAdapter adapter = (FeedlyListViewAdapter) listView.getExpandableListAdapter();
+				adapter.getFilter().filter(newText, new FilterListener()
 				{
-					FeedlyListViewAdapter adapter = (FeedlyListViewAdapter) listView.getExpandableListAdapter();
-					adapter.getFilter().filter(newText, new FilterListener()
+
+					@Override
+					public void onFilterComplete(int count)
 					{
+						Toast.makeText(MainActivity.this, String.valueOf(count), Toast.LENGTH_SHORT).show();
 
-						@Override
-						public void onFilterComplete(int count)
-						{
-							Toast.makeText(MainActivity.this, String.valueOf(count), Toast.LENGTH_SHORT).show();
+					}
+				});
 
-						}
-					});
+				System.out.println("on text chnge text: " + newText);
+				return true;
+			}
 
-					System.out.println("on text chnge text: " + newText);
-					return true;
-				}
-
-				@Override
-				public boolean onQueryTextSubmit(String query)
+			@Override
+			public boolean onQueryTextSubmit(String query)
+			{
+				FeedlyListViewAdapter adapter = (FeedlyListViewAdapter) listView.getExpandableListAdapter();
+				adapter.getFilter().filter(query, new FilterListener()
 				{
-					FeedlyListViewAdapter adapter = (FeedlyListViewAdapter) listView.getExpandableListAdapter();
-					adapter.getFilter().filter(query, new FilterListener()
+
+					@Override
+					public void onFilterComplete(int count)
 					{
+						Toast.makeText(MainActivity.this, String.valueOf(count), Toast.LENGTH_SHORT).show();
 
-						@Override
-						public void onFilterComplete(int count)
-						{
-							Toast.makeText(MainActivity.this, String.valueOf(count), Toast.LENGTH_SHORT).show();
+					}
+				});
 
-						}
-					});
-
-					System.out.println("on query submit: " + query);
-					return true;
-				}
-			};
-			searchView.setOnQueryTextListener(textChangeListener);
-		//}
+				System.out.println("on query submit: " + query);
+				return true;
+			}
+		};
+		searchView.setOnQueryTextListener(textChangeListener);
+		// }
 
 		return true;
 	}
@@ -271,7 +297,7 @@ public class MainActivity extends ActionBarActivity
 			Profile profile;
 			List<Subscription> subscriptions;
 			Map<Category, List<Subscription>> categorySubscriptions = new HashMap<Category, List<Subscription>>();
-			//Markers markers;
+			// Markers markers;
 
 			try
 			{
@@ -292,9 +318,9 @@ public class MainActivity extends ActionBarActivity
 					dbHelper.TruncateSubscriptions();
 					dbHelper.WriteSubscriptions(subscriptions);
 
-//					markers = feedly.GetUnreadCounts();
-//					dbHelper.TruncateMarkers();
-//					dbHelper.WriteMarkers(markers);
+					// markers = feedly.GetUnreadCounts();
+					// dbHelper.TruncateMarkers();
+					// dbHelper.WriteMarkers(markers);
 
 					for (Category category : categories)
 					{
@@ -310,12 +336,12 @@ public class MainActivity extends ActionBarActivity
 					// //Log.v("Tag", sub.getWebsite());
 					// }
 
-//					List<Marker> markerList = markers.getUnreadcounts();
-//
-//					for (Marker marker : markerList)
-//					{
-//						Log.v("Tag", String.valueOf(marker.getCount()));
-//					}
+					// List<Marker> markerList = markers.getUnreadcounts();
+					//
+					// for (Marker marker : markerList)
+					// {
+					// Log.v("Tag", String.valueOf(marker.getCount()));
+					// }
 				}
 				else
 				{
@@ -332,7 +358,7 @@ public class MainActivity extends ActionBarActivity
 
 					subscriptions = dbHelper.GetSubscriptions();
 
-					//markers = dbHelper.GetUnreadCounts();
+					// markers = dbHelper.GetUnreadCounts();
 
 				}
 
@@ -370,6 +396,12 @@ public class MainActivity extends ActionBarActivity
 
 		listView.setAdapter(adapter);
 
+	}
+
+	@Override
+	public boolean onNavigationItemSelected(int arg0, long arg1)
+	{
+		return false;
 	}
 
 }
