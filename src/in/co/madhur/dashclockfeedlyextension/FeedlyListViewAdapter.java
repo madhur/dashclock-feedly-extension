@@ -2,6 +2,8 @@ package in.co.madhur.dashclockfeedlyextension;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import in.co.madhur.dashclockfeedlyextension.api.Category;
 import in.co.madhur.dashclockfeedlyextension.api.FeedlyData;
@@ -22,7 +24,12 @@ public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements
 		ISaveable, Filterable
 
 {
-	private FeedlyData result, savedResult;
+	private List<Category> categories, originalCategories;
+	private List<Subscription> subscriptions, originalSubs;
+	private Map<Category, List<Subscription>> categorySubscriptions,
+			originalCategorySubscriptions;
+	private ArrayList<Category> blank = new ArrayList<Category>();
+	private ArrayList<Subscription> blankSub = new ArrayList<Subscription>();
 	private Context context;
 	private ViewHolderItem item;
 	private ViewHolderGroup groupItem;
@@ -30,8 +37,25 @@ public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements
 
 	public FeedlyListViewAdapter(FeedlyData result, Context context)
 	{
-		this.result = result;
-		this.savedResult = result;
+		this.setCategories(result.getCategories());
+		this.setSubscriptions(result.getSubscriptions());
+		this.setCategorySubscriptions(result.getCategorySubscriptions());
+
+		originalCategories = new ArrayList<Category>();
+		originalSubs = new ArrayList<Subscription>();
+		originalCategorySubscriptions = new HashMap<Category, List<Subscription>>();
+
+		for (Category category : getCategories())
+		{
+			originalCategories.add(category);
+			originalCategorySubscriptions.put(category, categorySubscriptions.get(category));
+		}
+		for (Subscription sub : getSubscriptions())
+		{
+
+			originalSubs.add(sub);
+		}
+
 		this.context = context;
 		GetSelectedValuesFromPreferences();
 
@@ -40,28 +64,40 @@ public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements
 	@Override
 	public int getGroupCount()
 	{
-		return result.getCategories().size();
+		return getCategories().size();
 	}
 
 	@Override
 	public int getChildrenCount(int groupPosition)
 	{
-		Category category = result.getCategories().get(groupPosition);
-		return category.getSubscriptions().size();
+		Category category = getCategories().get(groupPosition);
+		// return category.getSubscriptions().size();
+		return categorySubscriptions.get(category).size();
 
 	}
 
 	@Override
 	public Object getGroup(int groupPosition)
 	{
-		return result.getCategories().get(groupPosition);
+		return getCategories().get(groupPosition);
 	}
 
 	@Override
 	public Object getChild(int groupPosition, int childPosition)
 	{
 		Category category = (Category) getGroup(groupPosition);
-		return category.getSubscriptions().get(childPosition);
+		// return category.getSubscriptions().get(childPosition);
+		return categorySubscriptions.get(category).get(childPosition);
+		// for(Subscription sub: getSubscriptions())
+		// {
+		//
+		// if(sub.getCategories().contains(category))
+		// {
+		//
+		// return sub;
+		// }
+		// }
+		// return null;
 
 	}
 
@@ -235,13 +271,17 @@ public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements
 				if (results.count > 0)
 				{
 					Log.println(Log.INFO, "Results", "FOUND");
-					result = filteredData;
+					categories = filteredData.getCategories();
+					subscriptions = filteredData.getSubscriptions();
+					categorySubscriptions = filteredData.getCategorySubscriptions();
 
 					notifyDataSetChanged();
 				}
 				else
 				{
 					Log.println(Log.INFO, "Results", "-");
+					categories = blank;
+					subscriptions = blankSub;
 					notifyDataSetInvalidated();
 				}
 			}
@@ -251,50 +291,98 @@ public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements
 			{
 				FilterResults results = new FilterResults();
 
-				ArrayList<Category> categories = (ArrayList<Category>) result.getCategories();
+				// ArrayList<Category> categories = new ArrayList<Category>();
 				ArrayList<Subscription> filteredsubs = new ArrayList<Subscription>();
 				ArrayList<Category> filteredcategories = new ArrayList<Category>();
 
-				if (constraint != null)
+				Map<Category, List<Subscription>> filteredCategorySubscriptions = new HashMap<Category, List<Subscription>>();
+				//
+				// for(Category category: originalCategories)
+				// {
+				// categories.add(category);
+				// }
+
+				if (constraint != null && constraint.length() > 0)
 				{
 
-					for (Category category : categories)
+					for (Category category : originalCategories)
 					{
-						ArrayList<Subscription> subs = (ArrayList<Subscription>) category.getSubscriptions();
+						ArrayList<Subscription> filteredCategorySubs = new ArrayList<Subscription>();
 
-						for (Subscription sub : subs)
+						for (Subscription sub : originalCategorySubscriptions.get(category))
 						{
 
-							if (sub.getTitle().contains(constraint))
+							if (sub.getTitle().trim().toLowerCase().contains(constraint.toString().trim().toLowerCase())
+									|| category.getLabel().trim().toLowerCase().contains(constraint.toString().trim().toLowerCase()))
 							{
-								if(!filteredcategories.contains(category))
+								if (!filteredcategories.contains(category))
+								{
 									filteredcategories.add(category);
-								
+								}
+
 								filteredsubs.add(sub);
+
+								filteredCategorySubs.add(sub);
+
+								filteredCategorySubscriptions.put(category, filteredCategorySubs);
+
 							}
 						}
+
+						// category.setSubscriptions(filteredCategorySubs);
 					}
 				}
 				else
 				{
-					
-					filteredcategories=(ArrayList<Category>) result.getCategories();
-					filteredsubs=(ArrayList<Subscription>) result.getSubscriptions();
+
+					filteredcategories = (ArrayList<Category>) originalCategories;
+					filteredsubs = (ArrayList<Subscription>) originalSubs;
+					filteredCategorySubscriptions = originalCategorySubscriptions;
 				}
 
-				FeedlyData filteredData = new FeedlyData(result.getProfile(), filteredcategories, filteredsubs, result.getMarkers());
+				FeedlyData filteredData = new FeedlyData(null, filteredcategories, filteredsubs, filteredCategorySubscriptions, null);
 
 				synchronized (this)
 				{
 					results.values = filteredData;
 					results.count = filteredsubs.size();
 				}
-			
+
 				return results;
 
 			}
 
 		};
+	}
+
+	public List<Category> getCategories()
+	{
+		return categories;
+	}
+
+	public void setCategories(List<Category> categories)
+	{
+		this.categories = categories;
+	}
+
+	public List<Subscription> getSubscriptions()
+	{
+		return subscriptions;
+	}
+
+	public void setSubscriptions(List<Subscription> subscriptions)
+	{
+		this.subscriptions = subscriptions;
+	}
+
+	public Map<Category, List<Subscription>> getCategorySubscriptions()
+	{
+		return categorySubscriptions;
+	}
+
+	public void setCategorySubscriptions(Map<Category, List<Subscription>> categorySubscriptions)
+	{
+		this.categorySubscriptions = categorySubscriptions;
 	}
 
 }

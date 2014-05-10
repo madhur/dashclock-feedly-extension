@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class Category
 {
 	
-	private List<Subscription> subscriptions;
+	//private List<Subscription> subscriptions;
 
 	@JsonProperty("id")
 	private String id;
@@ -59,14 +59,14 @@ public class Category
 		this.additionalProperties.put(name, value);
 	}
 
-	public List<Subscription> getSubscriptions()
-	{
-		return subscriptions;
-	}
-
-	public void setSubscriptions(List<Subscription> subscriptions)
-	{
-		this.subscriptions = subscriptions;
-	}
+//	public List<Subscription> getSubscriptions()
+//	{
+//		return subscriptions;
+//	}
+//
+//	public void setSubscriptions(List<Subscription> subscriptions)
+//	{
+//		this.subscriptions = subscriptions;
+//	}
 
 }

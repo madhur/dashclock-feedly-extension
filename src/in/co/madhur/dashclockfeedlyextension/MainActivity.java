@@ -1,6 +1,8 @@
 package in.co.madhur.dashclockfeedlyextension;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import in.co.madhur.dashclockfeedlyextension.api.Category;
 import in.co.madhur.dashclockfeedlyextension.api.Feedly;
@@ -25,8 +27,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.Filter.FilterListener;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity
 {
@@ -171,7 +175,17 @@ public class MainActivity extends Activity
             public boolean onQueryTextChange(String newText)
             {
             	FeedlyListViewAdapter adapter= (FeedlyListViewAdapter) listView.getExpandableListAdapter();
-            	adapter.getFilter().filter(newText);
+            	adapter.getFilter().filter(newText, new FilterListener()
+				{
+					
+					@Override
+					public void onFilterComplete(int count)
+					{
+						Toast.makeText(MainActivity.this, String.valueOf(count), Toast.LENGTH_SHORT).show();
+						
+					}
+				});
+            	
                 System.out.println("on text chnge text: "+newText);
                 return true;
             }
@@ -179,7 +193,16 @@ public class MainActivity extends Activity
             public boolean onQueryTextSubmit(String query)
             {
             	FeedlyListViewAdapter adapter= (FeedlyListViewAdapter) listView.getExpandableListAdapter();
-            	adapter.getFilter().filter(query);
+            	adapter.getFilter().filter(query, new FilterListener()
+				{
+					
+					@Override
+					public void onFilterComplete(int count)
+					{
+						Toast.makeText(MainActivity.this, String.valueOf(count), Toast.LENGTH_SHORT).show();
+						
+					}
+				});
             	
                 System.out.println("on query submit: "+query);
                 return true;
@@ -217,6 +240,7 @@ public class MainActivity extends Activity
 			List<Category> categories;
 			Profile profile;
 			List<Subscription> subscriptions;
+			Map<Category, List<Subscription>> categorySubscriptions=new HashMap<Category, List<Subscription>>();
 			Markers markers;
 
 			try
@@ -244,7 +268,9 @@ public class MainActivity extends Activity
 
 					for (Category category : categories)
 					{
-						category.setSubscriptions(dbHelper.GetSubScriptionsForCategory(category.getId()));
+						categorySubscriptions.put(category, dbHelper.GetSubScriptionsForCategory(category.getId()));
+						//category.setSubscriptions(dbHelper.GetSubScriptionsForCategory(category.getId()));
+						
 						// Log.v("Tag", category.getLabel());
 					}
 
@@ -269,7 +295,8 @@ public class MainActivity extends Activity
 
 					for (Category category : categories)
 					{
-						category.setSubscriptions(dbHelper.GetSubScriptionsForCategory(category.getId()));
+						categorySubscriptions.put(category, dbHelper.GetSubScriptionsForCategory(category.getId()));
+						//category.setSubscriptions(dbHelper.GetSubScriptionsForCategory(category.getId()));
 						// Log.v("Tag", category.getLabel());
 					}
 
@@ -279,7 +306,7 @@ public class MainActivity extends Activity
 
 				}
 
-				return new FeedlyData(profile, categories, subscriptions, markers);
+				return new FeedlyData(profile, categories, subscriptions, categorySubscriptions, markers);
 
 			}
 			catch (Exception e)
