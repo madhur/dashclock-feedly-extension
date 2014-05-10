@@ -14,10 +14,10 @@
         android:title="@string/action_selecteverything"/>
      
         <item
-        android:id="@+id/action_selectallsubscriptions"
+        android:id="@+id/action_selectallcategories"
         android:orderInCategory="100"
         app:showAsAction="never"
-        android:title="@string/action_selectallsubscriptions"/>
+        android:title="@string/action_selectallcategories"/>
      
      
        <item
@@ -25,6 +25,12 @@
         android:orderInCategory="100"
         app:showAsAction="never"
         android:title="@string/action_selectallfeeds"/>
+       
+         <item
+        android:id="@+id/action_selectnone"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:title="@string/action_selectnone"/>
      
     <item
         android:id="@+id/action_settings"

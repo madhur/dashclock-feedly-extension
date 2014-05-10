@@ -268,6 +268,58 @@ public final class FeedlyListViewAdapter extends BaseExpandableListAdapter imple
 		return feedItemsFilter;
 		
 	}
+	
+	public void selectNone()
+	{
+		check_states.clear();
+		notifyDataSetChanged();
+	}
+	
+	public void selectAll()
+	{
+		for(Category category: getCategories())
+		{
+			check_states.put(category.getId(), true);
+			
+			for(Subscription sub: categorySubscriptions.get(category))
+			{
+				check_states.put(sub.getId(), true);
+			}
+			
+		}
+		
+		notifyDataSetChanged();
+		
+	}
+	
+	public void selectAllFeeds()
+	{
+		selectNone();
+		for(Category category: getCategories())
+		{
+			
+			for(Subscription sub: categorySubscriptions.get(category))
+			{
+				check_states.put(sub.getId(), true);
+			}
+			
+		}
+		
+		notifyDataSetChanged();
+		
+	}
+	
+	public void selectAllCategories()
+	{
+		selectNone();
+		for(Category category: getCategories())
+		{
+			check_states.put(category.getId(), true);
+		}
+		
+		notifyDataSetChanged();
+		
+	}
 
 	private List<Category> getCategories()
 	{
@@ -287,11 +339,6 @@ public final class FeedlyListViewAdapter extends BaseExpandableListAdapter imple
 	private void setSubscriptions(List<Subscription> subscriptions)
 	{
 		this.subscriptions = subscriptions;
-	}
-
-	private Map<Category, List<Subscription>> getCategorySubscriptions()
-	{
-		return categorySubscriptions;
 	}
 
 	private void setCategorySubscriptions(Map<Category, List<Subscription>> categorySubscriptions)

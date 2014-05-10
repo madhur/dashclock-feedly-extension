@@ -120,6 +120,8 @@ public class MainActivity extends ActionBarActivity
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
+		FeedlyListViewAdapter adapter = (FeedlyListViewAdapter) listView.getExpandableListAdapter();
+		
 		switch (item.getItemId())
 		{
 			case R.id.action_refresh:
@@ -138,17 +140,20 @@ public class MainActivity extends ActionBarActivity
 				break;
 
 			case R.id.action_selecteverything:
-				FeedlyListViewAdapter adapter = (FeedlyListViewAdapter) listView.getExpandableListAdapter();
-				// adapter.
-
+				adapter.selectAll();
 				break;
 
-			case R.id.action_selectallsubscriptions:
+			case R.id.action_selectallcategories:
 
+				adapter.selectAllCategories();
 				break;
 
 			case R.id.action_selectallfeeds:
-
+				adapter.selectAllFeeds();
+				break;
+				
+			case R.id.action_selectnone:
+				adapter.selectNone();
 				break;
 
 			default:
@@ -266,7 +271,7 @@ public class MainActivity extends ActionBarActivity
 			Profile profile;
 			List<Subscription> subscriptions;
 			Map<Category, List<Subscription>> categorySubscriptions = new HashMap<Category, List<Subscription>>();
-			Markers markers;
+			//Markers markers;
 
 			try
 			{
@@ -287,9 +292,9 @@ public class MainActivity extends ActionBarActivity
 					dbHelper.TruncateSubscriptions();
 					dbHelper.WriteSubscriptions(subscriptions);
 
-					markers = feedly.GetUnreadCounts();
-					dbHelper.TruncateMarkers();
-					dbHelper.WriteMarkers(markers);
+//					markers = feedly.GetUnreadCounts();
+//					dbHelper.TruncateMarkers();
+//					dbHelper.WriteMarkers(markers);
 
 					for (Category category : categories)
 					{
@@ -305,12 +310,12 @@ public class MainActivity extends ActionBarActivity
 					// //Log.v("Tag", sub.getWebsite());
 					// }
 
-					List<Marker> markerList = markers.getUnreadcounts();
-
-					for (Marker marker : markerList)
-					{
-						Log.v("Tag", String.valueOf(marker.getCount()));
-					}
+//					List<Marker> markerList = markers.getUnreadcounts();
+//
+//					for (Marker marker : markerList)
+//					{
+//						Log.v("Tag", String.valueOf(marker.getCount()));
+//					}
 				}
 				else
 				{
@@ -327,11 +332,11 @@ public class MainActivity extends ActionBarActivity
 
 					subscriptions = dbHelper.GetSubscriptions();
 
-					markers = dbHelper.GetUnreadCounts();
+					//markers = dbHelper.GetUnreadCounts();
 
 				}
 
-				return new FeedlyData(profile, categories, subscriptions, categorySubscriptions, markers);
+				return new FeedlyData(profile, categories, subscriptions, categorySubscriptions, null);
 
 			}
 			catch (Exception e)

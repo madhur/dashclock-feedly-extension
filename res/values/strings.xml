@@ -37,7 +37,8 @@
     <string name="widget_configuration">Widget Configuration</string>
     <string name="search_hint">search</string>
     <string name="action_selecteverything">Select everything</string>
-    <string name="action_selectallsubscriptions">Select All subscriptions</string>
+    <string name="action_selectallcategories">Select All Categories</string>
     <string name="action_selectallfeeds">Select All feeds</string>
+    <string name="action_selectnone">Select None</string>
 
 </resources>
