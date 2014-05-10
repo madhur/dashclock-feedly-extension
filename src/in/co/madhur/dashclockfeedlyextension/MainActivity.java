@@ -42,18 +42,19 @@ import android.widget.Toast;
 public class MainActivity extends ActionBarActivity implements
 		OnNavigationListener
 {
-
+	private boolean initializing = true;
 	private WebApiHelper apiHelper;
 	private AppPreferences appPreferences;
-
+	//private FeedlyData result;
 	private ProgressBar progressBar;
 	private ExpandableListView listView;
+	private FeedlyListViewAdapter widgetAdapter, notiAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		SetupStrictMode();
-		
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
@@ -386,21 +387,53 @@ public class MainActivity extends ActionBarActivity implements
 
 	private void UpdateUI(FeedlyData result)
 	{
+		FeedlyListViewAdapter adapter = null;
+		//this.result=result;
 		if (result.isError())
 		{
 			// Show error
 			return;
 		}
 
-		FeedlyListViewAdapter adapter = new FeedlyListViewAdapter(result, this);
+		int selIndex = getSupportActionBar().getSelectedNavigationIndex();
+		widgetAdapter = new WidgetViewAdapter(result, this);
+		notiAdapter = new NotificationViewAdapter(result, this);
+		
+		if (selIndex == 0)
+		{
+			adapter=widgetAdapter;
+		}
+		else if (selIndex == 1)
+		{
+			adapter=notiAdapter;
+		}
 
-		listView.setAdapter(adapter);
+		if(adapter!=null)
+			listView.setAdapter(adapter);
 
 	}
 
 	@Override
-	public boolean onNavigationItemSelected(int arg0, long arg1)
+	public boolean onNavigationItemSelected(int itemPosition, long itemId)
 	{
+		if (initializing)
+		{
+			initializing = false;
+			return true;
+		}
+
+		switch (itemPosition)
+		{
+
+			case 0:
+				listView.setAdapter(widgetAdapter);
+				return true;
+
+			case 1:
+				listView.setAdapter(notiAdapter);
+				return true;
+
+		}
 		return false;
 	}
 

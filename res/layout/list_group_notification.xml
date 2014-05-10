@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="10dp"
+    android:paddingTop="10dp" >
+
+    <TextView
+        android:id="@+id/lblListHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
+        android:textSize="17sp" />
+
+    <CheckBox
+        android:id="@+id/GroupCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentRight="true"
+        android:focusable="false"
+        android:paddingRight="10dp"
+        android:scaleX="2"
+        android:scaleY="2" />
+
+    <SeekBar
+        android:id="@+id/GroupSeekbar"
+        android:focusable="false"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:max="1000" 
+        
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/lblListHeader" >
+    </SeekBar>
+
+</RelativeLayout>

@@ -41,6 +41,15 @@
             android:dependency="enable_notifications"
             android:summary="@string/enable_led_desc"
             android:title="@string/enable_led" />
+        
+        <ListPreference
+            android:defaultValue="10"
+            android:dependency="enable_notifications"
+            android:entries="@array/minimum_unread"
+            android:entryValues="@array/minimum_unread_values"
+            android:key="minimum_read"
+            android:summary="@string/minimum_unread_desc"
+            android:title="@string/minimum_unread" />
     </PreferenceCategory>
     
     <PreferenceCategory android:title="@string/widget_configuration" >
