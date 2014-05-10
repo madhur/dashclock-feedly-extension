@@ -15,6 +15,11 @@ import in.co.madhur.dashclockfeedlyextension.db.DbHelper;
 
 import com.infospace.android.oauth2.WebApiHelper;
 
+import de.keyboardsurfer.android.widget.crouton.Configuration;
+import de.keyboardsurfer.android.widget.crouton.Configuration.Builder;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -206,6 +211,13 @@ public class MainActivity extends ActionBarActivity implements
 	{
 		GetFeedlyData(true);
 	}
+	
+	@Override
+	protected void onDestroy()
+	{
+		super.onDestroy();
+		Crouton.cancelAllCroutons();
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
@@ -276,7 +288,6 @@ public class MainActivity extends ActionBarActivity implements
 		private DbHelper dbHelper;
 		private Feedly feedly;
 		private boolean forceRefresh;
-
 		public GetFeedlyDataTask(Feedly feedly, boolean forceRefresh)
 		{
 			this.feedly = feedly;
@@ -289,6 +300,11 @@ public class MainActivity extends ActionBarActivity implements
 
 			super.onPreExecute();
 			progressBar.setVisibility(View.VISIBLE);
+			//Crouton.showText(MainActivity.this, "Getting the latest categories and feeds from Feedly", Style.INFO, null, Configuration.DURATION_INFINITE)
+			//Crouton.makeText(MainActivity.this, "Getting the latest categories and feeds from Feedly", Style.INFO).show();
+			Configuration.Builder builder=new Builder();
+			builder.setDuration(Configuration.DURATION_INFINITE);
+			
 		}
 
 		@Override
@@ -380,7 +396,6 @@ public class MainActivity extends ActionBarActivity implements
 			super.onPostExecute(result);
 			progressBar.setVisibility(View.GONE);
 			UpdateUI(result);
-
 		}
 
 	}

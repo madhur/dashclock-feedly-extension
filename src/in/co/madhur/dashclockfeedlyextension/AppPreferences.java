@@ -32,7 +32,8 @@ public class AppPreferences
 		ENABLE_VIBRATE("enable_vibrate"),
 		ENABLE_LED("enable_led"),
 		CLICK_INTENT("click_intent"),
-		SYNC_INTERVAL("sync_interval");
+		SYNC_INTERVAL("sync_interval"),
+		MINIMUM_UNREAD("minimum_unread");
 		
 		
 		public final String key;

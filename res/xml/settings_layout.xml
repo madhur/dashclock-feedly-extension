@@ -47,7 +47,7 @@
             android:dependency="enable_notifications"
             android:entries="@array/minimum_unread"
             android:entryValues="@array/minimum_unread_values"
-            android:key="minimum_read"
+            android:key="minimum_unread"
             android:summary="@string/minimum_unread_desc"
             android:title="@string/minimum_unread" />
     </PreferenceCategory>

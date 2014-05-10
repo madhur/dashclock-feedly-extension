@@ -32,6 +32,7 @@ public class FeedlyPreferenceActivity extends PreferenceActivity
 		SetListeners();
 
 		UpdateLabel((ListPreference) findPreference(Keys.SYNC_INTERVAL.key), null);
+		UpdateLabel((ListPreference) findPreference(Keys.MINIMUM_UNREAD.key), null);
 	}
 
 	protected void UpdateLabel(ListPreference listPreference, String newValue)

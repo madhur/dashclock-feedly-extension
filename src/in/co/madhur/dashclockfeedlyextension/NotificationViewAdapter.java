@@ -58,7 +58,7 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 				if(checkbox.isChecked())
 					groupItem.groupSeekbar.setVisibility(View.VISIBLE);
 				else
-					groupItem.groupSeekbar.setVisibility(View.GONE);
+					groupItem.groupSeekbar.setVisibility(View.INVISIBLE);
 			}
 		});
 
@@ -72,7 +72,7 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 		else
 		{
 			groupItem.checked.setChecked(false);
-			groupItem.groupSeekbar.setVisibility(View.GONE);
+			groupItem.groupSeekbar.setVisibility(View.INVISIBLE);
 
 		}
 
@@ -118,7 +118,7 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 				if(checkbox.isChecked())
 					item.childSeekbar.setVisibility(View.VISIBLE);
 				else
-					item.childSeekbar.setVisibility(View.GONE);
+					item.childSeekbar.setVisibility(View.INVISIBLE);
 
 			}
 		});
@@ -134,7 +134,7 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 		else
 		{
 			item.checked.setChecked(false);
-			item.childSeekbar.setVisibility(View.GONE);
+			item.childSeekbar.setVisibility(View.INVISIBLE);
 		}
 
 		return convertView;
