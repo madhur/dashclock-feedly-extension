@@ -20,7 +20,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
-public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements
+public final class FeedlyListViewAdapter extends BaseExpandableListAdapter implements
 		ISaveable, Filterable
 
 {
@@ -34,6 +34,7 @@ public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements
 	private ViewHolderItem item;
 	private ViewHolderGroup groupItem;
 	private final HashMap<String, Boolean> check_states = new HashMap<String, Boolean>();
+	private FeedItemsFilter feedItemsFilter;
 
 	public FeedlyListViewAdapter(FeedlyData result, Context context)
 	{
@@ -259,130 +260,139 @@ public class FeedlyListViewAdapter extends BaseExpandableListAdapter implements
 	@Override
 	public Filter getFilter()
 	{
-		return new Filter()
+		if(feedItemsFilter==null)
 		{
-
-			@Override
-			protected void publishResults(CharSequence constraint, FilterResults results)
-			{
-
-				FeedlyData filteredData = (FeedlyData) results.values;
-
-				if (results.count > 0)
-				{
-					Log.println(Log.INFO, "Results", "FOUND");
-					categories = filteredData.getCategories();
-					subscriptions = filteredData.getSubscriptions();
-					categorySubscriptions = filteredData.getCategorySubscriptions();
-
-					notifyDataSetChanged();
-				}
-				else
-				{
-					Log.println(Log.INFO, "Results", "-");
-					categories = blank;
-					subscriptions = blankSub;
-					notifyDataSetInvalidated();
-				}
-			}
-
-			@Override
-			protected FilterResults performFiltering(CharSequence constraint)
-			{
-				FilterResults results = new FilterResults();
-
-				// ArrayList<Category> categories = new ArrayList<Category>();
-				ArrayList<Subscription> filteredsubs = new ArrayList<Subscription>();
-				ArrayList<Category> filteredcategories = new ArrayList<Category>();
-
-				Map<Category, List<Subscription>> filteredCategorySubscriptions = new HashMap<Category, List<Subscription>>();
-				//
-				// for(Category category: originalCategories)
-				// {
-				// categories.add(category);
-				// }
-
-				if (constraint != null && constraint.length() > 0)
-				{
-
-					for (Category category : originalCategories)
-					{
-						ArrayList<Subscription> filteredCategorySubs = new ArrayList<Subscription>();
-
-						for (Subscription sub : originalCategorySubscriptions.get(category))
-						{
-
-							if (sub.getTitle().trim().toLowerCase().contains(constraint.toString().trim().toLowerCase())
-									|| category.getLabel().trim().toLowerCase().contains(constraint.toString().trim().toLowerCase()))
-							{
-								if (!filteredcategories.contains(category))
-								{
-									filteredcategories.add(category);
-								}
-
-								filteredsubs.add(sub);
-
-								filteredCategorySubs.add(sub);
-
-								filteredCategorySubscriptions.put(category, filteredCategorySubs);
-
-							}
-						}
-
-						// category.setSubscriptions(filteredCategorySubs);
-					}
-				}
-				else
-				{
-
-					filteredcategories = (ArrayList<Category>) originalCategories;
-					filteredsubs = (ArrayList<Subscription>) originalSubs;
-					filteredCategorySubscriptions = originalCategorySubscriptions;
-				}
-
-				FeedlyData filteredData = new FeedlyData(null, filteredcategories, filteredsubs, filteredCategorySubscriptions, null);
-
-				synchronized (this)
-				{
-					results.values = filteredData;
-					results.count = filteredsubs.size();
-				}
-
-				return results;
-
-			}
-
-		};
+			feedItemsFilter=new FeedItemsFilter();
+		}
+		
+		return feedItemsFilter;
+		
 	}
 
-	public List<Category> getCategories()
+	private List<Category> getCategories()
 	{
 		return categories;
 	}
 
-	public void setCategories(List<Category> categories)
+	private void setCategories(List<Category> categories)
 	{
 		this.categories = categories;
 	}
 
-	public List<Subscription> getSubscriptions()
+	private List<Subscription> getSubscriptions()
 	{
 		return subscriptions;
 	}
 
-	public void setSubscriptions(List<Subscription> subscriptions)
+	private void setSubscriptions(List<Subscription> subscriptions)
 	{
 		this.subscriptions = subscriptions;
 	}
 
-	public Map<Category, List<Subscription>> getCategorySubscriptions()
+	private Map<Category, List<Subscription>> getCategorySubscriptions()
 	{
 		return categorySubscriptions;
 	}
 
-	public void setCategorySubscriptions(Map<Category, List<Subscription>> categorySubscriptions)
+	private void setCategorySubscriptions(Map<Category, List<Subscription>> categorySubscriptions)
 	{
 		this.categorySubscriptions = categorySubscriptions;
+	}
+	
+	private class FeedItemsFilter extends Filter
+	{
+		@Override
+		protected void publishResults(CharSequence constraint, FilterResults results)
+		{
+
+			FeedlyData filteredData = (FeedlyData) results.values;
+
+			if (results.count > 0)
+			{
+				Log.println(Log.INFO, "Results", "FOUND");
+				categories = filteredData.getCategories();
+				subscriptions = filteredData.getSubscriptions();
+				categorySubscriptions = filteredData.getCategorySubscriptions();
+
+				notifyDataSetChanged();
+			}
+			else
+			{
+				Log.println(Log.INFO, "Results", "-");
+				categories = blank;
+				subscriptions = blankSub;
+				notifyDataSetInvalidated();
+			}
+		}
+
+		@Override
+		protected FilterResults performFiltering(CharSequence constraint)
+		{
+			FilterResults results = new FilterResults();
+
+			// ArrayList<Category> categories = new ArrayList<Category>();
+			ArrayList<Subscription> filteredsubs = new ArrayList<Subscription>();
+			ArrayList<Category> filteredcategories = new ArrayList<Category>();
+
+			Map<Category, List<Subscription>> filteredCategorySubscriptions = new HashMap<Category, List<Subscription>>();
+			//
+			// for(Category category: originalCategories)
+			// {
+			// categories.add(category);
+			// }
+
+			if (constraint != null && constraint.length() > 0)
+			{
+
+				for (Category category : originalCategories)
+				{
+					ArrayList<Subscription> filteredCategorySubs = new ArrayList<Subscription>();
+
+					for (Subscription sub : originalCategorySubscriptions.get(category))
+					{
+
+						if (sub.getTitle().trim().toLowerCase().contains(constraint.toString().trim().toLowerCase())
+								|| category.getLabel().trim().toLowerCase().contains(constraint.toString().trim().toLowerCase()))
+						{
+							if (!filteredcategories.contains(category))
+							{
+								filteredcategories.add(category);
+							}
+
+							filteredsubs.add(sub);
+
+							filteredCategorySubs.add(sub);
+
+							filteredCategorySubscriptions.put(category, filteredCategorySubs);
+
+						}
+					}
+
+					// category.setSubscriptions(filteredCategorySubs);
+				}
+			}
+			else
+			{
+
+				filteredcategories = (ArrayList<Category>) originalCategories;
+				filteredsubs = (ArrayList<Subscription>) originalSubs;
+				filteredCategorySubscriptions = originalCategorySubscriptions;
+			}
+
+			FeedlyData filteredData = new FeedlyData(null, filteredcategories, filteredsubs, filteredCategorySubscriptions, null);
+
+			synchronized (this)
+			{
+				results.values = filteredData;
+				results.count = filteredsubs.size();
+			}
+
+			return results;
+
+		}
+
+		
+		
 	}
 
 }

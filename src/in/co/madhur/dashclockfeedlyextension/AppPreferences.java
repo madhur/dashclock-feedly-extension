@@ -3,6 +3,7 @@ package in.co.madhur.dashclockfeedlyextension;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import android.R.bool;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -23,7 +24,12 @@ public class AppPreferences
 	
 	public enum Keys
 	{
-		SELECTED_VALUES("selected_values");
+		SELECTED_VALUES("selected_values"),
+		ENABLE_NOTIFICATIONS("enable_notifications"),
+		ENABLE_SOUND("enable_sound"),
+		ENABLE_VIBRATE("enable_vibrate"),
+		ENABLE_LED("enable_led");
+		
 		
 		public final String key;
 
@@ -44,6 +50,11 @@ public class AppPreferences
 		return true;
 		
 		
+	}
+	
+	public boolean GetBoolPreferences(Keys key)
+	{
+		return sharedPreferences.getBoolean(key.key, true);
 	}
 	
 	public String GetToken()

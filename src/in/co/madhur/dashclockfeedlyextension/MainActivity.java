@@ -18,10 +18,13 @@ import com.infospace.android.oauth2.WebApiHelper;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.app.Activity;
 import android.app.SearchManager;
+import android.app.SearchableInfo;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,10 +32,11 @@ import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.Filter.FilterListener;
 import android.widget.ProgressBar;
-import android.widget.SearchView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity
+//import android.support.v7
+
+public class MainActivity extends ActionBarActivity
 {
 
 	private WebApiHelper apiHelper;
@@ -133,6 +137,20 @@ public class MainActivity extends Activity
 				finish();
 				break;
 
+			case R.id.action_selecteverything:
+				FeedlyListViewAdapter adapter = (FeedlyListViewAdapter) listView.getExpandableListAdapter();
+				// adapter.
+
+				break;
+
+			case R.id.action_selectallsubscriptions:
+
+				break;
+
+			case R.id.action_selectallfeeds:
+
+				break;
+
 			default:
 				return super.onOptionsItemSelected(item);
 		}
@@ -166,49 +184,56 @@ public class MainActivity extends Activity
 
 		// Associate searchable configuration with the SearchView
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-		searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-		
-		SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener()
-        {
-            @Override
-            public boolean onQueryTextChange(String newText)
-            {
-            	FeedlyListViewAdapter adapter= (FeedlyListViewAdapter) listView.getExpandableListAdapter();
-            	adapter.getFilter().filter(newText, new FilterListener()
+		//SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+		MenuItem searchitem=menu.findItem(R.id.action_search);
+		SearchView searchView=(SearchView) MenuItemCompat.getActionView(searchitem);
+		SearchableInfo info = searchManager.getSearchableInfo(getComponentName());
+//	//	if (info != null && searchView != null)
+//		{
+			searchView.setSearchableInfo(info);
+
+			SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener()
+			{
+				@Override
+				public boolean onQueryTextChange(String newText)
 				{
-					
-					@Override
-					public void onFilterComplete(int count)
+					FeedlyListViewAdapter adapter = (FeedlyListViewAdapter) listView.getExpandableListAdapter();
+					adapter.getFilter().filter(newText, new FilterListener()
 					{
-						Toast.makeText(MainActivity.this, String.valueOf(count), Toast.LENGTH_SHORT).show();
-						
-					}
-				});
-            	
-                System.out.println("on text chnge text: "+newText);
-                return true;
-            }
-            @Override
-            public boolean onQueryTextSubmit(String query)
-            {
-            	FeedlyListViewAdapter adapter= (FeedlyListViewAdapter) listView.getExpandableListAdapter();
-            	adapter.getFilter().filter(query, new FilterListener()
+
+						@Override
+						public void onFilterComplete(int count)
+						{
+							Toast.makeText(MainActivity.this, String.valueOf(count), Toast.LENGTH_SHORT).show();
+
+						}
+					});
+
+					System.out.println("on text chnge text: " + newText);
+					return true;
+				}
+
+				@Override
+				public boolean onQueryTextSubmit(String query)
 				{
-					
-					@Override
-					public void onFilterComplete(int count)
+					FeedlyListViewAdapter adapter = (FeedlyListViewAdapter) listView.getExpandableListAdapter();
+					adapter.getFilter().filter(query, new FilterListener()
 					{
-						Toast.makeText(MainActivity.this, String.valueOf(count), Toast.LENGTH_SHORT).show();
-						
-					}
-				});
-            	
-                System.out.println("on query submit: "+query);
-                return true;
-            }
-        };
-        searchView.setOnQueryTextListener(textChangeListener);
+
+						@Override
+						public void onFilterComplete(int count)
+						{
+							Toast.makeText(MainActivity.this, String.valueOf(count), Toast.LENGTH_SHORT).show();
+
+						}
+					});
+
+					System.out.println("on query submit: " + query);
+					return true;
+				}
+			};
+			searchView.setOnQueryTextListener(textChangeListener);
+		//}
 
 		return true;
 	}
@@ -240,7 +265,7 @@ public class MainActivity extends Activity
 			List<Category> categories;
 			Profile profile;
 			List<Subscription> subscriptions;
-			Map<Category, List<Subscription>> categorySubscriptions=new HashMap<Category, List<Subscription>>();
+			Map<Category, List<Subscription>> categorySubscriptions = new HashMap<Category, List<Subscription>>();
 			Markers markers;
 
 			try
@@ -269,8 +294,8 @@ public class MainActivity extends Activity
 					for (Category category : categories)
 					{
 						categorySubscriptions.put(category, dbHelper.GetSubScriptionsForCategory(category.getId()));
-						//category.setSubscriptions(dbHelper.GetSubScriptionsForCategory(category.getId()));
-						
+						// category.setSubscriptions(dbHelper.GetSubScriptionsForCategory(category.getId()));
+
 						// Log.v("Tag", category.getLabel());
 					}
 
@@ -296,7 +321,7 @@ public class MainActivity extends Activity
 					for (Category category : categories)
 					{
 						categorySubscriptions.put(category, dbHelper.GetSubScriptionsForCategory(category.getId()));
-						//category.setSubscriptions(dbHelper.GetSubScriptionsForCategory(category.getId()));
+						// category.setSubscriptions(dbHelper.GetSubScriptionsForCategory(category.getId()));
 						// Log.v("Tag", category.getLabel());
 					}
 
