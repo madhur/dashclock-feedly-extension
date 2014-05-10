@@ -3,13 +3,14 @@
 
     <PreferenceCategory android:title="@string/synchronization" >
         <CheckBoxPreference
-            android:key="enable_autosync"
             android:defaultValue="true"
+            android:key="enable_autosync"
             android:summary="@string/enable_autosync_desc"
             android:title="@string/enable_autosync" />
 
         <ListPreference
             android:defaultValue="1"
+            android:dependency="enable_autosync"
             android:entries="@array/sync_interval"
             android:entryValues="@array/sync_interval_values"
             android:key="sync_interval"
@@ -25,23 +26,23 @@
         </CheckBoxPreference>
         <CheckBoxPreference
             android:defaultValue="true"
+            android:dependency="enable_notifications"
             android:key="enable_sound"
             android:summary="@string/enable_sound_desc"
-            android:dependency="enable_notifications"
             android:title="@string/enable_sound" />
         <CheckBoxPreference
             android:defaultValue="true"
-            android:key="enable_vibrate"
             android:dependency="enable_notifications"
+            android:key="enable_vibrate"
             android:summary="@string/enable_vibrate_desc"
             android:title="@string/enable_vibrate" />
         <CheckBoxPreference
             android:defaultValue="true"
-            android:key="enable_led"
             android:dependency="enable_notifications"
+            android:key="enable_led"
             android:summary="@string/enable_led_desc"
             android:title="@string/enable_led" />
-        
+
         <ListPreference
             android:defaultValue="10"
             android:dependency="enable_notifications"
@@ -51,13 +52,21 @@
             android:summary="@string/minimum_unread_desc"
             android:title="@string/minimum_unread" />
     </PreferenceCategory>
-    
     <PreferenceCategory android:title="@string/widget_configuration" >
-           <com.google.android.apps.dashclock.configuration.AppChooserPreference
+        <com.google.android.apps.dashclock.configuration.AppChooserPreference
             android:key="click_intent"
             android:title="@string/click_behave_title" />
 
+        <PreferenceScreen
+            android:summary="@string/widget_appearance_desc"
+            android:title="@string/widget_appearance" >
+        </PreferenceScreen>
     </PreferenceCategory>
-        
+    <PreferenceCategory android:title="@string/action_about" >
+        <Preference
+            android:key="action_about"
+            android:summary="@string/action_about_desc"
+            android:title="@string/action_about" />
+    </PreferenceCategory>
 
 </PreferenceScreen>

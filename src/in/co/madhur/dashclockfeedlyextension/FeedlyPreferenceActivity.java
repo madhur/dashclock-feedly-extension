@@ -7,12 +7,25 @@ import com.google.android.apps.dashclock.configuration.AppChooserPreference;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.text.TextUtils;
 
 public class FeedlyPreferenceActivity extends PreferenceActivity
 {
 	private AppPreferences appPreferences;
+	
+	protected final OnPreferenceChangeListener listPreferenceChangeListerner = new OnPreferenceChangeListener()
+	{
+
+		@Override
+		public boolean onPreferenceChange(Preference preference, Object newValue)
+		{
+			UpdateLabel((ListPreference) preference, newValue.toString());
+			return true;
+		}
+	};
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -56,6 +69,9 @@ public class FeedlyPreferenceActivity extends PreferenceActivity
 	{
 
 		final Keys clickIntentKey = Keys.CLICK_INTENT;
+		
+		findPreference(Keys.SYNC_INTERVAL.key).setOnPreferenceChangeListener(listPreferenceChangeListerner);
+		findPreference(Keys.MINIMUM_UNREAD.key).setOnPreferenceChangeListener(listPreferenceChangeListerner);
 
 		CharSequence intentSummary = AppChooserPreference.getDisplayValue(this, appPreferences.getMetadata(clickIntentKey));
 		getPreferenceScreen().findPreference(clickIntentKey.key).setSummary(TextUtils.isEmpty(intentSummary)

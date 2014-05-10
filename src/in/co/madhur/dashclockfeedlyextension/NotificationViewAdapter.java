@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
+import android.widget.Toast;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 public class NotificationViewAdapter extends FeedlyListViewAdapter
@@ -22,7 +24,7 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 	{
 		super(result, context);
 	}
-	
+
 	@Override
 	public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent)
 	{
@@ -36,7 +38,7 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 
 			groupItem.textViewItem = (TextView) convertView.findViewById(R.id.lblListHeader);
 			groupItem.checked = (CheckBox) convertView.findViewById(R.id.GroupCheckBox);
-			groupItem.groupSeekbar=(SeekBar) convertView.findViewById(R.id.GroupSeekbar);
+			groupItem.groupSeekbar = (SeekBar) convertView.findViewById(R.id.GroupSeekbar);
 
 			convertView.setTag(groupItem);
 		}
@@ -54,13 +56,15 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 			{
 				CheckBox checkbox = (CheckBox) v;
 				check_states.put(category.getId(), checkbox.isChecked());
-				
-				if(checkbox.isChecked())
+
+				if (checkbox.isChecked())
 					groupItem.groupSeekbar.setVisibility(View.VISIBLE);
 				else
 					groupItem.groupSeekbar.setVisibility(View.INVISIBLE);
 			}
 		});
+
+		// groupItem.childSeekbar.setProgress(0);
 
 		groupItem.textViewItem.setText(category.getLabel());
 
@@ -94,8 +98,8 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 			item.title = (TextView) convertView.findViewById(R.id.lblListItem);
 			item.checked = (CheckBox) convertView.findViewById(R.id.ChildCheckBox);
 			item.website = (TextView) convertView.findViewById(R.id.WebsiteLabel);
-			item.childSeekbar=(SeekBar) convertView.findViewById(R.id.ChildSeekbar);
-			
+			item.childSeekbar = (SeekBar) convertView.findViewById(R.id.ChildSeekbar);
+
 			convertView.setTag(item);
 
 		}
@@ -113,9 +117,9 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 			{
 				CheckBox checkbox = (CheckBox) v;
 				check_states.put(subscription.getId(), checkbox.isChecked());
+				Toast.makeText(context, subscription.getId(), Toast.LENGTH_SHORT).show();
 				
-
-				if(checkbox.isChecked())
+				if (checkbox.isChecked())
 					item.childSeekbar.setVisibility(View.VISIBLE);
 				else
 					item.childSeekbar.setVisibility(View.INVISIBLE);
@@ -139,19 +143,16 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 
 		return convertView;
 	}
-	
+
 	private static class ViewHolderGroupNotification extends ViewHolderGroup
 	{
 		SeekBar groupSeekbar;
 	}
-	
+
 	private static class ViewHolderItemNotification extends ViewHolderItem
 	{
 		SeekBar childSeekbar;
-		
+
 	}
-
-
-
 
 }

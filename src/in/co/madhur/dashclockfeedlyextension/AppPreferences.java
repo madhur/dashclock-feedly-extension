@@ -11,19 +11,20 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 
 public class AppPreferences
 {
 	private Context context;
 	private SharedPreferences sharedPreferences;
-	
+
 	public AppPreferences(Context context)
 	{
-		
-		this.context=context;
+
+		this.context = context;
 		this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 	}
-	
+
 	public enum Keys
 	{
 		SELECTED_VALUES("selected_values"),
@@ -34,8 +35,7 @@ public class AppPreferences
 		CLICK_INTENT("click_intent"),
 		SYNC_INTERVAL("sync_interval"),
 		MINIMUM_UNREAD("minimum_unread");
-		
-		
+
 		public final String key;
 
 		private Keys(String key)
@@ -44,71 +44,85 @@ public class AppPreferences
 
 		}
 	}
-	
+
 	public boolean IsTokenPresent()
 	{
-		
-		String accessToken=sharedPreferences.getString(context.getString(R.string.feedly_api_access_token), "");
-		if(TextUtils.isEmpty(accessToken))
+
+		String accessToken = sharedPreferences.getString(context.getString(R.string.feedly_api_access_token), "");
+		if (TextUtils.isEmpty(accessToken))
 			return false;
-		
+
 		return true;
-		
-		
+
 	}
-	
+
+	public int GetMinimumUnreadDefault()
+	{
+		int num;
+
+		String s = sharedPreferences.getString(Keys.MINIMUM_UNREAD.key, "10");
+		try
+		{
+			num = Integer.parseInt(s);
+		}
+		catch (NumberFormatException e)
+		{
+			Log.e(App.TAG, e.getMessage());
+			return 10;
+		}
+
+		return num;
+	}
+
 	public boolean GetBoolPreferences(Keys key)
 	{
 		return sharedPreferences.getBoolean(key.key, true);
 	}
-	
+
 	public String GetToken()
 	{
-		String accessToken=sharedPreferences.getString(context.getString(R.string.feedly_api_access_token), "");
+		String accessToken = sharedPreferences.getString(context.getString(R.string.feedly_api_access_token), "");
 		return accessToken;
-		
+
 	}
 
 	public void SaveSelectedValues(HashMap<String, Boolean> check_states)
 	{
-		StringBuilder sb=new StringBuilder();
-		for(String Id : check_states.keySet())
+		StringBuilder sb = new StringBuilder();
+		for (String Id : check_states.keySet())
 		{
-			if(check_states.get(Id))
+			if (check_states.get(Id))
 			{
 				sb.append(Id);
 				sb.append(';');
 			}
 		}
-		
-		Editor edit=sharedPreferences.edit();
+
+		Editor edit = sharedPreferences.edit();
 		edit.putString(Keys.SELECTED_VALUES.key, sb.toString());
 		edit.commit();
-		
+
 	}
-	
+
 	public ArrayList<String> GetSelectedValues()
 	{
-		ArrayList<String> values=new ArrayList<String>();
-		
-		String tokenValues=sharedPreferences.getString(Keys.SELECTED_VALUES.key, "");
-		if(tokenValues.equalsIgnoreCase(""))
+		ArrayList<String> values = new ArrayList<String>();
+
+		String tokenValues = sharedPreferences.getString(Keys.SELECTED_VALUES.key, "");
+		if (tokenValues.equalsIgnoreCase(""))
 			return values;
-		
-		String[] splitValues=tokenValues.split(";");
-		for(String s: splitValues)
+
+		String[] splitValues = tokenValues.split(";");
+		for (String s : splitValues)
 			values.add(s);
-		
+
 		return values;
-		
-		
+
 	}
 
 	public String getMetadata(Keys key)
 	{
 		return sharedPreferences.getString(key.key, "");
 	}
-	
-	
 
 }
