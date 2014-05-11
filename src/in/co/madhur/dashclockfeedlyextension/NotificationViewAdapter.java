@@ -1,5 +1,7 @@
 package in.co.madhur.dashclockfeedlyextension;
 
+import java.util.HashMap;
+
 import in.co.madhur.dashclockfeedlyextension.api.Category;
 import in.co.madhur.dashclockfeedlyextension.api.FeedlyData;
 import in.co.madhur.dashclockfeedlyextension.api.Subscription;
@@ -17,8 +19,9 @@ import android.widget.TextView;
 
 public class NotificationViewAdapter extends FeedlyListViewAdapter
 {
-	protected ViewHolderItemNotification item;
-	protected ViewHolderGroupNotification groupItem;
+	private ViewHolderItemNotification item;
+	private ViewHolderGroupNotification groupItem;
+	private HashMap<String, Integer> seek_states = new HashMap<String, Integer>();
 
 	public NotificationViewAdapter(FeedlyData result, Context context)
 	{
@@ -39,6 +42,7 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 			groupItem.textViewItem = (TextView) convertView.findViewById(R.id.lblListHeader);
 			groupItem.checked = (CheckBox) convertView.findViewById(R.id.GroupCheckBox);
 			groupItem.groupSeekbar = (SeekBar) convertView.findViewById(R.id.GroupSeekbar);
+			groupItem.groupSeekCount = (TextView) convertView.findViewById(R.id.GroupSeekCount);
 
 			convertView.setTag(groupItem);
 		}
@@ -56,35 +60,65 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 			{
 				CheckBox checkbox = (CheckBox) v;
 				check_states.put(category.getId(), checkbox.isChecked());
-				
+
 				notifyDataSetChanged();
 
-//				if (checkbox.isChecked())
-//					groupItem.groupSeekbar.setVisibility(View.VISIBLE);
-//				else
-//					groupItem.groupSeekbar.setVisibility(View.INVISIBLE);
 			}
 		});
 
-		// groupItem.childSeekbar.setProgress(0);
-
 		groupItem.textViewItem.setText(category.getLabel());
+		
+		if (seek_states.containsKey(category.getId()))
+		{
+			groupItem.groupSeekCount.setText(String.valueOf(seek_states.get(category.getId())));
+			groupItem.groupSeekbar.setProgress(seek_states.get(category.getId()));
+		}
+		
+		groupItem.groupSeekbar.setOnSeekBarChangeListener(new OnSeekBarChangeListener()
+		{
+			
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar)
+			{
+				notifyDataSetChanged();
+			}
+			
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar)
+			{
+				
+			}
+			
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+			{
+				SetSeek(seekBar, category.getId(), progress);
+				
+			}
+		});
 
 		if (check_states.containsKey(category.getId()))
 		{
-			boolean checkCondition=check_states.get(category.getId());
-			
+			boolean checkCondition = check_states.get(category.getId());
+
 			groupItem.checked.setChecked(checkCondition);
-			if(checkCondition)
+			if (checkCondition)
+			{
 				groupItem.groupSeekbar.setVisibility(View.VISIBLE);
+				groupItem.groupSeekCount.setVisibility(View.VISIBLE);
+			}
 			else
+			{
 				groupItem.groupSeekbar.setVisibility(View.GONE);
-				
+				groupItem.groupSeekCount.setVisibility(View.GONE);
+			}
+
 		}
 		else
 		{
 			groupItem.checked.setChecked(false);
 			groupItem.groupSeekbar.setVisibility(View.GONE);
+			groupItem.groupSeekCount.setVisibility(View.GONE);
 
 		}
 
@@ -107,6 +141,7 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 			item.checked = (CheckBox) convertView.findViewById(R.id.ChildCheckBox);
 			item.website = (TextView) convertView.findViewById(R.id.WebsiteLabel);
 			item.childSeekbar = (SeekBar) convertView.findViewById(R.id.ChildSeekbar);
+			item.chidlSeekCount = (TextView) convertView.findViewById(R.id.ChildSeekCount);
 
 			convertView.setTag(item);
 
@@ -124,15 +159,10 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 			public void onClick(View v)
 			{
 				CheckBox checkbox = (CheckBox) v;
-				
+
 				check_states.put(subscription.getId(), checkbox.isChecked());
-				
+
 				notifyDataSetChanged();
-				
-//				if (checkbox.isChecked())
-//					item.childSeekbar.setVisibility(View.VISIBLE);
-//				else
-//					item.childSeekbar.setVisibility(View.INVISIBLE);
 
 			}
 		});
@@ -140,33 +170,90 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 		item.title.setText(subscription.getTitle());
 		item.website.setText(subscription.getWebsite());
 
+		if (seek_states.containsKey(subscription.getId()))
+		{
+			item.chidlSeekCount.setText(String.valueOf(seek_states.get(subscription.getId())));
+			item.childSeekbar.setProgress(seek_states.get(subscription.getId()));
+		}
+
+		item.childSeekbar.setOnSeekBarChangeListener(new OnSeekBarChangeListener()
+		{
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar)
+			{
+				notifyDataSetChanged();
+
+			}
+
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar)
+			{
+			}
+
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+			{
+				SetSeek(seekBar, subscription.getId(), progress);
+			}
+		});
+
 		if (check_states.containsKey(subscription.getId()))
 		{
-			boolean check_condition=check_states.get(subscription.getId());
+			boolean check_condition = check_states.get(subscription.getId());
 			item.checked.setChecked(check_condition);
-			
-			if(check_condition)
+
+			if (check_condition)
+			{
 				item.childSeekbar.setVisibility(View.VISIBLE);
+				item.chidlSeekCount.setVisibility(View.VISIBLE);
+			}
 			else
+			{
 				item.childSeekbar.setVisibility(View.GONE);
+				item.chidlSeekCount.setVisibility(View.GONE);
+			}
 		}
 		else
 		{
 			item.checked.setChecked(false);
 			item.childSeekbar.setVisibility(View.GONE);
+			item.chidlSeekCount.setVisibility(View.GONE);
 		}
 
 		return convertView;
+	}
+	
+	private void SetSeek(SeekBar seekBar, String id, int progress)
+	{
+		
+		int stepValues[] = { 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
+
+		for (int i = stepValues.length - 1; i > -1; --i)
+		{
+			if (progress > stepValues[i])
+			{
+				progress = progress / stepValues[i];
+				progress = progress * stepValues[i];
+				
+				seek_states.put(id, stepValues[i+1]);
+				break;
+
+			}
+
+		}
 	}
 
 	private static class ViewHolderGroupNotification extends ViewHolderGroup
 	{
 		SeekBar groupSeekbar;
+		TextView groupSeekCount;
 	}
 
 	private static class ViewHolderItemNotification extends ViewHolderItem
 	{
 		SeekBar childSeekbar;
+		TextView chidlSeekCount;
 
 	}
 

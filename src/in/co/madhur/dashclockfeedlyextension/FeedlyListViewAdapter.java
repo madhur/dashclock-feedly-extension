@@ -10,10 +10,6 @@ import in.co.madhur.dashclockfeedlyextension.api.FeedlyData;
 import in.co.madhur.dashclockfeedlyextension.api.Subscription;
 import android.content.Context;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckBox;
 import android.widget.Filter;
@@ -31,8 +27,6 @@ public abstract class FeedlyListViewAdapter extends BaseExpandableListAdapter im
 	private ArrayList<Category> blank = new ArrayList<Category>();
 	private ArrayList<Subscription> blankSub = new ArrayList<Subscription>();
 	protected Context context;
-//	protected ViewHolderItem item;
-//	protected ViewHolderGroup groupItem;
 	protected final HashMap<String, Boolean> check_states = new HashMap<String, Boolean>();
 	private FeedItemsFilter feedItemsFilter;
 
@@ -280,16 +274,10 @@ public abstract class FeedlyListViewAdapter extends BaseExpandableListAdapter im
 		{
 			FilterResults results = new FilterResults();
 
-			// ArrayList<Category> categories = new ArrayList<Category>();
 			ArrayList<Subscription> filteredsubs = new ArrayList<Subscription>();
 			ArrayList<Category> filteredcategories = new ArrayList<Category>();
 
 			Map<Category, List<Subscription>> filteredCategorySubscriptions = new HashMap<Category, List<Subscription>>();
-			//
-			// for(Category category: originalCategories)
-			// {
-			// categories.add(category);
-			// }
 
 			if (constraint != null && constraint.length() > 0)
 			{
@@ -318,7 +306,6 @@ public abstract class FeedlyListViewAdapter extends BaseExpandableListAdapter im
 						}
 					}
 
-					// category.setSubscriptions(filteredCategorySubs);
 				}
 			}
 			else
