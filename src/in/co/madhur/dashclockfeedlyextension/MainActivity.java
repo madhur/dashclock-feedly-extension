@@ -21,24 +21,30 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.annotation.TargetApi;
 import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.OnNavigationListener;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.Filter.FilterListener;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -50,11 +56,12 @@ public class MainActivity extends ActionBarActivity implements
 	private boolean initializing = true;
 	private WebApiHelper apiHelper;
 	private AppPreferences appPreferences;
-	//private FeedlyData result;
+	// private FeedlyData result;
 	private ProgressBar progressBar;
 	private ExpandableListView listView;
 	private FeedlyListViewAdapter widgetAdapter, notiAdapter;
 
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -81,6 +88,36 @@ public class MainActivity extends ActionBarActivity implements
 		// Set up the dropdown list navigation in the action bar.
 		getSupportActionBar().setListNavigationCallbacks(adapter, this);
 
+		// if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
+		// {
+		// listView.setChildIndicatorBoundsRelative(0, 0);
+		// }
+		// else
+		// {
+		//
+		// listView.setChildIndicatorBounds(0, 0);
+		// }
+
+		listView.setOnGroupClickListener(new OnGroupClickListener()
+		{
+			@Override
+			public boolean onGroupClick(ExpandableListView parent, View clickedView, int groupPosition, long rowId)
+			{
+				ImageView groupIndicator = (ImageView) clickedView.findViewById(R.id.group_indicator);
+				if (parent.isGroupExpanded(groupPosition))
+				{
+					parent.collapseGroup(groupPosition);
+					groupIndicator.setImageResource(R.drawable.expander_open_holo_dark);
+				}
+				else
+				{
+					parent.expandGroup(groupPosition);
+					groupIndicator.setImageResource(R.drawable.expander_close_holo_dark);
+				}
+				return true;
+			}
+		});
+
 		appPreferences = new AppPreferences(this);
 		if (!appPreferences.IsTokenPresent())
 		{
@@ -103,6 +140,49 @@ public class MainActivity extends ActionBarActivity implements
 
 		}
 
+	}
+
+	public int GetPixelFromDips(float pixels)
+	{
+		// Get the screen's density scale
+		final float scale = getResources().getDisplayMetrics().density;
+		Log.d(App.TAG, "Density DPI: "
+				+ String.valueOf(getResources().getDisplayMetrics().densityDpi));
+		Log.d(App.TAG, "Height Pixels: "
+				+ String.valueOf(getResources().getDisplayMetrics().heightPixels));
+		Log.d(App.TAG, "Width Pixels: "
+				+ String.valueOf(getResources().getDisplayMetrics().widthPixels));
+		Log.d(App.TAG, "Density: "
+				+ String.valueOf(getResources().getDisplayMetrics().density));
+		// Convert the dps to pixels, based on density scale
+		return (int) (pixels * scale + 0.5f);
+
+	}
+
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus)
+	{
+		super.onWindowFocusChanged(hasFocus);
+		DisplayMetrics metrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(metrics);
+		int width = metrics.widthPixels;
+		Log.d(App.TAG, "10 dp = " + String.valueOf(GetPixelFromDips(10)));
+		// listView.setIndicatorBoundsRelative(-50, 128);
+
+		// if (android.os.Build.VERSION.SDK_INT <
+		// android.os.Build.VERSION_CODES.JELLY_BEAN_MR2)
+		// {
+		// listView.setIndicatorBounds(width - GetPixelFromDips(35), width
+		// - GetPixelFromDips(5));
+		//
+		// }
+		// else
+		// {
+		// listView.setIndicatorBoundsRelative(width - GetPixelFromDips(35),
+		// width
+		// - GetPixelFromDips(5));
+		// }
 	}
 
 	private void SetupStrictMode()
@@ -211,7 +291,7 @@ public class MainActivity extends ActionBarActivity implements
 	{
 		GetFeedlyData(true);
 	}
-	
+
 	@Override
 	protected void onDestroy()
 	{
@@ -288,6 +368,7 @@ public class MainActivity extends ActionBarActivity implements
 		private DbHelper dbHelper;
 		private Feedly feedly;
 		private boolean forceRefresh;
+
 		public GetFeedlyDataTask(Feedly feedly, boolean forceRefresh)
 		{
 			this.feedly = feedly;
@@ -300,11 +381,15 @@ public class MainActivity extends ActionBarActivity implements
 
 			super.onPreExecute();
 			progressBar.setVisibility(View.VISIBLE);
-			//Crouton.showText(MainActivity.this, "Getting the latest categories and feeds from Feedly", Style.INFO, null, Configuration.DURATION_INFINITE)
-			//Crouton.makeText(MainActivity.this, "Getting the latest categories and feeds from Feedly", Style.INFO).show();
-			Configuration.Builder builder=new Builder();
+			// Crouton.showText(MainActivity.this,
+			// "Getting the latest categories and feeds from Feedly",
+			// Style.INFO, null, Configuration.DURATION_INFINITE)
+			// Crouton.makeText(MainActivity.this,
+			// "Getting the latest categories and feeds from Feedly",
+			// Style.INFO).show();
+			Configuration.Builder builder = new Builder();
 			builder.setDuration(Configuration.DURATION_INFINITE);
-			
+
 		}
 
 		@Override
@@ -403,7 +488,7 @@ public class MainActivity extends ActionBarActivity implements
 	private void UpdateUI(FeedlyData result)
 	{
 		FeedlyListViewAdapter adapter = null;
-		//this.result=result;
+		// this.result=result;
 		if (result.isError())
 		{
 			// Show error
@@ -413,17 +498,17 @@ public class MainActivity extends ActionBarActivity implements
 		int selIndex = getSupportActionBar().getSelectedNavigationIndex();
 		widgetAdapter = new WidgetViewAdapter(result, this);
 		notiAdapter = new NotificationViewAdapter(result, this);
-		
+
 		if (selIndex == 0)
 		{
-			adapter=widgetAdapter;
+			adapter = widgetAdapter;
 		}
 		else if (selIndex == 1)
 		{
-			adapter=notiAdapter;
+			adapter = notiAdapter;
 		}
 
-		if(adapter!=null)
+		if (adapter != null)
 			listView.setAdapter(adapter);
 
 	}
