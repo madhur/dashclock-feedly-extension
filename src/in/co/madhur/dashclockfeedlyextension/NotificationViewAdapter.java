@@ -56,11 +56,13 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 			{
 				CheckBox checkbox = (CheckBox) v;
 				check_states.put(category.getId(), checkbox.isChecked());
+				
+				notifyDataSetChanged();
 
-				if (checkbox.isChecked())
-					groupItem.groupSeekbar.setVisibility(View.VISIBLE);
-				else
-					groupItem.groupSeekbar.setVisibility(View.INVISIBLE);
+//				if (checkbox.isChecked())
+//					groupItem.groupSeekbar.setVisibility(View.VISIBLE);
+//				else
+//					groupItem.groupSeekbar.setVisibility(View.INVISIBLE);
 			}
 		});
 
@@ -70,13 +72,19 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 
 		if (check_states.containsKey(category.getId()))
 		{
-			groupItem.checked.setChecked(check_states.get(category.getId()));
-			groupItem.groupSeekbar.setVisibility(View.VISIBLE);
+			boolean checkCondition=check_states.get(category.getId());
+			
+			groupItem.checked.setChecked(checkCondition);
+			if(checkCondition)
+				groupItem.groupSeekbar.setVisibility(View.VISIBLE);
+			else
+				groupItem.groupSeekbar.setVisibility(View.GONE);
+				
 		}
 		else
 		{
 			groupItem.checked.setChecked(false);
-			groupItem.groupSeekbar.setVisibility(View.INVISIBLE);
+			groupItem.groupSeekbar.setVisibility(View.GONE);
 
 		}
 
@@ -116,13 +124,15 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 			public void onClick(View v)
 			{
 				CheckBox checkbox = (CheckBox) v;
-				check_states.put(subscription.getId(), checkbox.isChecked());
-				Toast.makeText(context, subscription.getId(), Toast.LENGTH_SHORT).show();
 				
-				if (checkbox.isChecked())
-					item.childSeekbar.setVisibility(View.VISIBLE);
-				else
-					item.childSeekbar.setVisibility(View.INVISIBLE);
+				check_states.put(subscription.getId(), checkbox.isChecked());
+				
+				notifyDataSetChanged();
+				
+//				if (checkbox.isChecked())
+//					item.childSeekbar.setVisibility(View.VISIBLE);
+//				else
+//					item.childSeekbar.setVisibility(View.INVISIBLE);
 
 			}
 		});
@@ -132,13 +142,18 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 
 		if (check_states.containsKey(subscription.getId()))
 		{
-			item.checked.setChecked(check_states.get(subscription.getId()));
-			item.childSeekbar.setVisibility(View.VISIBLE);
+			boolean check_condition=check_states.get(subscription.getId());
+			item.checked.setChecked(check_condition);
+			
+			if(check_condition)
+				item.childSeekbar.setVisibility(View.VISIBLE);
+			else
+				item.childSeekbar.setVisibility(View.GONE);
 		}
 		else
 		{
 			item.checked.setChecked(false);
-			item.childSeekbar.setVisibility(View.INVISIBLE);
+			item.childSeekbar.setVisibility(View.GONE);
 		}
 
 		return convertView;
