@@ -3,6 +3,7 @@ package in.co.madhur.dashclockfeedlyextension;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences.Keys;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import android.R.bool;
@@ -37,7 +38,8 @@ public class AppPreferences
 		CLICK_INTENT("click_intent"),
 		SYNC_INTERVAL("sync_interval"),
 		MINIMUM_UNREAD("minimum_unread"),
-		ENABLE_AUTOSYNC("enable_autosync");
+		ENABLE_AUTOSYNC("enable_autosync"),
+		LAST_SUCCESSFUL_SYNC("last_successful_sync");
 
 		public final String key;
 
@@ -223,6 +225,20 @@ public class AppPreferences
 	public String getMetadata(Keys key)
 	{
 		return sharedPreferences.getString(key.key, "");
+	}
+
+	public void SaveSuccessfulSync()
+	{
+		Editor edit=sharedPreferences.edit();
+		edit.putLong(Keys.LAST_SUCCESSFUL_SYNC.key, System.currentTimeMillis());
+		edit.commit();
+		
+	}
+
+	public long GetLastSuccessfulSync()
+	{
+		return  sharedPreferences.getLong(Keys.LAST_SUCCESSFUL_SYNC.key, 0);
+		
 	}
 
 	

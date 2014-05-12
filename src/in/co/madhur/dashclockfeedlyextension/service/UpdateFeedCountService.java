@@ -1,6 +1,7 @@
 package in.co.madhur.dashclockfeedlyextension.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import in.co.madhur.dashclockfeedlyextension.App;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences;
@@ -39,50 +40,98 @@ public class UpdateFeedCountService extends WakefulIntentService
 		}
 		else
 		{
-			WebApiHelper.register(this);
-			dbHelper = DbHelper.getInstance(this);
-			apiHelper = WebApiHelper.getInstance();
-
-			if (apiHelper.shouldRefreshAccesToken())
-			{
-				apiHelper.refreshAccessTokenIfNeeded();
-			}
-
-			String token = appPreferences.GetToken();
-
-			Feedly feedly = Feedly.getInstance(token);
-
-			try
-			{
-				markers = feedly.GetUnreadCounts();
-			}
-			catch (Exception e)
-			{
-				Log.e(App.TAG, "Exception while getting marker count");
+			// Check if network disconnected, else return
+			if(!Connection.isConnected(this))
 				return;
-
-			}
-
-			try
+			
+			RefreshTokenIfRequired();
+			
+			if(!CheckLastSync())
 			{
-				dbHelper.TruncateMarkers();
-				dbHelper.WriteMarkers(markers);
+				
+				Log.d(App.TAG, "Successful sync within time interval. aborting");
+				return;
 			}
-			catch (Exception e)
-			{
-				Log.e(App.TAG, "Exception writing to database");
-				Log.e(App.TAG, e.getMessage());
-				e.printStackTrace();
-			}
+			
+			if(!GetUnreadCountsAndSave())
+				return;
+		
+			appPreferences.SaveSuccessfulSync();
 
 			if (appPreferences.GetBoolPreferences(Keys.ENABLE_NOTIFICATIONS))
 			{
 				SendNotifications();
-
 			}
 
 		}
 
+	}
+	
+	// Return false if unsucessful, true if successful
+	private boolean GetUnreadCountsAndSave()
+	{
+		String token = appPreferences.GetToken();
+
+		Feedly feedly = Feedly.getInstance(token);
+
+		try
+		{
+			markers = feedly.GetUnreadCounts();
+		}
+		catch (Exception e)
+		{
+			Log.e(App.TAG, "Exception while getting marker count");
+			return false;
+
+		}
+		
+		
+
+		try
+		{
+			dbHelper.TruncateMarkers();
+			dbHelper.WriteMarkers(markers);
+		}
+		catch (Exception e)
+		{
+			Log.e(App.TAG, "Exception writing to database");
+			Log.e(App.TAG, e.getMessage());
+			e.printStackTrace();
+			return false;
+		}
+		
+		return true;
+		
+		
+	}
+
+	private boolean CheckLastSync()
+	{
+		long lastSync=appPreferences.GetLastSuccessfulSync();
+		
+		//First time sync, Just return true
+		if(lastSync==0)
+			return true;
+		
+		// Else see if we are not doing too much sync within the sync interval
+		int syncIntervalHour=appPreferences.GetSyncInterval();
+		long syncIntervalMillisec=syncIntervalHour*60*60*1000;
+		if(System.currentTimeMillis() - lastSync > syncIntervalMillisec)
+			return true;
+		
+		return false;
+	}
+
+	private void RefreshTokenIfRequired()
+	{
+		WebApiHelper.register(this);
+		dbHelper = DbHelper.getInstance(this);
+		apiHelper = WebApiHelper.getInstance();
+
+		if (apiHelper.shouldRefreshAccesToken())
+		{
+			apiHelper.refreshAccessTokenIfNeeded();
+		}
 	}
 
 	private void SendNotifications()
