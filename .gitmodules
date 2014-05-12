@@ -1,0 +1,3 @@
+[submodule "android_oauth2_webview"]
+      path = android_oauth2_webview
+      url = https://github.com/madhur/android_oauth2_webview.git
