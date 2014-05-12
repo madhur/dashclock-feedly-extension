@@ -90,12 +90,7 @@ dependencies {
 }
 
     
-    buildTypes {
-    release {
-        #signingConfig signingConfigs.release
-    }
-}
-    
+ 
     
 } 
 
