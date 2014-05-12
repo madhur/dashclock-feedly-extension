@@ -41,7 +41,7 @@ android {
     
 dependencies {
    
-   
+
     compile project(':android_oauth2_webview')
     compile 'com.squareup:otto:1.3.3'
     
@@ -92,7 +92,7 @@ dependencies {
     
     buildTypes {
     release {
-        signingConfig signingConfigs.release
+        #signingConfig signingConfigs.release
     }
 }
     
