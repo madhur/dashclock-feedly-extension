@@ -20,12 +20,15 @@ repositories {
 }
 
 
-android {
+android 
+{
     buildToolsVersion "19.0.3"
     compileSdkVersion 18
     
-     sourceSets {
-        main {
+     sourceSets 
+     {
+        main 
+        {
             manifest.srcFile 'AndroidManifest.xml'
             java.srcDirs = ['src']
             resources.srcDirs = ['src']
@@ -37,9 +40,22 @@ android {
 
         instrumentTest.setRoot('tests')
     }
+
+          packagingOptions 
+          {
+             exclude 'META-INF/NOTICE'
+             exclude 'META-INF/LICENSE'
+          }
+
+           lintOptions {
+        abortOnError false
+    }
+       
+
     
     
-dependencies {
+    
+    dependencies {
    
 
     compile project(':android_oauth2_webview')
@@ -67,7 +83,7 @@ dependencies {
   
     exclude group: 'com.google.android', module: 'support-v4'
     exclude module: 'support-v4'
-   
+
   }
 
 
@@ -81,9 +97,7 @@ dependencies {
 
     
 
-   
-
-    
+ 
  
     
 } 
