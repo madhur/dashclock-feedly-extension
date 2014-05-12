@@ -25,6 +25,10 @@
         <attr name="numColumns" format="integer" />
     </declare-styleable>
 
-        <item name="count_left_padding" type="attr">5dp</item>
+        <item name="padding_small" type="attr">5dp</item>
+        <item name="padding_large" type="attr">20dp</item>
+        <item name="padding_xlarge" type="attr">25dp</item>
+        <item name="padding_medium" type="attr">10dp</item>
+        <item name="padding_xmedium" type="attr">15dp</item>
 
 </resources>
