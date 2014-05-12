@@ -3,51 +3,64 @@
     <item android:id="@+id/action_search"
         app:showAsAction="collapseActionView|always"
           android:icon="@drawable/ic_action_search"
-          
+          android:orderInCategory="50"
            app:actionViewClass="android.support.v7.widget.SearchView" 
           android:title="@string/action_search"/>
-    
+
+         <item
+        android:id="@+id/action_expandall"
+        android:orderInCategory="55"
+        app:showAsAction="never"
+        android:title="@string/action_expandall"/>
+         
+                  <item
+        android:id="@+id/action_collapseall"
+        android:orderInCategory="60"
+        app:showAsAction="never"
+        android:title="@string/action_collapseall"/>
+         
+              
      <item
         android:id="@+id/action_selecteverything"
-        android:orderInCategory="100"
+        android:orderInCategory="101"
         app:showAsAction="never"
         android:title="@string/action_selecteverything"/>
      
         <item
         android:id="@+id/action_selectallcategories"
-        android:orderInCategory="100"
+        android:orderInCategory="102"
         app:showAsAction="never"
         android:title="@string/action_selectallcategories"/>
      
      
        <item
         android:id="@+id/action_selectallfeeds"
-        android:orderInCategory="100"
+        android:orderInCategory="103"
         app:showAsAction="never"
         android:title="@string/action_selectallfeeds"/>
        
          <item
         android:id="@+id/action_selectnone"
-        android:orderInCategory="100"
+        android:orderInCategory="104"
         app:showAsAction="never"
         android:title="@string/action_selectnone"/>
      
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
+        android:orderInCategory="105"
         app:showAsAction="never"
         android:icon="@drawable/action_settings"
         android:title="@string/action_settings"/>
     
      <item
         android:id="@+id/action_switchtheme"
-        android:orderInCategory="100"
+        android:orderInCategory="106"
         app:showAsAction="never"
         android:title="@string/action_switchtheme"/>
     
      <item
         android:id="@+id/action_refresh"
-        android:orderInCategory="100"
+        android:orderInCategory="107"
         app:showAsAction="always"
         android:icon="@drawable/navigation_refresh"
         android:title="@string/action_refresh"/>
@@ -55,20 +68,20 @@
 
             <item
         android:id="@+id/action_accept"
-        android:orderInCategory="100"
+        android:orderInCategory="108"
         app:showAsAction="always"
         android:icon="@drawable/navigation_accept"
         android:title="@string/action_accept"/>
             
               <item
         android:id="@+id/action_logout"
-        android:orderInCategory="100"
+        android:orderInCategory="109"
         app:showAsAction="never"
         android:title="@string/action_logout"/>
               
                 <item
         android:id="@+id/action_about"
-        android:orderInCategory="100"
+        android:orderInCategory="110"
         app:showAsAction="never"
         android:title="@string/action_about"/>
       

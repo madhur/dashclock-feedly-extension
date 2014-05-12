@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import in.co.madhur.dashclockfeedlyextension.Consts.APPVIEW;
 import in.co.madhur.dashclockfeedlyextension.api.Category;
 import in.co.madhur.dashclockfeedlyextension.api.Feedly;
 import in.co.madhur.dashclockfeedlyextension.api.FeedlyData;
@@ -14,6 +15,8 @@ import in.co.madhur.dashclockfeedlyextension.api.Subscription;
 import in.co.madhur.dashclockfeedlyextension.db.DbHelper;
 
 import com.infospace.android.oauth2.WebApiHelper;
+
+import crittercism.android.cu;
 
 import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Configuration.Builder;
@@ -201,6 +204,12 @@ public class MainActivity extends ActionBarActivity implements
 
 	}
 
+	private APPVIEW GetCurrentView()
+	{
+		int index = getSupportActionBar().getSelectedNavigationIndex();
+		return APPVIEW.values()[index];
+	}
+
 	private void GetFeedlyData()
 	{
 		GetFeedlyData(false);
@@ -257,11 +266,61 @@ public class MainActivity extends ActionBarActivity implements
 				adapter.selectNone();
 				break;
 
+			case R.id.action_expandall:
+				ExpandAll();
+				break;
+
+			case R.id.action_collapseall:
+				CollapseAll();
+				break;
+
 			default:
 				return super.onOptionsItemSelected(item);
 		}
 
 		return super.onOptionsItemSelected(item);
+
+	}
+
+	private void ExpandAll()
+	{
+		APPVIEW currentView = GetCurrentView();
+
+		if (currentView == APPVIEW.WIDGET)
+		{
+			for (int i = 0; i < widgetAdapter.getGroupCount(); ++i)
+				listView.expandGroup(i);
+
+		}
+		else if (currentView == APPVIEW.NOTIFICATIONS)
+		{
+
+			for (int i = 0; i < notiAdapter.getGroupCount(); ++i)
+			{
+				listView.expandGroup(i);
+			}
+		}
+
+	}
+
+	private void CollapseAll()
+	{
+		APPVIEW currentView = GetCurrentView();
+
+		if (currentView == APPVIEW.WIDGET)
+		{
+			for (int i = 0; i < widgetAdapter.getGroupCount(); ++i)
+				listView.collapseGroup(i);
+
+		}
+		else if (currentView == APPVIEW.NOTIFICATIONS)
+		{
+
+			for (int i = 0; i < notiAdapter.getGroupCount(); ++i)
+			{
+				listView.collapseGroup(i);
+			}
+		}
 
 	}
 
@@ -485,15 +544,20 @@ public class MainActivity extends ActionBarActivity implements
 			return;
 		}
 
-		int selIndex = getSupportActionBar().getSelectedNavigationIndex();
+		APPVIEW currentView = GetCurrentView();
+
 		widgetAdapter = new WidgetViewAdapter(result, this);
 		notiAdapter = new NotificationViewAdapter(result, this);
 
-		if (selIndex == 0)
+		// Are these both required ?
+		widgetAdapter.GetSelectedValuesFromPreferences();
+		notiAdapter.GetSelectedValuesFromPreferences();
+
+		if (currentView == APPVIEW.WIDGET)
 		{
 			adapter = widgetAdapter;
 		}
-		else if (selIndex == 1)
+		else if (currentView == APPVIEW.NOTIFICATIONS)
 		{
 			adapter = notiAdapter;
 		}
@@ -512,15 +576,20 @@ public class MainActivity extends ActionBarActivity implements
 			return true;
 		}
 
-		switch (itemPosition)
+		switch (APPVIEW.values()[itemPosition])
 		{
 
-			case 0:
+			case WIDGET:
 				listView.setAdapter(widgetAdapter);
+				notiAdapter.SaveSelectedValuestoPreferences();
+				widgetAdapter.GetSelectedValuesFromPreferences();
 				return true;
 
-			case 1:
+			case NOTIFICATIONS:
 				listView.setAdapter(notiAdapter);
+
+				widgetAdapter.SaveSelectedValuestoPreferences();
+				notiAdapter.GetSelectedValuesFromPreferences();
 				return true;
 
 		}

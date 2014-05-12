@@ -47,5 +47,7 @@
     <string name="minimum_unread_desc">Select default minimum unread feeds after which notification will fire. A custom value can be configured per feed in notification configuration</string>
     <string name="widget_appearance">Widget Appearance</string>
     <string name="widget_appearance_desc">Configure the appearance of widget</string>
+    <string name="action_expandall">Expand All</string>
+    <string name="action_collapseall">Collapse All</string>
 
 </resources>

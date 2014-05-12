@@ -7,7 +7,9 @@ import in.co.madhur.dashclockfeedlyextension.api.Category;
 import in.co.madhur.dashclockfeedlyextension.api.FeedlyData;
 import in.co.madhur.dashclockfeedlyextension.api.Subscription;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.opengl.Visibility;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +25,14 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 	private ViewHolderItemNotification item;
 	private ViewHolderGroupNotification groupItem;
 	private HashMap<String, Integer> seek_states = new HashMap<String, Integer>();
-
+	private Formatter formatter=new Formatter();
+	
 	public NotificationViewAdapter(FeedlyData result, Context context)
 	{
 		super(result, context);
 	}
 
+	
 	@Override
 	public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent)
 	{
@@ -44,6 +48,7 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 			groupItem.checked = (CheckBox) convertView.findViewById(R.id.GroupCheckBox);
 			groupItem.groupSeekbar = (SeekBar) convertView.findViewById(R.id.GroupSeekbar);
 			groupItem.groupSeekCount = (TextView) convertView.findViewById(R.id.GroupSeekCount);
+			groupItem.selectedChildCount=(TextView) convertView.findViewById(R.id.SelectedCountTextView);
 
 			convertView.setTag(groupItem);
 		}
@@ -109,7 +114,7 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 			}
 		});
 
-		if (check_states.containsKey(category.getId()) || seek_states.containsKey(category.getId()))
+		if (check_states.containsKey(category.getId()) && seek_states.containsKey(category.getId()))
 		{
 			groupItem.groupSeekCount.setText(String.valueOf(seek_states.get(category.getId())));
 			groupItem.groupSeekbar.setProgress(seek_states.get(category.getId()));
@@ -121,6 +126,7 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 			{
 				groupItem.groupSeekbar.setVisibility(View.VISIBLE);
 				groupItem.groupSeekCount.setVisibility(View.VISIBLE);
+			
 			}
 			else
 			{
@@ -136,6 +142,30 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 			groupItem.groupSeekCount.setVisibility(View.GONE);
 
 		}
+		
+		int selectedChild=0;
+		for(int i=0;i<getChildrenCount(groupPosition); ++i)
+		{
+			Subscription sub=(Subscription) getChild(groupPosition, i);
+			if(check_states.containsKey(sub.getId()))
+			{
+				selectedChild++;
+			}
+			
+		}
+		
+		if(selectedChild!=0)
+		{
+			groupItem.selectedChildCount.setVisibility(View.VISIBLE);
+			groupItem.selectedChildCount.setText(String.valueOf(selectedChild));
+			groupItem.textViewItem.setTypeface(null, Typeface.BOLD);
+		}
+		else
+		{
+			groupItem.selectedChildCount.setVisibility(View.GONE);
+			groupItem.textViewItem.setTypeface(null, Typeface.NORMAL);
+		}
+		
 
 		return convertView;
 	}
@@ -225,6 +255,8 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 			{
 				item.childSeekbar.setVisibility(View.VISIBLE);
 				item.chidlSeekCount.setVisibility(View.VISIBLE);
+				
+				
 			}
 			else
 			{
@@ -266,6 +298,7 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 	{
 		SeekBar groupSeekbar;
 		TextView groupSeekCount;
+		TextView selectedChildCount;
 	}
 
 	private static class ViewHolderItemNotification extends ViewHolderItem

@@ -162,7 +162,7 @@ public class AppPreferences
 		String splitValues[]=seekValues.split(";");
 		for(String splitValue: splitValues)
 		{
-			String []idNum=splitValue.split("|");
+			String []idNum=splitValue.split("\\|");
 			if(idNum.length == 2)
 			{
 				seek_states.put(idNum[0], Integer.parseInt(idNum[1]));
