@@ -81,18 +81,8 @@ public abstract class FeedlyListViewAdapter extends BaseExpandableListAdapter im
 	public Object getChild(int groupPosition, int childPosition)
 	{
 		Category category = (Category) getGroup(groupPosition);
-		// return category.getSubscriptions().get(childPosition);
 		return categorySubscriptions.get(category).get(childPosition);
-		// for(Subscription sub: getSubscriptions())
-		// {
-		//
-		// if(sub.getCategories().contains(category))
-		// {
-		//
-		// return sub;
-		// }
-		// }
-		// return null;
+		
 
 	}
 
@@ -135,24 +125,19 @@ public abstract class FeedlyListViewAdapter extends BaseExpandableListAdapter im
 	}
 
 	@Override
-	public void SaveSelectedValuestoPreferences()
-	{
-		AppPreferences appPreferences = new AppPreferences(context);
-		appPreferences.SaveSelectedValues(check_states);
-
-	}
+	public abstract void SaveSelectedValuestoPreferences();
 
 	@Override
-	public void GetSelectedValuesFromPreferences()
-	{
-		AppPreferences appPreferences = new AppPreferences(context);
-		ArrayList<String> selectedValues = appPreferences.GetSelectedValues();
-
-		for (String s : selectedValues)
-		{
-			check_states.put(s, true);
-		}
-	}
+	public abstract void GetSelectedValuesFromPreferences();
+//	{
+//		AppPreferences appPreferences = new AppPreferences(context);
+//		ArrayList<String> selectedValues = appPreferences.GetSelectedValues();
+//
+//		for (String s : selectedValues)
+//		{
+//			check_states.put(s, true);
+//		}
+//	}
 
 	@Override
 	public Filter getFilter()

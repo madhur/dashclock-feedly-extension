@@ -88,16 +88,6 @@ public class MainActivity extends ActionBarActivity implements
 		// Set up the dropdown list navigation in the action bar.
 		getSupportActionBar().setListNavigationCallbacks(adapter, this);
 
-		// if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
-		// {
-		// listView.setChildIndicatorBoundsRelative(0, 0);
-		// }
-		// else
-		// {
-		//
-		// listView.setChildIndicatorBounds(0, 0);
-		// }
-
 		listView.setOnGroupClickListener(new OnGroupClickListener()
 		{
 			@Override

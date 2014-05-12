@@ -1,5 +1,6 @@
 package in.co.madhur.dashclockfeedlyextension;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import in.co.madhur.dashclockfeedlyextension.api.Category;
@@ -59,7 +60,24 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 			public void onClick(View v)
 			{
 				CheckBox checkbox = (CheckBox) v;
-				check_states.put(category.getId(), checkbox.isChecked());
+				if(checkbox.isChecked())
+				{
+					check_states.put(category.getId(), true);
+					
+					if(!seek_states.containsKey(category.getId()))
+					{
+						
+						seek_states.put(category.getId(), GetMinimumUnreadDefault());
+					}
+				}
+				else
+				{
+					check_states.remove(category.getId());
+					
+					//We do not remove seek states for unchecked items in a hope that they will be checked later and user will not have to set them agian
+					// These values also go into preference
+					// check_states should be subset of seek_states always
+				}
 
 				notifyDataSetChanged();
 
@@ -67,12 +85,6 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 		});
 
 		groupItem.textViewItem.setText(category.getLabel());
-		
-		if (seek_states.containsKey(category.getId()))
-		{
-			groupItem.groupSeekCount.setText(String.valueOf(seek_states.get(category.getId())));
-			groupItem.groupSeekbar.setProgress(seek_states.get(category.getId()));
-		}
 		
 		groupItem.groupSeekbar.setOnSeekBarChangeListener(new OnSeekBarChangeListener()
 		{
@@ -97,8 +109,11 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 			}
 		});
 
-		if (check_states.containsKey(category.getId()))
+		if (check_states.containsKey(category.getId()) || seek_states.containsKey(category.getId()))
 		{
+			groupItem.groupSeekCount.setText(String.valueOf(seek_states.get(category.getId())));
+			groupItem.groupSeekbar.setProgress(seek_states.get(category.getId()));
+			
 			boolean checkCondition = check_states.get(category.getId());
 
 			groupItem.checked.setChecked(checkCondition);
@@ -160,7 +175,10 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 			{
 				CheckBox checkbox = (CheckBox) v;
 
-				check_states.put(subscription.getId(), checkbox.isChecked());
+				if(checkbox.isChecked())
+					check_states.put(subscription.getId(), true);
+				else
+					check_states.remove(subscription.getId());
 
 				notifyDataSetChanged();
 
@@ -255,6 +273,39 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 		SeekBar childSeekbar;
 		TextView chidlSeekCount;
 
+	}
+	
+	private int GetMinimumUnreadDefault()
+	{
+		AppPreferences appPreferences = new AppPreferences(context);
+		return appPreferences.GetMinimumUnreadDefault();
+		
+	}
+
+	@Override
+	public void SaveSelectedValuestoPreferences()
+	{
+		AppPreferences appPreferences = new AppPreferences(context);
+		appPreferences.SaveSelectedValuesNotifications(check_states, seek_states);
+		
+	}
+
+	@Override
+	public void GetSelectedValuesFromPreferences()
+	{
+		check_states.clear();
+		
+		AppPreferences appPreferences = new AppPreferences(context);
+		ArrayList<String> selectedValues = appPreferences.GetSelectedValuesNotifications();
+
+		for (String s : selectedValues)
+		{
+			check_states.put(s, true);
+		}
+		
+		HashMap<String, Integer> seekValues=appPreferences.GetSeekValues();
+		seek_states=seekValues;
+		
 	}
 
 }

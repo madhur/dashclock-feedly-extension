@@ -1,5 +1,7 @@
 package in.co.madhur.dashclockfeedlyextension;
 
+import java.util.ArrayList;
+
 import in.co.madhur.dashclockfeedlyextension.api.Category;
 import in.co.madhur.dashclockfeedlyextension.api.FeedlyData;
 import in.co.madhur.dashclockfeedlyextension.api.Subscription;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 public class WidgetViewAdapter extends FeedlyListViewAdapter
@@ -127,6 +130,29 @@ public class WidgetViewAdapter extends FeedlyListViewAdapter
 	private static class ViewHolderItemWidget extends ViewHolderItem
 	{
 		
+		
+	}
+
+	@Override
+	public void SaveSelectedValuestoPreferences()
+	{
+		AppPreferences appPreferences = new AppPreferences(context);
+		appPreferences.SaveSelectedValuesWidgets(check_states);
+		
+	}
+
+	@Override
+	public void GetSelectedValuesFromPreferences()
+	{
+		check_states.clear();
+		
+		AppPreferences appPreferences = new AppPreferences(context);
+		ArrayList<String> selectedValues = appPreferences.GetSelectedValuesWidgets();
+
+		for (String s : selectedValues)
+		{
+			check_states.put(s, true);
+		}
 		
 	}
 

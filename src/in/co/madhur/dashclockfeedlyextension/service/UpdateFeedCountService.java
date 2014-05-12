@@ -87,7 +87,7 @@ public class UpdateFeedCountService extends WakefulIntentService
 
 	private void SendNotifications()
 	{
-		ArrayList<String> selectedValues = appPreferences.GetSelectedValues();
+		ArrayList<String> selectedValues = appPreferences.GetSelectedValuesNotifications();
 		
 		if(selectedValues.size()==0)
 		{
