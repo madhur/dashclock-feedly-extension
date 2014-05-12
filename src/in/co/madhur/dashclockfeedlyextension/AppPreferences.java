@@ -36,7 +36,8 @@ public class AppPreferences
 		ENABLE_LED("enable_led"),
 		CLICK_INTENT("click_intent"),
 		SYNC_INTERVAL("sync_interval"),
-		MINIMUM_UNREAD("minimum_unread");
+		MINIMUM_UNREAD("minimum_unread"),
+		ENABLE_AUTOSYNC("enable_autosync");
 
 		public final String key;
 
@@ -62,7 +63,7 @@ public class AppPreferences
 	{
 		int num;
 
-		String s = sharedPreferences.getString(Keys.MINIMUM_UNREAD.key, "10");
+		String s = sharedPreferences.getString(Keys.MINIMUM_UNREAD.key, Defaults.MIN_UNREAD);
 		try
 		{
 			num = Integer.parseInt(s);
@@ -75,6 +76,12 @@ public class AppPreferences
 
 		return num;
 	}
+	
+	public boolean IsSyncEnabled()
+	{
+		return sharedPreferences.getBoolean(Keys.ENABLE_AUTOSYNC.key, Defaults.SYNC_ENABLED);
+		
+	}
 
 	public boolean GetBoolPreferences(Keys key)
 	{
@@ -86,6 +93,28 @@ public class AppPreferences
 		String accessToken = sharedPreferences.getString(context.getString(R.string.feedly_api_access_token), "");
 		return accessToken;
 
+	}
+	
+	public int GetSyncInterval()
+	{
+		
+		int interval;
+
+		String s = sharedPreferences.getString(Keys.SYNC_INTERVAL.key, Defaults.SYNC_INTERVAL);
+		try
+		{
+			interval = Integer.parseInt(s);
+		}
+		catch (NumberFormatException e)
+		{
+			Log.e(App.TAG, e.getMessage());
+			return 1;
+		}
+
+		return interval;
+		
+		
+		
 	}
 
 	public void SaveSelectedValuesWidgets(HashMap<String, Boolean> check_states)

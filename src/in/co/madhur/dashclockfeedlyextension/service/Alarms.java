@@ -9,7 +9,7 @@ import android.content.Intent;
 
 public class Alarms
 {
-	
+	int REQUEST_CODE=0;
 	private Context context;
 	private AppPreferences appPreferences;
 	
@@ -31,8 +31,11 @@ public class Alarms
 	{
 		
 		AlarmManager alarmManager=GetAlarmManager(context);
-		long recurInterval=1000;
-		alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 10000, recurInterval, GetPendingIntent(context) );
+		
+		int prefInterval=appPreferences.GetSyncInterval();
+		long recurInterval=prefInterval*60*60;
+		
+		alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 0, recurInterval, GetPendingIntent(context) );
 	}
 	
 	public void cancel()
@@ -51,9 +54,13 @@ public class Alarms
 	{
 		Intent serviceIntent=new Intent();
 		serviceIntent.setClass(context, UpdateFeedCountService.class);
+		return PendingIntent.getService(context , REQUEST_CODE, serviceIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		
-		return PendingIntent.getService(context , 0, serviceIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		
+	}
+
+	public boolean ShouldSchedule()
+	{
+		return appPreferences.IsSyncEnabled();
 	}
 	
 

@@ -1,6 +1,7 @@
 package in.co.madhur.dashclockfeedlyextension;
 
 import in.co.madhur.dashclockfeedlyextension.AppPreferences.Keys;
+import in.co.madhur.dashclockfeedlyextension.service.Alarms;
 
 import com.google.android.apps.dashclock.configuration.AppChooserPreference;
 
@@ -91,6 +92,25 @@ public class FeedlyPreferenceActivity extends PreferenceActivity
 				return true;
 			}
 
+		});
+		
+		
+		findPreference(Keys.ENABLE_AUTOSYNC.key).setOnPreferenceChangeListener(new OnPreferenceChangeListener()
+		{
+			
+			@Override
+			public boolean onPreferenceChange(Preference preference, Object newValue)
+			{
+				Boolean newVal=(Boolean) newValue;
+				Alarms alarms=new Alarms(FeedlyPreferenceActivity.this);
+				
+				if(newVal)
+					alarms.Schedule();
+				else
+					alarms.cancel();
+				
+				return true;
+			}
 		});
 	}
 
