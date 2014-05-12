@@ -25,7 +25,6 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 	private ViewHolderItemNotification item;
 	private ViewHolderGroupNotification groupItem;
 	private HashMap<String, Integer> seek_states = new HashMap<String, Integer>();
-	private Formatter formatter=new Formatter();
 	
 	public NotificationViewAdapter(FeedlyData result, Context context)
 	{
@@ -143,6 +142,13 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 
 		}
 		
+		HighlightGroup(groupPosition);
+		
+		return convertView;
+	}
+	
+	private void HighlightGroup(int groupPosition)
+	{
 		int selectedChild=0;
 		for(int i=0;i<getChildrenCount(groupPosition); ++i)
 		{
@@ -157,7 +163,8 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 		if(selectedChild!=0)
 		{
 			groupItem.selectedChildCount.setVisibility(View.VISIBLE);
-			groupItem.selectedChildCount.setText(String.valueOf(selectedChild));
+			groupItem.selectedChildCount.setText("("+String.valueOf(selectedChild)+")");
+
 			groupItem.textViewItem.setTypeface(null, Typeface.BOLD);
 		}
 		else
@@ -165,9 +172,6 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 			groupItem.selectedChildCount.setVisibility(View.GONE);
 			groupItem.textViewItem.setTypeface(null, Typeface.NORMAL);
 		}
-		
-
-		return convertView;
 	}
 
 	@Override
@@ -276,17 +280,14 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 	
 	private void SetSeek(SeekBar seekBar, String id, int progress)
 	{
-		
-		int stepValues[] = { 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
-
-		for (int i = stepValues.length - 1; i > -1; --i)
+		for (int i = Consts.stepValues.length - 1; i > -1; --i)
 		{
-			if (progress > stepValues[i])
+			if (progress > Consts.stepValues[i])
 			{
-				progress = progress / stepValues[i];
-				progress = progress * stepValues[i];
+				progress = progress / Consts.stepValues[i];
+				progress = progress * Consts.stepValues[i];
 				
-				seek_states.put(id, stepValues[i+1]);
+				seek_states.put(id, Consts.stepValues[i+1]);
 				break;
 
 			}
@@ -298,7 +299,6 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 	{
 		SeekBar groupSeekbar;
 		TextView groupSeekCount;
-		TextView selectedChildCount;
 	}
 
 	private static class ViewHolderItemNotification extends ViewHolderItem

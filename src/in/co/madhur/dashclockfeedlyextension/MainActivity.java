@@ -580,16 +580,18 @@ public class MainActivity extends ActionBarActivity implements
 		{
 
 			case WIDGET:
-				listView.setAdapter(widgetAdapter);
+				
 				notiAdapter.SaveSelectedValuestoPreferences();
 				widgetAdapter.GetSelectedValuesFromPreferences();
+				listView.setAdapter(widgetAdapter);
 				return true;
 
 			case NOTIFICATIONS:
-				listView.setAdapter(notiAdapter);
+				
 
 				widgetAdapter.SaveSelectedValuestoPreferences();
 				notiAdapter.GetSelectedValuesFromPreferences();
+				listView.setAdapter(notiAdapter);
 				return true;
 
 		}

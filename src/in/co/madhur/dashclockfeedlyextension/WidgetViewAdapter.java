@@ -6,6 +6,7 @@ import in.co.madhur.dashclockfeedlyextension.api.Category;
 import in.co.madhur.dashclockfeedlyextension.api.FeedlyData;
 import in.co.madhur.dashclockfeedlyextension.api.Subscription;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,7 @@ public class WidgetViewAdapter extends FeedlyListViewAdapter
 	{
 		super(result, context);
 	}
-	
+
 	@Override
 	public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent)
 	{
@@ -37,6 +38,7 @@ public class WidgetViewAdapter extends FeedlyListViewAdapter
 
 			groupItem.textViewItem = (TextView) convertView.findViewById(R.id.lblListHeader);
 			groupItem.checked = (CheckBox) convertView.findViewById(R.id.GroupCheckBox);
+			groupItem.selectedChildCount = (TextView) convertView.findViewById(R.id.SelectedCountTextView);
 
 			convertView.setTag(groupItem);
 		}
@@ -53,7 +55,14 @@ public class WidgetViewAdapter extends FeedlyListViewAdapter
 			public void onClick(View v)
 			{
 				CheckBox checkbox = (CheckBox) v;
-				check_states.put(category.getId(), checkbox.isChecked());
+				if (checkbox.isChecked())
+				{
+					check_states.put(category.getId(), true);
+				}
+				else
+					check_states.remove(category.getId());
+				
+				notifyDataSetChanged();
 			}
 		});
 
@@ -69,7 +78,37 @@ public class WidgetViewAdapter extends FeedlyListViewAdapter
 
 		}
 
+		HighlightGroup(groupPosition);
+
 		return convertView;
+	}
+
+	private void HighlightGroup(int groupPosition)
+	{
+		int selectedChild = 0;
+		for (int i = 0; i < getChildrenCount(groupPosition); ++i)
+		{
+			Subscription sub = (Subscription) getChild(groupPosition, i);
+			if (check_states.containsKey(sub.getId()))
+			{
+				selectedChild++;
+			}
+
+		}
+
+		if (selectedChild != 0)
+		{
+			groupItem.selectedChildCount.setVisibility(View.VISIBLE);
+			groupItem.selectedChildCount.setText("("
+					+ String.valueOf(selectedChild) + ")");
+
+			groupItem.textViewItem.setTypeface(null, Typeface.BOLD);
+		}
+		else
+		{
+			groupItem.selectedChildCount.setVisibility(View.GONE);
+			groupItem.textViewItem.setTypeface(null, Typeface.NORMAL);
+		}
 	}
 
 	@Override
@@ -104,7 +143,12 @@ public class WidgetViewAdapter extends FeedlyListViewAdapter
 			public void onClick(View v)
 			{
 				CheckBox checkbox = (CheckBox) v;
-				check_states.put(subscription.getId(), checkbox.isChecked());
+				if(checkbox.isChecked())
+					check_states.put(subscription.getId(), true);
+				else
+					check_states.remove(subscription.getId());
+				
+				notifyDataSetChanged();
 
 			}
 		});
@@ -121,16 +165,15 @@ public class WidgetViewAdapter extends FeedlyListViewAdapter
 
 		return convertView;
 	}
-	
+
 	private static class ViewHolderGroupWidget extends ViewHolderGroup
 	{
-		
+
 	}
-	
+
 	private static class ViewHolderItemWidget extends ViewHolderItem
 	{
-		
-		
+
 	}
 
 	@Override
@@ -138,14 +181,14 @@ public class WidgetViewAdapter extends FeedlyListViewAdapter
 	{
 		AppPreferences appPreferences = new AppPreferences(context);
 		appPreferences.SaveSelectedValuesWidgets(check_states);
-		
+
 	}
 
 	@Override
 	public void GetSelectedValuesFromPreferences()
 	{
 		check_states.clear();
-		
+
 		AppPreferences appPreferences = new AppPreferences(context);
 		ArrayList<String> selectedValues = appPreferences.GetSelectedValuesWidgets();
 
@@ -153,8 +196,7 @@ public class WidgetViewAdapter extends FeedlyListViewAdapter
 		{
 			check_states.put(s, true);
 		}
-		
-	}
 
+	}
 
 }

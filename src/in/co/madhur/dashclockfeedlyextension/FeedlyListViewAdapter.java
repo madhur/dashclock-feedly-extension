@@ -115,6 +115,7 @@ public abstract class FeedlyListViewAdapter extends BaseExpandableListAdapter im
 	{
 		TextView textViewItem;
 		CheckBox checked;
+		TextView selectedChildCount;
 	}
 
 	protected abstract static class ViewHolderItem
@@ -227,6 +228,8 @@ public abstract class FeedlyListViewAdapter extends BaseExpandableListAdapter im
 	{
 		this.categorySubscriptions = categorySubscriptions;
 	}
+	
+	
 	
 	private class FeedItemsFilter extends Filter
 	{

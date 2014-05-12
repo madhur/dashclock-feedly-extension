@@ -14,10 +14,19 @@
 
     <TextView
         android:id="@+id/lblListHeader"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
+        android:textSize="17sp" />
+    
+    <TextView
+        android:id="@+id/SelectedCountTextView"
+        android:text="34324"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/lblListHeader"
+        android:paddingLeft="5dp"
         android:textSize="17sp" />
 
     <CheckBox
