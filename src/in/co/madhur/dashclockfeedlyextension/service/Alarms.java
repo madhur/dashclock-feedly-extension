@@ -34,7 +34,7 @@ public class Alarms
 		AlarmManager alarmManager=GetAlarmManager(context);
 		
 		int prefInterval=appPreferences.GetSyncInterval();
-		long recurInterval=prefInterval*60*60;
+		long recurInterval=prefInterval*60*60*1000;
 		
 		alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 0, recurInterval, GetPendingIntent(context) );
 	}

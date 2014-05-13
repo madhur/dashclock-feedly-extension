@@ -54,6 +54,16 @@ public final class FeedlyContract
 		public static final String UPDATED = "updated";
 		
 	}
+	
+	
+	public static abstract class Markers implements BaseColumns
+	{
+		public static final String VIEW_NAME = "markers";
+		public static final String TITLE="title";
+		public static final String COUNT="count";
+		public static final String UPDATED = "updated";
+		
+	}
 
 	
 

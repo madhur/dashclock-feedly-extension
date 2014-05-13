@@ -427,6 +427,36 @@ public class DbHelper
 		return sub;
 
 	}
+	
+	
+	public String GetTitleFromSuborCategoryId(String Id)
+	{
+		String title = "";
+		SQLiteDatabase database = db.getReadableDatabase();
+		Subscription sub = new Subscription();
+		
+		Cursor c = database.query(in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.Markers.VIEW_NAME, // The table to
+				// query
+				null, // The columns to return
+				in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.Markers._ID+"=?", // The columns for the WHERE clause
+				new String[] { Id }, // The values for the WHERE
+													// clause
+				null, // don't group the rows
+				null, // don't filter by row groups
+				null // The sort order
+		);
+
+		if (c.moveToFirst())
+		{
+
+			title=c.getString(c.getColumnIndexOrThrow(in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.Markers.TITLE));
+		}
+		
+		c.close();
+
+		return title;
+		
+	}
 
 	public boolean IsFetchRequired()
 	{

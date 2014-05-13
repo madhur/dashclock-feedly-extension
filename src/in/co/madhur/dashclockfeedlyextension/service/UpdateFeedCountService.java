@@ -2,10 +2,12 @@ package in.co.madhur.dashclockfeedlyextension.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import in.co.madhur.dashclockfeedlyextension.App;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences.Keys;
+import in.co.madhur.dashclockfeedlyextension.R;
 import in.co.madhur.dashclockfeedlyextension.api.Feedly;
 import in.co.madhur.dashclockfeedlyextension.api.Marker;
 import in.co.madhur.dashclockfeedlyextension.api.Markers;
@@ -15,6 +17,8 @@ import com.commonsware.cwac.wakeful.WakefulIntentService;
 import com.infospace.android.oauth2.WebApiHelper;
 
 import android.content.Intent;
+import android.os.Environment;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 public class UpdateFeedCountService extends WakefulIntentService
@@ -24,9 +28,14 @@ public class UpdateFeedCountService extends WakefulIntentService
 	private AppPreferences appPreferences;
 	private Markers markers;
 
+	public UpdateFeedCountService()
+	{
+		super("UpdateFeedCountService");
+	}
+
 	public UpdateFeedCountService(String name)
 	{
-		super(name);
+		super("UpdateFeedCountService");
 	}
 
 	@Override
@@ -41,32 +50,32 @@ public class UpdateFeedCountService extends WakefulIntentService
 		else
 		{
 			// Check if network disconnected, else return
-			if(!Connection.isConnected(this))
+			if (!Connection.isConnected(this))
 				return;
-			
+
 			RefreshTokenIfRequired();
-			
-			if(!CheckLastSync())
-			{
-				
-				Log.d(App.TAG, "Successful sync within time interval. aborting");
+
+			// if(!CheckLastSync())
+			// {
+			//
+			// Log.d(App.TAG, "Successful sync within time interval. aborting");
+			// return;
+			// }
+
+			if (!GetUnreadCountsAndSave())
 				return;
-			}
-			
-			if(!GetUnreadCountsAndSave())
-				return;
-		
+
 			appPreferences.SaveSuccessfulSync();
 
 			if (appPreferences.GetBoolPreferences(Keys.ENABLE_NOTIFICATIONS))
 			{
-				SendNotifications();
+				PrepareAndSendNotifications();
 			}
 
 		}
 
 	}
-	
+
 	// Return false if unsucessful, true if successful
 	private boolean GetUnreadCountsAndSave()
 	{
@@ -81,11 +90,10 @@ public class UpdateFeedCountService extends WakefulIntentService
 		catch (Exception e)
 		{
 			Log.e(App.TAG, "Exception while getting marker count");
+			Log.e(App.TAG, e.getMessage());
 			return false;
 
 		}
-		
-		
 
 		try
 		{
@@ -99,26 +107,25 @@ public class UpdateFeedCountService extends WakefulIntentService
 			e.printStackTrace();
 			return false;
 		}
-		
+
 		return true;
-		
-		
+
 	}
 
 	private boolean CheckLastSync()
 	{
-		long lastSync=appPreferences.GetLastSuccessfulSync();
-		
-		//First time sync, Just return true
-		if(lastSync==0)
+		long lastSync = appPreferences.GetLastSuccessfulSync();
+
+		// First time sync, Just return true
+		if (lastSync == 0)
 			return true;
-		
+
 		// Else see if we are not doing too much sync within the sync interval
-		int syncIntervalHour=appPreferences.GetSyncInterval();
-		long syncIntervalMillisec=syncIntervalHour*60*60*1000;
-		if(System.currentTimeMillis() - lastSync > syncIntervalMillisec)
+		int syncIntervalHour = appPreferences.GetSyncInterval();
+		long syncIntervalMillisec = syncIntervalHour * 60 * 60 * 1000;
+		if (System.currentTimeMillis() - lastSync > syncIntervalMillisec)
 			return true;
-		
+
 		return false;
 	}
 
@@ -134,30 +141,68 @@ public class UpdateFeedCountService extends WakefulIntentService
 		}
 	}
 
-	private void SendNotifications()
+	private void PrepareAndSendNotifications()
 	{
+		Notifications notifications = new Notifications(this);
+
 		ArrayList<String> selectedValues = appPreferences.GetSelectedValuesNotifications();
-		
-		if(selectedValues.size()==0)
+		HashMap<String, Integer> seek_states = appPreferences.GetSeekValues();
+		ArrayList<String> notiText = new ArrayList<String>();
+		int totalUnread = 0;
+
+		if (selectedValues.size() == 0)
 		{
 			Log.d(App.TAG, "No feeds selected for notification");
 			return;
 		}
-		
-		for(String selValue: selectedValues)
+
+		for (String selValue : selectedValues)
 		{
-			for(Marker marker: markers.getUnreadcounts())
+			for (Marker marker : markers.getUnreadcounts())
 			{
-				
-				if(selValue.equalsIgnoreCase(marker.getId()))
+
+				if (selValue.equalsIgnoreCase(marker.getId()))
 				{
-					Log.d(App.TAG, marker.getCount() + " feeds for " + marker.getId());
-					
-					
+					Log.d(App.TAG, marker.getCount() + " feeds for "
+							+ marker.getId());
+
+					if (marker.getCount() == 0)
+						continue;
+
+					if (!seek_states.containsKey(marker.getId()))
+					{
+						Log.e(App.TAG, "Seek state not found for id "
+								+ marker.getId());
+						continue;
+					}
+
+					if (marker.getCount() > seek_states.get(marker.getId()))
+					{
+						totalUnread = totalUnread + marker.getCount();
+						notiText.add(String.format(getString(R.string.noti_inbox_text), marker.getCount(), dbHelper.GetTitleFromSuborCategoryId(marker.getId())));
+
+					}
+
 				}
 			}
 		}
-		
+
+		String contentText = String.format(getString(R.string.noti_content_text), totalUnread);
+
+		if (totalUnread != 0 && notiText.size() > 0)
+		{
+			Log.d(App.TAG, "Firing notification");
+
+			NotificationCompat.Builder builder = notifications.GetNotificationBuilder(contentText, totalUnread);
+			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN)
+			{
+				builder=notifications.GetExpandedBuilder(builder, notiText, contentText);
+			}
+			
+			
+			notifications.FireNotification(0, builder);
+
+		}
 
 	}
 
