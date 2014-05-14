@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_holder"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -10,10 +11,10 @@
 
      <fragment
          android:id="@+id/headlines_fragment"
-         android:name="com.infospace.android.oauth2.AuthenticationFragment"
+         android:name="in.co.madhur.dashclockfeedlyextension.SplashFragment"
          android:layout_width="match_parent"
          android:layout_height="match_parent"
         
-         tools:layout="@layout/feedly_oauth2_browser" />
+         />
 
 </RelativeLayout>

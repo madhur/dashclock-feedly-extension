@@ -39,7 +39,10 @@ public class AppPreferences
 		SYNC_INTERVAL("sync_interval"),
 		MINIMUM_UNREAD("minimum_unread"),
 		ENABLE_AUTOSYNC("enable_autosync"),
-		LAST_SUCCESSFUL_SYNC("last_successful_sync");
+		LAST_SUCCESSFUL_SYNC("last_successful_sync"),
+		ACCESS_TOKEN("access_token"),
+		REFRESH_TOKEN("refresh_token"),
+		TOKEN_EXPIRES_IN("expires_in");
 
 		public final String key;
 
@@ -78,11 +81,11 @@ public class AppPreferences
 
 		return num;
 	}
-	
+
 	public boolean IsSyncEnabled()
 	{
 		return sharedPreferences.getBoolean(Keys.ENABLE_AUTOSYNC.key, Defaults.SYNC_ENABLED);
-		
+
 	}
 
 	public boolean GetBoolPreferences(Keys key)
@@ -96,10 +99,10 @@ public class AppPreferences
 		return accessToken;
 
 	}
-	
+
 	public int GetSyncInterval()
 	{
-		
+
 		int interval;
 
 		String s = sharedPreferences.getString(Keys.SYNC_INTERVAL.key, Defaults.SYNC_INTERVAL);
@@ -114,9 +117,20 @@ public class AppPreferences
 		}
 
 		return interval;
-		
-		
-		
+
+	}
+
+	public void ClearTokens()
+	{
+
+		String empty = "";
+		Editor edit = sharedPreferences.edit();
+		edit.putString(Keys.ACCESS_TOKEN.key, empty);
+		edit.putString(Keys.REFRESH_TOKEN.key, empty);
+		edit.putString(Keys.TOKEN_EXPIRES_IN.key, empty);
+		edit.putString(Keys.LAST_SUCCESSFUL_SYNC.key, empty);
+		edit.commit();
+
 	}
 
 	public void SaveSelectedValuesWidgets(HashMap<String, Boolean> check_states)
@@ -136,12 +150,12 @@ public class AppPreferences
 		edit.commit();
 
 	}
-	
+
 	public void SaveSelectedValuesNotifications(HashMap<String, Boolean> check_states, HashMap<String, Integer> seek_states)
 	{
 		StringBuilder sb = new StringBuilder();
 		StringBuilder sb1 = new StringBuilder();
-		
+
 		for (String Id : check_states.keySet())
 		{
 			if (check_states.get(Id))
@@ -150,25 +164,23 @@ public class AppPreferences
 				sb.append(';');
 			}
 		}
-		
-		for(String Id:seek_states.keySet())
+
+		for (String Id : seek_states.keySet())
 		{
 			sb1.append(Id);
 			sb1.append('|');
 			sb1.append(seek_states.get(Id));
 			sb1.append(';');
-		
+
 		}
 
 		Editor edit = sharedPreferences.edit();
 		edit.putString(Keys.SELECTED_VALUES_NOTIFICATIONS.key, sb.toString());
 		edit.putString(Keys.NOTIFICATION_SEEK_STATES.key, sb1.toString());
 		edit.commit();
-		
-		
 
 	}
-	
+
 	public ArrayList<String> GetSelectedValuesNotifications()
 	{
 		ArrayList<String> values = new ArrayList<String>();
@@ -184,29 +196,27 @@ public class AppPreferences
 		return values;
 
 	}
-	
+
 	public HashMap<String, Integer> GetSeekValues()
 	{
-		HashMap<String, Integer> seek_states=new HashMap<String, Integer>();
-		
-		String seekValues=sharedPreferences.getString(Keys.NOTIFICATION_SEEK_STATES.key, "");
-		String splitValues[]=seekValues.split(";");
-		for(String splitValue: splitValues)
+		HashMap<String, Integer> seek_states = new HashMap<String, Integer>();
+
+		String seekValues = sharedPreferences.getString(Keys.NOTIFICATION_SEEK_STATES.key, "");
+		String splitValues[] = seekValues.split(";");
+		for (String splitValue : splitValues)
 		{
-			String []idNum=splitValue.split("\\|");
-			if(idNum.length == 2)
+			String[] idNum = splitValue.split("\\|");
+			if (idNum.length == 2)
 			{
 				seek_states.put(idNum[0], Integer.parseInt(idNum[1]));
 			}
-			
-			
+
 		}
-		
+
 		return seek_states;
-		
-		
+
 	}
-	
+
 	public ArrayList<String> GetSelectedValuesWidgets()
 	{
 		ArrayList<String> values = new ArrayList<String>();
@@ -229,17 +239,16 @@ public class AppPreferences
 
 	public void SaveSuccessfulSync()
 	{
-		Editor edit=sharedPreferences.edit();
+		Editor edit = sharedPreferences.edit();
 		edit.putLong(Keys.LAST_SUCCESSFUL_SYNC.key, System.currentTimeMillis());
 		edit.commit();
-		
+
 	}
 
 	public long GetLastSuccessfulSync()
 	{
-		return  sharedPreferences.getLong(Keys.LAST_SUCCESSFUL_SYNC.key, 0);
-		
+		return sharedPreferences.getLong(Keys.LAST_SUCCESSFUL_SYNC.key, 0);
+
 	}
 
-	
 }

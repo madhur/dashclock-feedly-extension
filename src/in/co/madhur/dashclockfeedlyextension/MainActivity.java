@@ -14,6 +14,7 @@ import in.co.madhur.dashclockfeedlyextension.api.Profile;
 import in.co.madhur.dashclockfeedlyextension.api.Subscription;
 import in.co.madhur.dashclockfeedlyextension.db.DbHelper;
 
+import com.infospace.android.oauth2.AuthenticationFragment;
 import com.infospace.android.oauth2.WebApiHelper;
 
 import crittercism.android.cu;
@@ -32,7 +33,10 @@ import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.LinearGradient;
 import android.graphics.drawable.Drawable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.OnNavigationListener;
@@ -63,6 +67,7 @@ public class MainActivity extends ActionBarActivity implements
 	private ProgressBar progressBar;
 	private ExpandableListView listView;
 	private FeedlyListViewAdapter widgetAdapter, notiAdapter;
+	private int LOGIN_REQUEST_CODE = 1;
 
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 	@Override
@@ -114,9 +119,7 @@ public class MainActivity extends ActionBarActivity implements
 		appPreferences = new AppPreferences(this);
 		if (!appPreferences.IsTokenPresent())
 		{
-			Intent loginIntent = new Intent();
-			loginIntent.setClass(this, LoginActivity.class);
-			startActivityForResult(loginIntent, 1);
+			StartLoginProcedure();
 		}
 		else
 		{
@@ -135,58 +138,26 @@ public class MainActivity extends ActionBarActivity implements
 
 	}
 
-	public int GetPixelFromDips(float pixels)
+	private void StartLoginProcedure()
 	{
-		// Get the screen's density scale
-		final float scale = getResources().getDisplayMetrics().density;
-		Log.d(App.TAG, "Density DPI: "
-				+ String.valueOf(getResources().getDisplayMetrics().densityDpi));
-		Log.d(App.TAG, "Height Pixels: "
-				+ String.valueOf(getResources().getDisplayMetrics().heightPixels));
-		Log.d(App.TAG, "Width Pixels: "
-				+ String.valueOf(getResources().getDisplayMetrics().widthPixels));
-		Log.d(App.TAG, "Density: "
-				+ String.valueOf(getResources().getDisplayMetrics().density));
-		// Convert the dps to pixels, based on density scale
-		return (int) (pixels * scale + 0.5f);
+		Intent loginIntent = new Intent();
+		loginIntent.setClass(this, LoginActivity.class);
+		startActivityForResult(loginIntent, LOGIN_REQUEST_CODE);
 
-	}
-
-	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-	@Override
-	public void onWindowFocusChanged(boolean hasFocus)
-	{
-		super.onWindowFocusChanged(hasFocus);
-		DisplayMetrics metrics = new DisplayMetrics();
-		getWindowManager().getDefaultDisplay().getMetrics(metrics);
-		int width = metrics.widthPixels;
-		Log.d(App.TAG, "10 dp = " + String.valueOf(GetPixelFromDips(10)));
-		// listView.setIndicatorBoundsRelative(-50, 128);
-
-		// if (android.os.Build.VERSION.SDK_INT <
-		// android.os.Build.VERSION_CODES.JELLY_BEAN_MR2)
-		// {
-		// listView.setIndicatorBounds(width - GetPixelFromDips(35), width
-		// - GetPixelFromDips(5));
-		//
-		// }
-		// else
-		// {
-		// listView.setIndicatorBoundsRelative(width - GetPixelFromDips(35),
-		// width
-		// - GetPixelFromDips(5));
-		// }
 	}
 
 	private void SetupStrictMode()
 	{
-		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork() // or
-		// .detectAll()
-		// for
-		// all
-		// detectable
-		// problems
-		.penaltyLog().build());
+		if (App.DEBUG)
+		{
+			StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork() // or
+			// .detectAll()
+			// for
+			// all
+			// detectable
+			// problems
+			.penaltyLog().build());
+		}
 
 		// StrictMode.setVmPolicy(new
 		// StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects().detectLeakedClosableObjects().penaltyLog().penaltyDeath().build());
@@ -220,7 +191,7 @@ public class MainActivity extends ActionBarActivity implements
 	{
 		super.onActivityResult(requestCode, resultCode, data);
 
-		if (resultCode == 1 && requestCode == 1)
+		if (resultCode == 1 && requestCode == LOGIN_REQUEST_CODE)
 		{
 			GetFeedlyData();
 
@@ -274,11 +245,22 @@ public class MainActivity extends ActionBarActivity implements
 				CollapseAll();
 				break;
 
+			case R.id.action_logout:
+				Logout();
+				break;
+
 			default:
 				return super.onOptionsItemSelected(item);
 		}
 
 		return super.onOptionsItemSelected(item);
+
+	}
+
+	private void Logout()
+	{
+		appPreferences.ClearTokens();
+		StartLoginProcedure();
 
 	}
 
@@ -430,6 +412,7 @@ public class MainActivity extends ActionBarActivity implements
 
 			super.onPreExecute();
 			progressBar.setVisibility(View.VISIBLE);
+			listView.setVisibility(View.GONE);
 			// Crouton.showText(MainActivity.this,
 			// "Getting the latest categories and feeds from Feedly",
 			// Style.INFO, null, Configuration.DURATION_INFINITE)
@@ -453,7 +436,6 @@ public class MainActivity extends ActionBarActivity implements
 			try
 			{
 				dbHelper = DbHelper.getInstance(MainActivity.this);
-
 				if (dbHelper.IsFetchRequired() || forceRefresh)
 				{
 
@@ -529,6 +511,7 @@ public class MainActivity extends ActionBarActivity implements
 		{
 			super.onPostExecute(result);
 			progressBar.setVisibility(View.GONE);
+			listView.setVisibility(View.VISIBLE);
 			UpdateUI(result);
 		}
 
@@ -580,22 +563,31 @@ public class MainActivity extends ActionBarActivity implements
 		{
 
 			case WIDGET:
-				
-				notiAdapter.SaveSelectedValuestoPreferences();
-				widgetAdapter.GetSelectedValuesFromPreferences();
-				listView.setAdapter(widgetAdapter);
+
+				if (notiAdapter != null && widgetAdapter != null)
+				{
+					notiAdapter.SaveSelectedValuestoPreferences();
+					widgetAdapter.GetSelectedValuesFromPreferences();
+					listView.setAdapter(widgetAdapter);
+				}
+				else
+					Log.e(App.TAG, "Error");
 				return true;
 
 			case NOTIFICATIONS:
-				
-
-				widgetAdapter.SaveSelectedValuestoPreferences();
-				notiAdapter.GetSelectedValuesFromPreferences();
-				listView.setAdapter(notiAdapter);
+				if (notiAdapter != null && widgetAdapter != null)
+				{
+					widgetAdapter.SaveSelectedValuestoPreferences();
+					notiAdapter.GetSelectedValuesFromPreferences();
+					listView.setAdapter(notiAdapter);
+				}
+				else
+					Log.e(App.TAG, "Error");
 				return true;
 
 		}
 		return false;
 	}
 
+	
 }
