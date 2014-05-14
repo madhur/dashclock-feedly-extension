@@ -364,6 +364,44 @@ public class DbHelper
 
 		return markers;
 	}
+	
+	public Markers GetUnreadCountsView()
+	{
+		SQLiteDatabase database = db.getReadableDatabase();
+		Markers markers = new Markers();
+		List<Marker> listMarkers = new ArrayList<Marker>();
+
+		Cursor c = database.query(in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.Markers.VIEW_NAME, // The table to
+				// query
+				null, // The columns to return
+				null, // The columns for the WHERE clause
+				null, // The values for the WHERE clause
+				null, // don't group the rows
+				null, // don't filter by row groups
+				null // The sort order
+		);
+
+		if (c.moveToFirst())
+		{
+			do
+			{
+				Marker marker = new Marker();
+				marker.setCount(c.getInt(c.getColumnIndexOrThrow(in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.Markers.COUNT)));
+				marker.setId(c.getString(c.getColumnIndexOrThrow(in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.Markers._ID)));
+				marker.setUpdated(c.getLong(c.getColumnIndexOrThrow(in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.Markers.UPDATED)));
+				marker.setTitle(c.getString(c.getColumnIndexOrThrow(in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.Markers.TITLE)));
+
+				listMarkers.add(marker);
+			}
+			while (c.moveToNext());
+		}
+		
+		c.close();
+
+		markers.setUnreadcounts(listMarkers);
+
+		return markers;
+	}
 
 	public List<Subscription> GetSubScriptionsForCategory(String categoryId)
 	{

@@ -34,6 +34,7 @@ import android.preference.Preference;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -46,6 +47,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
+import in.co.madhur.dashclockfeedlyextension.App;
 import in.co.madhur.dashclockfeedlyextension.R;
 
 import java.net.URISyntaxException;
@@ -120,6 +122,7 @@ public class AppChooserPreference extends Preference
 		}
 		catch (URISyntaxException e)
 		{
+			Log.e(App.TAG, e.getMessage());
 			return defaultIntent;
 		}
 	}

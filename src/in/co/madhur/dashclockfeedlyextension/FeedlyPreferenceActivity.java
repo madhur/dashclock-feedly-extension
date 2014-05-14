@@ -78,6 +78,11 @@ public class FeedlyPreferenceActivity extends PreferenceActivity
 		getPreferenceScreen().findPreference(clickIntentKey.key).setSummary(TextUtils.isEmpty(intentSummary)
 				|| intentSummary.equals(getString(R.string.pref_shortcut_default)) ? ""
 				: intentSummary);
+		
+		 intentSummary = AppChooserPreference.getDisplayValue(this, appPreferences.getMetadata(Keys.NOTIFICATION_CLICK_INTENT));
+			getPreferenceScreen().findPreference(Keys.NOTIFICATION_CLICK_INTENT.key).setSummary(TextUtils.isEmpty(intentSummary)
+					|| intentSummary.equals(getString(R.string.pref_shortcut_default)) ? ""
+					: intentSummary);
 
 		getPreferenceScreen().findPreference(clickIntentKey.key).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
 		{
@@ -87,6 +92,21 @@ public class FeedlyPreferenceActivity extends PreferenceActivity
 			{
 				CharSequence intentSummary = AppChooserPreference.getDisplayValue(getBaseContext(), newValue.toString());
 				getPreferenceScreen().findPreference(clickIntentKey.key).setSummary(TextUtils.isEmpty(intentSummary)
+						|| intentSummary.equals(getResources().getString(R.string.pref_shortcut_default)) ? ""
+						: intentSummary);
+				return true;
+			}
+
+		});
+		
+		getPreferenceScreen().findPreference(Keys.NOTIFICATION_CLICK_INTENT.key).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+		{
+
+			@Override
+			public boolean onPreferenceChange(Preference preference, Object newValue)
+			{
+				CharSequence intentSummary = AppChooserPreference.getDisplayValue(getBaseContext(), newValue.toString());
+				getPreferenceScreen().findPreference(Keys.NOTIFICATION_CLICK_INTENT.key).setSummary(TextUtils.isEmpty(intentSummary)
 						|| intentSummary.equals(getResources().getString(R.string.pref_shortcut_default)) ? ""
 						: intentSummary);
 				return true;

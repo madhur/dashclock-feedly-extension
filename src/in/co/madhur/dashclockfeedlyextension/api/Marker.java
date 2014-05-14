@@ -21,6 +21,8 @@ public class Marker
 	@JsonProperty("updated")
 	private Long updated;
 	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+	
+	private String title;
 
 	@JsonProperty("count")
 	public int getCount()
@@ -68,6 +70,16 @@ public class Marker
 	public void setAdditionalProperty(String name, Object value)
 	{
 		this.additionalProperties.put(name, value);
+	}
+
+	public String getTitle()
+	{
+		return title;
+	}
+
+	public void setTitle(String title)
+	{
+		this.title = title;
 	}
 
 }

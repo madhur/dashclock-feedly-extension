@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <PreferenceCategory android:title="@string/synchronization" >
+    <PreferenceCategory android:title="@string/configuration" >
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="enable_autosync"
@@ -17,7 +17,7 @@
             android:summary="@string/sync_interval_desc"
             android:title="@string/sync_interval" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/notifications" >
+    <PreferenceScreen android:title="@string/notifications" >
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="enable_notifications"
@@ -43,6 +43,10 @@
             android:summary="@string/enable_led_desc"
             android:title="@string/enable_led" />
 
+         <com.google.android.apps.dashclock.configuration.AppChooserPreference
+            android:key="notification_click_intent"  
+            android:title="@string/click_behave_title"   />
+         
         <ListPreference
             android:defaultValue="10"
             android:dependency="enable_notifications"
@@ -51,8 +55,10 @@
             android:key="minimum_unread"
             android:summary="@string/minimum_unread_desc"
             android:title="@string/minimum_unread" />
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/widget_configuration" >
+        
+        
+    </PreferenceScreen>
+    <PreferenceScreen android:title="@string/widget_configuration" >
         <com.google.android.apps.dashclock.configuration.AppChooserPreference
             android:key="click_intent"
             android:title="@string/click_behave_title" />
@@ -61,7 +67,7 @@
             android:summary="@string/widget_appearance_desc"
             android:title="@string/widget_appearance" >
         </PreferenceScreen>
-    </PreferenceCategory>
+    </PreferenceScreen>
     <PreferenceCategory android:title="@string/action_about" >
         <Preference
             android:key="action_about"

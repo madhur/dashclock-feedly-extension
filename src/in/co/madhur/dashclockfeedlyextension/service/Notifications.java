@@ -2,12 +2,15 @@ package in.co.madhur.dashclockfeedlyextension.service;
 
 import java.util.ArrayList;
 
+import in.co.madhur.dashclockfeedlyextension.LauncherActivity;
 import in.co.madhur.dashclockfeedlyextension.R;
+import in.co.madhur.dashclockfeedlyextension.AppPreferences.Keys;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 
 public class Notifications
@@ -31,9 +34,23 @@ public class Notifications
 		noti.setSmallIcon(R.drawable.ic_notification);
 		noti.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher));
 		noti.setNumber(number);
-		noti.setContentIntent(GetPendingIntent(context, contentText));
-
+		noti.setContentIntent(GetNotificationIntent());
 		return noti;
+	}
+	
+	private PendingIntent GetNotificationIntent()
+	{
+		Intent launchIntent=new Intent();
+		launchIntent.setClass(context, LauncherActivity.class);
+		Bundle data=new Bundle();
+		data.putString("key", Keys.NOTIFICATION_CLICK_INTENT.key);
+		launchIntent.putExtras(data);
+		launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		PendingIntent resultPendingIntent = PendingIntent.getActivity(context, 0, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		
+		return resultPendingIntent;
+		
+		
 	}
 
 	public NotificationCompat.Builder GetExpandedBuilder(NotificationCompat.Builder builder, ArrayList<String> lines, String summaryText)
@@ -43,23 +60,16 @@ public class Notifications
 		// Sets a title for the Inbox style big view
 		inboxStyle.setBigContentTitle(context.getString(R.string.app_name));
 		inboxStyle.setSummaryText(summaryText);
-		
-		for(String line: lines)
+
+		for (String line : lines)
 			inboxStyle.addLine(line);
-		
+
 		// Moves the big view style object into the notification object.
 		builder.setStyle(inboxStyle);
 
 		return builder;
 	}
 
-	private static PendingIntent GetPendingIntent(Context context, String contentText)
-	{
-		Intent toastIntent = new Intent();
-		PendingIntent pi = PendingIntent.getActivity(context, 0, toastIntent, PendingIntent.FLAG_ONE_SHOT);
-		return pi;
-
-	}
 
 	public void FireNotification(int id, NotificationCompat.Builder builder)
 	{
