@@ -51,11 +51,12 @@
     <string name="action_collapseall">Collapse All</string>
     <string name="noti_content_text" formatted="false">%s unread items</string>
     <string name="noti_inbox_text" formatted="false">%s unread items in %s</string>
-    <string name="intro_text">Feed notifier is a simple an intuitive notifier for your favorite unread feeds in Feedly.</string>
+    <string name="intro_text">Feed notifier is a simple, highly customizable and an intuitive notifier for your favorite unread articles in Feedly.</string>
     <string  name="login_text">Click here to Login</string>
     <string name="internet_error">You must be connected to internet to complete this operation</string>
     <string name="configuration">Configuration</string>
     <string name="lastupdate_display_format">Updated: %s</string>
     <string name="login_required">Login Required</string>
     <string name="login_required_desc">Please open the Feedly notifier app and login</string>
+    <string name="logout_ques">Are you sure you want to logout?</string>
 </resources>

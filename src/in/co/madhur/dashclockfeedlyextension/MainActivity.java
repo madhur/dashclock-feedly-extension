@@ -246,7 +246,7 @@ public class MainActivity extends ActionBarActivity
 
 	private void Logout()
 	{
-		new AlertDialog.Builder(this).setTitle("Delete entry").setMessage("Are you sure you want to delete this entry?").setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
+		new AlertDialog.Builder(this).setTitle(getString(R.string.app_name)).setMessage(getString(R.string.logout_ques)).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
 		{
 			public void onClick(DialogInterface dialog, int which)
 			{
@@ -337,12 +337,11 @@ public class MainActivity extends ActionBarActivity
 					@Override
 					public void onFilterComplete(int count)
 					{
-						Toast.makeText(MainActivity.this, String.valueOf(count), Toast.LENGTH_SHORT).show();
+						//Toast.makeText(MainActivity.this, String.valueOf(count), Toast.LENGTH_SHORT).show();
 
 					}
 				});
 
-				System.out.println("on text chnge text: " + newText);
 				return true;
 			}
 
@@ -356,12 +355,11 @@ public class MainActivity extends ActionBarActivity
 					@Override
 					public void onFilterComplete(int count)
 					{
-						Toast.makeText(MainActivity.this, String.valueOf(count), Toast.LENGTH_SHORT).show();
+						//Toast.makeText(MainActivity.this, String.valueOf(count), Toast.LENGTH_SHORT).show();
 
 					}
 				});
 
-				System.out.println("on query submit: " + query);
 				return true;
 			}
 		};
