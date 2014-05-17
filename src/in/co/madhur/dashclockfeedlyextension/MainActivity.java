@@ -21,9 +21,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
@@ -39,8 +41,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-public class MainActivity extends ActionBarActivity 
-		
+public class MainActivity extends ActionBarActivity
+
 {
 	private WebApiHelper apiHelper;
 	private AppPreferences appPreferences;
@@ -65,7 +67,7 @@ public class MainActivity extends ActionBarActivity
 		getSupportActionBar().setDisplayUseLogoEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 		// getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-		//getSupportActionBar().setDisplayShowTitleEnabled(false);
+		// getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 		// final String[] dropdownValues =
 		// getResources().getStringArray(R.array.dropdown);
@@ -160,11 +162,11 @@ public class MainActivity extends ActionBarActivity
 
 	}
 
-//	private APPVIEW GetCurrentView()
-//	{
-//		int index = getSupportActionBar().getSelectedNavigationIndex();
-//		return APPVIEW.values()[index];
-//	}
+	// private APPVIEW GetCurrentView()
+	// {
+	// int index = getSupportActionBar().getSelectedNavigationIndex();
+	// return APPVIEW.values()[index];
+	// }
 
 	private void GetFeedlyData()
 	{
@@ -244,8 +246,22 @@ public class MainActivity extends ActionBarActivity
 
 	private void Logout()
 	{
-		appPreferences.ClearTokens();
-		StartLoginProcedure();
+		new AlertDialog.Builder(this).setTitle("Delete entry").setMessage("Are you sure you want to delete this entry?").setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener()
+		{
+			public void onClick(DialogInterface dialog, int which)
+			{
+				// continue with delete
+
+				appPreferences.ClearTokens();
+				StartLoginProcedure();
+			}
+		}).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener()
+		{
+			public void onClick(DialogInterface dialog, int which)
+			{
+				// do nothing
+			}
+		}).setIcon(android.R.drawable.ic_dialog_alert).show();
 
 	}
 

@@ -44,7 +44,7 @@
             android:name=".LoginActivity"
             android:label="@string/app_name" >
         </activity>
-         <activity
+        <activity
             android:name=".LauncherActivity"
             android:label="@string/app_name" >
         </activity>
@@ -71,26 +71,31 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-         <receiver android:name=".receiver.NetworkStateReceiver" >
+        <receiver android:name=".receiver.NetworkStateReceiver" >
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-         <receiver android:name=".receiver.FeedUpdateReceiver" android:exported="false" >
+        <receiver
+            android:name=".receiver.FeedUpdateReceiver"
+            android:exported="false" >
             <intent-filter>
                 <action android:name="in.co.madhur.ACTION.UPDATE_FEEDS" />
             </intent-filter>
         </receiver>
-        
 
         <service
             android:name=".service.UpdateFeedCountService"
-            android:icon="@drawable/ic_launcher" android:exported="false"
+            android:exported="false"
+            android:icon="@drawable/ic_launcher"
             android:label="@string/app_short_name" >
             <intent-filter>
             </intent-filter>
         </service>
         
+        <service
+            android:name=".widget.FeedlyWidgetsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
         
         <service
             android:name=".service.FeedlyExtensionService"

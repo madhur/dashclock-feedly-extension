@@ -2,8 +2,8 @@ package in.co.madhur.dashclockfeedlyextension.db;
 
 import in.co.madhur.dashclockfeedlyextension.api.Category;
 import in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.Categories;
+import in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.FeedCountView;
 import in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.FeedlyUser;
-import in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.Markers;
 import in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.SubscriptionCategory;
 import in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.Subscriptions;
 import in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.UnreadCounts;
@@ -119,7 +119,7 @@ public class FeedlyDB extends SQLiteOpenHelper
 			+ UnreadCounts.TABLE_NAME;
 
 	private static final String SQL_DELETE_ENTRY_Markers = "DROP VIEW IF EXISTS "
-			+ Markers.VIEW_NAME;
+			+ FeedCountView.VIEW_NAME;
 
 	public FeedlyDB(Context context)
 	{
@@ -139,7 +139,7 @@ public class FeedlyDB extends SQLiteOpenHelper
 		db.execSQL(String.format(SQL_CREATE_Subscriptions, Subscriptions.TABLE_NAME));
 		db.execSQL(String.format(SQL_CREATE_SubscriptionCategory, SubscriptionCategory.TABLE_NAME));
 		db.execSQL(String.format(SQL_CREATE_UnreadCounts, UnreadCounts.TABLE_NAME));
-		db.execSQL(String.format(SQL_CREATE_Markers, Markers.VIEW_NAME));
+		db.execSQL(String.format(SQL_CREATE_Markers, FeedCountView.VIEW_NAME));
 	}
 
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)

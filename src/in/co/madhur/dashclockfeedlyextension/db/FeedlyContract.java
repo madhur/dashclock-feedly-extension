@@ -56,7 +56,7 @@ public final class FeedlyContract
 	}
 	
 	
-	public static abstract class Markers implements BaseColumns
+	public static abstract class FeedCountView implements BaseColumns
 	{
 		public static final String VIEW_NAME = "markers";
 		public static final String TITLE="title";

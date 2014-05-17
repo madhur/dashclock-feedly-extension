@@ -94,6 +94,7 @@ public class FeedlyExtensionService extends DashClockExtension
 		@Override
 		public void onReceive(Context context, Intent intent)
 		{
+			Log.v(App.TAG, "FeedChangeReceiver");
 			onUpdateData(DashClockExtension.UPDATE_REASON_CONTENT_CHANGED);
 		}
 	}

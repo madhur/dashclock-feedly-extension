@@ -371,7 +371,7 @@ public class DbHelper
 		Markers markers = new Markers();
 		List<Marker> listMarkers = new ArrayList<Marker>();
 
-		Cursor c = database.query(in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.Markers.VIEW_NAME, // The table to
+		Cursor c = database.query(in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.FeedCountView.VIEW_NAME, // The table to
 				// query
 				null, // The columns to return
 				null, // The columns for the WHERE clause
@@ -386,10 +386,10 @@ public class DbHelper
 			do
 			{
 				Marker marker = new Marker();
-				marker.setCount(c.getInt(c.getColumnIndexOrThrow(in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.Markers.COUNT)));
-				marker.setId(c.getString(c.getColumnIndexOrThrow(in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.Markers._ID)));
-				marker.setUpdated(c.getLong(c.getColumnIndexOrThrow(in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.Markers.UPDATED)));
-				marker.setTitle(c.getString(c.getColumnIndexOrThrow(in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.Markers.TITLE)));
+				marker.setCount(c.getInt(c.getColumnIndexOrThrow(in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.FeedCountView.COUNT)));
+				marker.setId(c.getString(c.getColumnIndexOrThrow(in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.FeedCountView._ID)));
+				marker.setUpdated(c.getLong(c.getColumnIndexOrThrow(in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.FeedCountView.UPDATED)));
+				marker.setTitle(c.getString(c.getColumnIndexOrThrow(in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.FeedCountView.TITLE)));
 
 				listMarkers.add(marker);
 			}
@@ -473,10 +473,10 @@ public class DbHelper
 		SQLiteDatabase database = db.getReadableDatabase();
 		Subscription sub = new Subscription();
 		
-		Cursor c = database.query(in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.Markers.VIEW_NAME, // The table to
+		Cursor c = database.query(in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.FeedCountView.VIEW_NAME, // The table to
 				// query
 				null, // The columns to return
-				in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.Markers._ID+"=?", // The columns for the WHERE clause
+				in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.FeedCountView._ID+"=?", // The columns for the WHERE clause
 				new String[] { Id }, // The values for the WHERE
 													// clause
 				null, // don't group the rows
@@ -487,7 +487,7 @@ public class DbHelper
 		if (c.moveToFirst())
 		{
 
-			title=c.getString(c.getColumnIndexOrThrow(in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.Markers.TITLE));
+			title=c.getString(c.getColumnIndexOrThrow(in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.FeedCountView.TITLE));
 		}
 		
 		c.close();

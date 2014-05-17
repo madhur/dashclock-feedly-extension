@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+     android:paddingBottom="@attr/padding_medium"
+    android:paddingTop="@attr/padding_medium" 
+    
+    >
+
+    <TextView
+        android:id="@+id/TitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:ellipsize="marquee"
+        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+       android:paddingRight="@attr/padding_large"
+        android:textSize="17sp" />
+
+
+   <TextView
+        android:id="@+id/CountTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentRight="true"
+        android:ellipsize="marquee"
+        android:textSize="17sp" />
+
+</RelativeLayout>
