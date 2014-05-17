@@ -4,26 +4,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import in.co.madhur.dashclockfeedlyextension.Consts.APPVIEW;
 import in.co.madhur.dashclockfeedlyextension.api.Category;
 import in.co.madhur.dashclockfeedlyextension.api.Feedly;
 import in.co.madhur.dashclockfeedlyextension.api.FeedlyData;
-import in.co.madhur.dashclockfeedlyextension.api.Marker;
-import in.co.madhur.dashclockfeedlyextension.api.Markers;
 import in.co.madhur.dashclockfeedlyextension.api.Profile;
 import in.co.madhur.dashclockfeedlyextension.api.Subscription;
 import in.co.madhur.dashclockfeedlyextension.db.DbHelper;
 
-import com.infospace.android.oauth2.AuthenticationFragment;
 import com.infospace.android.oauth2.WebApiHelper;
-
-import crittercism.android.cu;
 
 import de.keyboardsurfer.android.widget.crouton.Configuration;
 import de.keyboardsurfer.android.widget.crouton.Configuration.Builder;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
-
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,21 +25,13 @@ import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.LinearGradient;
-import android.graphics.drawable.Drawable;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBar.OnNavigationListener;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.Filter.FilterListener;
@@ -55,18 +39,15 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-//import android.support.v7
-
-public class MainActivity extends ActionBarActivity implements
-		OnNavigationListener
+public class MainActivity extends ActionBarActivity 
+		
 {
-	private boolean initializing = true;
 	private WebApiHelper apiHelper;
 	private AppPreferences appPreferences;
 	// private FeedlyData result;
 	private ProgressBar progressBar;
 	private ExpandableListView listView;
-	private FeedlyListViewAdapter widgetAdapter, notiAdapter;
+	private FeedlyListViewAdapter notiAdapter;
 	private int LOGIN_REQUEST_CODE = 1;
 
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -83,18 +64,22 @@ public class MainActivity extends ActionBarActivity implements
 
 		getSupportActionBar().setDisplayUseLogoEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-		getSupportActionBar().setDisplayShowTitleEnabled(false);
+		// getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+		//getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-		final String[] dropdownValues = getResources().getStringArray(R.array.dropdown);
-
-		// Specify a SpinnerAdapter to populate the dropdown list.
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getSupportActionBar().getThemedContext(), android.R.layout.simple_spinner_item, android.R.id.text1, dropdownValues);
-
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-		// Set up the dropdown list navigation in the action bar.
-		getSupportActionBar().setListNavigationCallbacks(adapter, this);
+		// final String[] dropdownValues =
+		// getResources().getStringArray(R.array.dropdown);
+		//
+		// // Specify a SpinnerAdapter to populate the dropdown list.
+		// ArrayAdapter<String> adapter = new
+		// ArrayAdapter<String>(getSupportActionBar().getThemedContext(),
+		// android.R.layout.simple_spinner_item, android.R.id.text1,
+		// dropdownValues);
+		//
+		// adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		//
+		// // Set up the dropdown list navigation in the action bar.
+		// getSupportActionBar().setListNavigationCallbacks(adapter, this);
 
 		listView.setOnGroupClickListener(new OnGroupClickListener()
 		{
@@ -175,11 +160,11 @@ public class MainActivity extends ActionBarActivity implements
 
 	}
 
-	private APPVIEW GetCurrentView()
-	{
-		int index = getSupportActionBar().getSelectedNavigationIndex();
-		return APPVIEW.values()[index];
-	}
+//	private APPVIEW GetCurrentView()
+//	{
+//		int index = getSupportActionBar().getSelectedNavigationIndex();
+//		return APPVIEW.values()[index];
+//	}
 
 	private void GetFeedlyData()
 	{
@@ -266,42 +251,19 @@ public class MainActivity extends ActionBarActivity implements
 
 	private void ExpandAll()
 	{
-		APPVIEW currentView = GetCurrentView();
 
-		if (currentView == APPVIEW.WIDGET)
+		for (int i = 0; i < notiAdapter.getGroupCount(); ++i)
 		{
-			for (int i = 0; i < widgetAdapter.getGroupCount(); ++i)
-				listView.expandGroup(i);
-
-		}
-		else if (currentView == APPVIEW.NOTIFICATIONS)
-		{
-
-			for (int i = 0; i < notiAdapter.getGroupCount(); ++i)
-			{
-				listView.expandGroup(i);
-			}
+			listView.expandGroup(i);
 		}
 
 	}
 
 	private void CollapseAll()
 	{
-		APPVIEW currentView = GetCurrentView();
-
-		if (currentView == APPVIEW.WIDGET)
+		for (int i = 0; i < notiAdapter.getGroupCount(); ++i)
 		{
-			for (int i = 0; i < widgetAdapter.getGroupCount(); ++i)
-				listView.collapseGroup(i);
-
-		}
-		else if (currentView == APPVIEW.NOTIFICATIONS)
-		{
-
-			for (int i = 0; i < notiAdapter.getGroupCount(); ++i)
-			{
-				listView.collapseGroup(i);
-			}
+			listView.collapseGroup(i);
 		}
 
 	}
@@ -527,67 +489,67 @@ public class MainActivity extends ActionBarActivity implements
 			return;
 		}
 
-		APPVIEW currentView = GetCurrentView();
+		// APPVIEW currentView = GetCurrentView();
 
-		widgetAdapter = new WidgetViewAdapter(result, this);
+		// widgetAdapter = new WidgetViewAdapter(result, this);
 		notiAdapter = new NotificationViewAdapter(result, this);
 
 		// Are these both required ?
-		widgetAdapter.GetSelectedValuesFromPreferences();
+		// widgetAdapter.GetSelectedValuesFromPreferences();
 		notiAdapter.GetSelectedValuesFromPreferences();
+		listView.setAdapter(notiAdapter);
 
-		if (currentView == APPVIEW.WIDGET)
-		{
-			adapter = widgetAdapter;
-		}
-		else if (currentView == APPVIEW.NOTIFICATIONS)
-		{
-			adapter = notiAdapter;
-		}
-
-		if (adapter != null)
-			listView.setAdapter(adapter);
+		// if (currentView == APPVIEW.WIDGET)
+		// {
+		// adapter = widgetAdapter;
+		// }
+		// else if (currentView == APPVIEW.NOTIFICATIONS)
+		// {
+		// adapter = notiAdapter;
+		// }
+		//
+		// if (adapter != null)
+		// listView.setAdapter(adapter);
 
 	}
 
-	@Override
-	public boolean onNavigationItemSelected(int itemPosition, long itemId)
-	{
-		if (initializing)
-		{
-			initializing = false;
-			return true;
-		}
+	// @Override
+	// public boolean onNavigationItemSelected(int itemPosition, long itemId)
+	// {
+	// if (initializing)
+	// {
+	// initializing = false;
+	// return true;
+	// }
+	//
+	// switch (APPVIEW.values()[itemPosition])
+	// {
+	//
+	// case WIDGET:
+	//
+	// if (notiAdapter != null && widgetAdapter != null)
+	// {
+	// notiAdapter.SaveSelectedValuestoPreferences();
+	// widgetAdapter.GetSelectedValuesFromPreferences();
+	// listView.setAdapter(widgetAdapter);
+	// }
+	// else
+	// Log.e(App.TAG, "Error");
+	// return true;
+	//
+	// case NOTIFICATIONS:
+	// if (notiAdapter != null && widgetAdapter != null)
+	// {
+	// widgetAdapter.SaveSelectedValuestoPreferences();
+	// notiAdapter.GetSelectedValuesFromPreferences();
+	// listView.setAdapter(notiAdapter);
+	// }
+	// else
+	// Log.e(App.TAG, "Error");
+	// return true;
+	//
+	// }
+	// return false;
+	// }
 
-		switch (APPVIEW.values()[itemPosition])
-		{
-
-			case WIDGET:
-
-				if (notiAdapter != null && widgetAdapter != null)
-				{
-					notiAdapter.SaveSelectedValuestoPreferences();
-					widgetAdapter.GetSelectedValuesFromPreferences();
-					listView.setAdapter(widgetAdapter);
-				}
-				else
-					Log.e(App.TAG, "Error");
-				return true;
-
-			case NOTIFICATIONS:
-				if (notiAdapter != null && widgetAdapter != null)
-				{
-					widgetAdapter.SaveSelectedValuestoPreferences();
-					notiAdapter.GetSelectedValuesFromPreferences();
-					listView.setAdapter(notiAdapter);
-				}
-				else
-					Log.e(App.TAG, "Error");
-				return true;
-
-		}
-		return false;
-	}
-
-	
 }

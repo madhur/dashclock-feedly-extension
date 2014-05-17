@@ -130,23 +130,23 @@ public class AppPreferences
 
 	}
 
-	public void SaveSelectedValuesWidgets(HashMap<String, Boolean> check_states)
-	{
-		StringBuilder sb = new StringBuilder();
-		for (String Id : check_states.keySet())
-		{
-			if (check_states.get(Id))
-			{
-				sb.append(Id);
-				sb.append(';');
-			}
-		}
-
-		Editor edit = sharedPreferences.edit();
-		edit.putString(Keys.SELECTED_VALUES_WIDGETS.key, sb.toString());
-		edit.commit();
-
-	}
+//	public void SaveSelectedValuesWidgets(HashMap<String, Boolean> check_states)
+//	{
+//		StringBuilder sb = new StringBuilder();
+//		for (String Id : check_states.keySet())
+//		{
+//			if (check_states.get(Id))
+//			{
+//				sb.append(Id);
+//				sb.append(';');
+//			}
+//		}
+//
+//		Editor edit = sharedPreferences.edit();
+//		edit.putString(Keys.SELECTED_VALUES_WIDGETS.key, sb.toString());
+//		edit.commit();
+//
+//	}
 
 	public void SaveSelectedValuesNotifications(HashMap<String, Boolean> check_states, HashMap<String, Integer> seek_states)
 	{
@@ -214,20 +214,20 @@ public class AppPreferences
 
 	}
 
-	public ArrayList<String> GetSelectedValuesWidgets()
-	{
-		ArrayList<String> values = new ArrayList<String>();
-
-		String tokenValues = sharedPreferences.getString(Keys.SELECTED_VALUES_WIDGETS.key, "");
-		if (tokenValues.equalsIgnoreCase(""))
-			return values;
-
-		String[] splitValues = tokenValues.split(";");
-		for (String s : splitValues)
-			values.add(s);
-
-		return values;
-	}
+//	public ArrayList<String> GetSelectedValuesWidgets()
+//	{
+//		ArrayList<String> values = new ArrayList<String>();
+//
+//		String tokenValues = sharedPreferences.getString(Keys.SELECTED_VALUES_WIDGETS.key, "");
+//		if (tokenValues.equalsIgnoreCase(""))
+//			return values;
+//
+//		String[] splitValues = tokenValues.split(";");
+//		for (String s : splitValues)
+//			values.add(s);
+//
+//		return values;
+//	}
 
 	public String getMetadata(Keys key)
 	{
