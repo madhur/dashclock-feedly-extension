@@ -55,4 +55,5 @@
     <string  name="login_text">Click here to Login</string>
     <string name="internet_error">You must be connected to internet to complete this operation</string>
     <string name="configuration">Configuration</string>
+    <string name="lastupdate_display_format">Updated: %s</string>
 </resources>

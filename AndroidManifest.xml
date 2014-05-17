@@ -71,6 +71,11 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+         <receiver android:name=".receiver.NetworkStateReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
          <receiver android:name=".receiver.FeedUpdateReceiver" android:exported="false" >
             <intent-filter>
                 <action android:name="in.co.madhur.ACTION.UPDATE_FEEDS" />

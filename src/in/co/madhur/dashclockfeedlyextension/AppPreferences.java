@@ -1,12 +1,8 @@
 package in.co.madhur.dashclockfeedlyextension;
 
-import in.co.madhur.dashclockfeedlyextension.AppPreferences.Keys;
-
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
-import android.R.bool;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;

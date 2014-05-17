@@ -89,7 +89,6 @@ public class UpdateFeedCountService extends WakefulIntentService
 		}
 		catch (Exception e)
 		{
-			Log.e(App.TAG, "Exception while getting marker count");
 			Log.e(App.TAG, e.getMessage());
 			return false;
 
@@ -102,7 +101,6 @@ public class UpdateFeedCountService extends WakefulIntentService
 		}
 		catch (Exception e)
 		{
-			Log.e(App.TAG, "Exception writing to database");
 			Log.e(App.TAG, e.getMessage());
 			e.printStackTrace();
 			return false;
@@ -144,62 +142,22 @@ public class UpdateFeedCountService extends WakefulIntentService
 	private void PrepareAndSendNotifications()
 	{
 		Notifications notifications = new Notifications(this);
-
-		ArrayList<String> selectedValues = appPreferences.GetSelectedValuesNotifications();
-		HashMap<String, Integer> seek_states = appPreferences.GetSeekValues();
-		ArrayList<String> notiText = new ArrayList<String>();
-		int totalUnread = 0;
-
-		if (selectedValues.size() == 0)
-		{
-			Log.d(App.TAG, "No feeds selected for notification");
+		StringFormatter formatter=new StringFormatter();
+		NotificationData data=formatter.GetNotificationData(this);
+		
+		if(data==null)
 			return;
-		}
 
-		for (String selValue : selectedValues)
-		{
-			for (Marker marker : markers.getUnreadcounts())
-			{
-
-				if (selValue.equalsIgnoreCase(marker.getId()))
-				{
-					Log.d(App.TAG, marker.getCount() + " feeds for "
-							+ marker.getId());
-
-					if (marker.getCount() == 0)
-						continue;
-
-					if (!seek_states.containsKey(marker.getId()))
-					{
-						Log.e(App.TAG, "Seek state not found for id "
-								+ marker.getId());
-						continue;
-					}
-
-					if (marker.getCount() > seek_states.get(marker.getId()))
-					{
-						totalUnread = totalUnread + marker.getCount();
-						notiText.add(String.format(getString(R.string.noti_inbox_text), marker.getCount(), dbHelper.GetTitleFromSuborCategoryId(marker.getId())));
-
-					}
-
-				}
-			}
-		}
-
-		String contentText = String.format(getString(R.string.noti_content_text), totalUnread);
-
-		if (totalUnread != 0 && notiText.size() > 0)
+		if (data.getStatus() != 0 && data.getExpandedBody().size() > 0)
 		{
 			Log.d(App.TAG, "Firing notification");
 
-			NotificationCompat.Builder builder = notifications.GetNotificationBuilder(contentText, totalUnread);
+			NotificationCompat.Builder builder = notifications.GetNotificationBuilder(data.getTitle(), data.getStatus());
 			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN)
 			{
-				builder=notifications.GetExpandedBuilder(builder, notiText, contentText);
+				builder = notifications.GetExpandedBuilder(builder, data.getExpandedBody(), data.getTitle());
 			}
-			
-			
+
 			notifications.FireNotification(0, builder);
 
 		}
