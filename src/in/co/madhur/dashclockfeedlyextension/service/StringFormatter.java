@@ -71,8 +71,6 @@ public class StringFormatter
 
 				if (selValue.equalsIgnoreCase(marker.getId()))
 				{
-					Log.d(App.TAG, marker.getCount() + " feeds for "
-							+ marker.getId());
 
 					if (marker.getCount() == 0)
 						continue;

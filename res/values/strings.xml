@@ -56,4 +56,6 @@
     <string name="internet_error">You must be connected to internet to complete this operation</string>
     <string name="configuration">Configuration</string>
     <string name="lastupdate_display_format">Updated: %s</string>
+    <string name="login_required">Login Required</string>
+    <string name="login_required_desc">Please open the Feedly notifier app and login</string>
 </resources>

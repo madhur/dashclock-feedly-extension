@@ -12,5 +12,6 @@ public class Consts
 	};
 	
 	public static final String UPDATE_ACTION="in.co.madhur.ACTION.UPDATE_FEEDS";
+	//public static final String FEEDS_CHANGED="in.co.madhur.ACTION.UPDATE_FEEDS_CHANGED";
 	
 }
