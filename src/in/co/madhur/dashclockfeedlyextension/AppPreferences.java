@@ -233,6 +233,11 @@ public class AppPreferences
 	{
 		return sharedPreferences.getString(key.key, "");
 	}
+	
+	public boolean getBoolMetadata(Keys key)
+	{
+		return sharedPreferences.getBoolean(key.key, true);
+	}
 
 	public void SaveSuccessfulSync()
 	{

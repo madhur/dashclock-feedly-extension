@@ -20,7 +20,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.DashPathEffect;
 import android.os.IBinder;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.Toast;
 
 public class FeedlyExtensionService extends DashClockExtension
 {
@@ -34,18 +36,23 @@ public class FeedlyExtensionService extends DashClockExtension
 		appPreferences = new AppPreferences(this);
 		if (changeReceiver != null)
 		{
-			unregisterReceiver(changeReceiver);
+			LocalBroadcastManager.getInstance(this).unregisterReceiver(changeReceiver);
+			//unregisterReceiver(changeReceiver);
 
 		}
 
 		IntentFilter filter = new IntentFilter(Consts.UPDATE_ACTION);
+		filter.addCategory(Consts.CATEGORY_DASHCLOCK);
+		
 		changeReceiver = new FeedChangeReceiver();
-		registerReceiver(changeReceiver, filter);
+		LocalBroadcastManager.getInstance(this).registerReceiver(changeReceiver, filter);
+		//registerReceiver(changeReceiver, filter);
 	}
 
 	@Override
 	protected void onUpdateData(int arg0)
 	{
+		
 
 		if (!appPreferences.IsTokenPresent())
 		{
@@ -94,7 +101,7 @@ public class FeedlyExtensionService extends DashClockExtension
 		@Override
 		public void onReceive(Context context, Intent intent)
 		{
-			Log.v(App.TAG, "FeedChangeReceiver");
+			Toast.makeText(context, "on recieve dashclock " + intent.getAction(), Toast.LENGTH_SHORT).show();
 			onUpdateData(DashClockExtension.UPDATE_REASON_CONTENT_CHANGED);
 		}
 	}

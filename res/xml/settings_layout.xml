@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:robobunny="http://robobunny.com" >
 
     <PreferenceCategory android:title="@string/configuration" >
         <CheckBoxPreference
@@ -17,6 +18,7 @@
             android:summary="@string/sync_interval_desc"
             android:title="@string/sync_interval" />
     </PreferenceCategory>
+
     <PreferenceScreen android:title="@string/notifications" >
         <CheckBoxPreference
             android:defaultValue="true"
@@ -43,10 +45,10 @@
             android:summary="@string/enable_led_desc"
             android:title="@string/enable_led" />
 
-         <com.google.android.apps.dashclock.configuration.AppChooserPreference
-            android:key="notification_click_intent"  
-            android:title="@string/click_behave_title"   />
-         
+        <com.google.android.apps.dashclock.configuration.AppChooserPreference
+            android:key="notification_click_intent"
+            android:title="@string/click_behave_title" />
+
         <ListPreference
             android:defaultValue="10"
             android:dependency="enable_notifications"
@@ -55,19 +57,43 @@
             android:key="minimum_unread"
             android:summary="@string/minimum_unread_desc"
             android:title="@string/minimum_unread" />
-        
-        
     </PreferenceScreen>
     <PreferenceScreen android:title="@string/widget_configuration" >
         <com.google.android.apps.dashclock.configuration.AppChooserPreference
             android:key="click_intent"
             android:title="@string/click_behave_title" />
 
-        <PreferenceScreen
-            android:summary="@string/widget_appearance_desc"
-            android:title="@string/widget_appearance" >
-        </PreferenceScreen>
+        <ListPreference
+            android:key="widget_text_size"
+            android:summary="@string/widget_text_size_desc"
+            android:title="@string/widget_text_size" />
+
+        <com.robobunny.SeekBarPreference
+            android:defaultValue="50"
+            android:key="widget_background_opacity"
+            android:max="100"
+            android:summary="@string/widget_background_opacity_desc"
+            android:title="@string/widget_background_opacity"
+            robobunny:min="1"
+            robobunny:unitsLeft=""
+            robobunny:unitsRight="%" />
+
+        <net.margaritov.preference.colorpicker.ColorPickerPreference
+            android:key="widget_title_color"
+            android:summary="@string/widget_title_color_desc"
+            android:title="@string/widget_title_color" >
+    		alphaSlider="true"                              
+ </net.margaritov.preference.colorpicker.ColorPickerPreference>
+            <net.margaritov.preference.colorpicker.ColorPickerPreference
+                android:key="widget_count_color"
+                android:summary="@string/widget_count_color_desc"
+                android:title="@string/widget_count_color" >
+    alphaSlider="true"                              
+ </net.margaritov.preference.colorpicker.ColorPickerPreference>
+           
+       
     </PreferenceScreen>
+
     <PreferenceCategory android:title="@string/action_about" >
         <Preference
             android:key="action_about"

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import in.co.madhur.dashclockfeedlyextension.LauncherActivity;
 import in.co.madhur.dashclockfeedlyextension.R;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences.Keys;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -30,13 +31,14 @@ public class Notifications
 		noti.setAutoCancel(true);
 		noti.setTicker(contentText);
 		noti.setContentText(contentText);
-
 		noti.setSmallIcon(R.drawable.ic_notification);
 		noti.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher));
 		noti.setNumber(number);
 		noti.setContentIntent(GetNotificationIntent());
+		
 		return noti;
 	}
+	
 	
 	private PendingIntent GetNotificationIntent()
 	{
@@ -71,10 +73,25 @@ public class Notifications
 	}
 
 
-	public void FireNotification(int id, NotificationCompat.Builder builder)
+	public void FireNotification(int id, NotificationCompat.Builder builder,  boolean vibrate, boolean sound, boolean led)
 	{
 		NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		Notification notification=builder.build();
+		
+		if(vibrate)
+			notification.defaults |= Notification.DEFAULT_VIBRATE;
+		if(sound)
+			notification.defaults |= Notification.DEFAULT_SOUND;
+		if(led)
+			notification.defaults |= Notification.DEFAULT_LIGHTS;
+		
 		mNotificationManager.notify(id, builder.build());
+
+	}
+	
+	public void FireNotification(int id, NotificationCompat.Builder builder)
+	{
+		FireNotification(id, builder, true, true, true);
 
 	}
 

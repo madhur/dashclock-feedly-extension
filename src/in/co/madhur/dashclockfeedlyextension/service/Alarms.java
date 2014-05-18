@@ -54,7 +54,7 @@ public class Alarms
 	private PendingIntent GetPendingIntent(Context context)
 	{
 		Intent updateIntent=new Intent();
-		updateIntent.setAction(Consts.UPDATE_ACTION);
+		updateIntent.setAction(Consts.UPDATE_COUNT_ACTION);
 		return PendingIntent.getBroadcast(context, REQUEST_CODE, updateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		
 		//Intent serviceIntent=new Intent();

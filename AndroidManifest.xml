@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:name=".App"
@@ -60,6 +61,11 @@
         <receiver android:name=".widget.FeedlyWidgetProvider" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                
+            </intent-filter>
+            <intent-filter>
+                <action android:name="in.co.madhur.ACTION.UPDATE" />
+                <category  android:name="in.co.madhur.ACTION.CATEGORY.WIDGET"/>
             </intent-filter>
 
             <meta-data
@@ -80,7 +86,7 @@
             android:name=".receiver.FeedUpdateReceiver"
             android:exported="false" >
             <intent-filter>
-                <action android:name="in.co.madhur.ACTION.UPDATE_FEEDS" />
+                <action android:name="in.co.madhur.ACTION.UPDATE_COUNT" />
             </intent-filter>
         </receiver>
 
@@ -99,7 +105,7 @@
         
         <service
             android:name=".service.FeedlyExtensionService"
-            android:icon="@drawable/ic_launcher"
+            android:icon="@drawable/ic_dashclock"
             android:label="@string/app_short_name"
             android:permission="com.google.android.apps.dashclock.permission.READ_EXTENSION_DATA" >
             <intent-filter>
@@ -116,9 +122,7 @@
                 android:name="description"
                 android:value="@string/extension_description" />
             <!-- A settings activity is optional -->
-            <meta-data
-                android:name="settingsActivity"
-                android:value=".MainActivity" />
+           
         </service>
     </application>
 

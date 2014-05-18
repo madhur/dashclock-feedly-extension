@@ -59,4 +59,14 @@
     <string name="login_required">Login Required</string>
     <string name="login_required_desc">Please open the Feedly notifier app and login</string>
     <string name="logout_ques">Are you sure you want to logout?</string>
+     <string name="dialog_color_picker">Color Picker</string>
+    <string name="press_color_to_apply">Press on Color to apply</string>
+    <string name="widget_text_size_desc">Adjust the Text Size in the widget</string>
+    <string name="widget_text_size">Text size</string>
+    <string name="widget_background_opacity">Background Opacity</string>
+    <string name="widget_background_opacity_desc">Adjust the opacity of the background</string>
+    <string name="widget_title_color_desc">Set the title color</string>
+    <string name="widget_title_color">Title Color</string>
+    <string name="widget_count_color_desc">Set the count color</string>
+    <string name="widget_count_color">Count color</string>    
 </resources>
