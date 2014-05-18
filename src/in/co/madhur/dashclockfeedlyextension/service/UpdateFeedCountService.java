@@ -80,12 +80,19 @@ public class UpdateFeedCountService extends WakefulIntentService
 	
 	private void SendUpdateBroadcast()
 	{
+		// Send update broadcast for widgets
 		Intent updateIntent=new Intent();
 		updateIntent.setAction(Consts.UPDATE_ACTION);
-		//updateIntent.addCategory(Consts.CATEGORY_DASHCLOCK);
 		updateIntent.addCategory(Consts.CATEGORY_WIDGET);
-		//LocalBroadcastManager.getInstance(this).sendBroadcast(updateIntent);
 		sendBroadcast(updateIntent);
+		
+		// Send update broadcast for dashclock widget
+		updateIntent=new Intent();
+		updateIntent.setAction(Consts.UPDATE_ACTION);
+		updateIntent.addCategory(Consts.CATEGORY_DASHCLOCK);
+		LocalBroadcastManager.getInstance(this).sendBroadcast(updateIntent);
+		
+		
 	}
 
 	// Return false if unsucessful, true if successful

@@ -10,9 +10,6 @@ public class FeedlyWidgetsService extends RemoteViewsService
 	@Override
 	public RemoteViewsFactory onGetViewFactory(Intent intent)
 	{
-		// TODO Auto-generated method stub
-		//int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-		
 		return new FeedlyWidgetListProvider(this);
 	}
 

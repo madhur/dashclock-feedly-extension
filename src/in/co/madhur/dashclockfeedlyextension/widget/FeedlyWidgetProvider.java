@@ -20,23 +20,13 @@ public class FeedlyWidgetProvider extends AppWidgetProvider
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds)
 	{
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
-
-		final int N = appWidgetIds.length;
-
-		Toast.makeText(context, "onUpdate " + String.valueOf(N), Toast.LENGTH_SHORT).show();
-
-		for (int i = 0; i < N; ++i)
-		{
-			RemoteViews remoteViews = updateWidgetListView(context, appWidgetIds[i]);
-			appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);
-		}
-
+		
+		UpdateWidget(context, appWidgetManager, appWidgetIds);
 	}
-
+	
 	@Override
 	public void onReceive(Context context, Intent intent)
 	{
-
 		super.onReceive(context, intent);
 
 		Toast.makeText(context, "on recieve widget" + intent.getAction(), Toast.LENGTH_SHORT).show();
@@ -45,16 +35,21 @@ public class FeedlyWidgetProvider extends AppWidgetProvider
 		ComponentName name = new ComponentName(context, FeedlyWidgetProvider.class);
 		int[] appWidgetIds = appWidgetManager.getAppWidgetIds(name);
 
+		UpdateWidget(context, appWidgetManager, appWidgetIds);
+
+	}
+	
+	private void UpdateWidget(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds )
+	{
 		final int N = appWidgetIds.length;
-		
-		Toast.makeText(context, "onReceive " + String.valueOf(N), Toast.LENGTH_SHORT).show();
-		
+
 		for (int i = 0; i < N; ++i)
 		{
 			RemoteViews remoteViews = updateWidgetListView(context, appWidgetIds[i]);
 			appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);
+			appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds[i], R.id.widgetListView);
 		}
-
+		
 	}
 
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)

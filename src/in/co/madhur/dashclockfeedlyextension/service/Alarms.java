@@ -56,11 +56,14 @@ public class Alarms
 		Intent updateIntent=new Intent();
 		updateIntent.setAction(Consts.UPDATE_COUNT_ACTION);
 		return PendingIntent.getBroadcast(context, REQUEST_CODE, updateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		
-		//Intent serviceIntent=new Intent();
-		//serviceIntent.setClass(context, UpdateFeedCountService.class);
-		//return PendingIntent.getService(context , REQUEST_CODE, serviceIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-		
+	}
+	
+	public  void StartUpdate()
+	{
+		Intent updateIntent=new Intent();
+		//updateIntent.setAction(Consts.UPDATE_COUNT_ACTION);
+		updateIntent.setClass(context, UpdateFeedCountService.class);
+		context.startService(updateIntent);
 	}
 
 	public boolean ShouldSchedule()

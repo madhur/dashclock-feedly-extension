@@ -10,6 +10,7 @@ import in.co.madhur.dashclockfeedlyextension.api.FeedlyData;
 import in.co.madhur.dashclockfeedlyextension.api.Profile;
 import in.co.madhur.dashclockfeedlyextension.api.Subscription;
 import in.co.madhur.dashclockfeedlyextension.db.DbHelper;
+import in.co.madhur.dashclockfeedlyextension.service.Alarms;
 
 import com.infospace.android.oauth2.WebApiHelper;
 
@@ -204,6 +205,7 @@ public class MainActivity extends ActionBarActivity
 
 			case R.id.action_accept:
 				SaveSelectedCategories();
+				new Alarms(this).StartUpdate();
 				finish();
 				break;
 

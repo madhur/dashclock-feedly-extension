@@ -19,8 +19,9 @@ public class FeedlyWidgetListProvider implements RemoteViewsFactory
 {
 	private Context context;
 	private DbHelper dbHelper;
-	Markers markers;
-	private List<WidgetData> widgetData=new ArrayList<WidgetData>();
+	private Markers markers;
+	private List<WidgetData> widgetData;
+	private AppPreferences appPreferences;
 	
 	public FeedlyWidgetListProvider(Context context)
 	{
@@ -30,13 +31,22 @@ public class FeedlyWidgetListProvider implements RemoteViewsFactory
 	@Override
 	public void onCreate()
 	{
-		dbHelper=DbHelper.getInstance(context);
-		markers=dbHelper.GetUnreadCountsView();
-		AppPreferences appPreferences=new AppPreferences(context);
+		Log.v(App.TAG, "FeedlyWidgetListProvider:  onCreate  ;");
 		
+		dbHelper=DbHelper.getInstance(context);
+		
+		appPreferences=new AppPreferences(context);
+		
+		PullData();
+		
+	}
+	
+	private void PullData()
+	{
+		markers=dbHelper.GetUnreadCountsView();
 		ArrayList<String> selectedValues = appPreferences.GetSelectedValuesNotifications();
 		HashMap<String, Integer> seek_states = appPreferences.GetSeekValues();
-		
+		widgetData=new ArrayList<WidgetData>();
 		
 		for (String selValue : selectedValues)
 		{
@@ -71,15 +81,16 @@ public class FeedlyWidgetListProvider implements RemoteViewsFactory
 	@Override
 	public void onDataSetChanged()
 	{
-		// TODO Auto-generated method stub
+		Log.v(App.TAG, "FeedlyWidgetListProvider:  onDataSetChanged  ;");
+		
+		PullData();
 
 	}
 
 	@Override
 	public void onDestroy()
 	{
-		// TODO Auto-generated method stub
-
+		Log.v(App.TAG, "FeedlyWidgetListProvider:  onDestroy  ;");
 	}
 
 	@Override
