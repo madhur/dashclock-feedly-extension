@@ -1,15 +1,13 @@
 package in.co.madhur.dashclockfeedlyextension;
 
 import com.crittercism.app.Crittercism;
-import com.squareup.otto.Bus;
-import com.squareup.otto.ThreadEnforcer;
 
 import android.app.Application;
 
 public class App extends Application
 {
 	
-	private static Bus bus;
+	//private static Bus bus;
 	public static final String TAG="Feedly";
 	public static final String LOG="feedly.log";
 	
@@ -21,14 +19,8 @@ public class App extends Application
 	{
 		super.onCreate();
 
-		bus = new Bus(ThreadEnforcer.ANY);
+		//bus = new Bus(ThreadEnforcer.ANY);
 		
-		 //Crittercism.initialize(getApplicationContext(), "5319d8748633a41329000003");
+		 //Crittercism.initialize(getApplicationContext(), "5378d07cb573f17d76000002");
 	}
-
-	public static Bus getEventBus()
-	{
-		return bus;
-	}
-
 }
