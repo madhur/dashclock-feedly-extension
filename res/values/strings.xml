@@ -68,5 +68,12 @@
     <string name="widget_title_color_desc">Set the title color</string>
     <string name="widget_title_color">Title Color</string>
     <string name="widget_count_color_desc">Set the count color</string>
-    <string name="widget_count_color">Count color</string>    
+    <string name="widget_count_color">Count color</string>
+    <string name="dark">Dark</string>        
+    <string name="black">Black</string>
+    <string name="sepia">Sepia</string>
+    <string name="light">Light</string>
+    <string name="pick_theme">Pick Theme</string>
+    <string name="themes">Themes</string>
+    <string name="follow_twitter">Follow @madhur25 on Twitter</string>
 </resources>

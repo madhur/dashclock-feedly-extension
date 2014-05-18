@@ -17,6 +17,12 @@
             android:key="sync_interval"
             android:summary="@string/sync_interval_desc"
             android:title="@string/sync_interval" />
+        <ListPreference
+            android:entries="@array/themes"
+            android:entryValues="@array/themes_values"
+            android:dialogTitle="@string/pick_theme"
+            android:key="pick_theme"
+            android:title="@string/themes" />
     </PreferenceCategory>
 
     <PreferenceScreen android:title="@string/notifications" >
@@ -82,16 +88,14 @@
             android:key="widget_title_color"
             android:summary="@string/widget_title_color_desc"
             android:title="@string/widget_title_color" >
-    		alphaSlider="true"                              
- </net.margaritov.preference.colorpicker.ColorPickerPreference>
-            <net.margaritov.preference.colorpicker.ColorPickerPreference
-                android:key="widget_count_color"
-                android:summary="@string/widget_count_color_desc"
-                android:title="@string/widget_count_color" >
-    alphaSlider="true"                              
- </net.margaritov.preference.colorpicker.ColorPickerPreference>
-           
-       
+    		alphaSlider="true"                              
+        </net.margaritov.preference.colorpicker.ColorPickerPreference>
+        <net.margaritov.preference.colorpicker.ColorPickerPreference
+            android:key="widget_count_color"
+            android:summary="@string/widget_count_color_desc"
+            android:title="@string/widget_count_color" >
+    alphaSlider="true"                              
+        </net.margaritov.preference.colorpicker.ColorPickerPreference>
     </PreferenceScreen>
 
     <PreferenceCategory android:title="@string/action_about" >
@@ -99,6 +103,9 @@
             android:key="action_about"
             android:summary="@string/action_about_desc"
             android:title="@string/action_about" />
+        <Preference
+            android:key="follow_twitter"
+            android:title="@string/follow_twitter" />
     </PreferenceCategory>
 
 </PreferenceScreen>

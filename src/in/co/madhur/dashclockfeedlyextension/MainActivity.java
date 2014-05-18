@@ -21,13 +21,16 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
@@ -40,14 +43,12 @@ import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.Filter.FilterListener;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity
 
 {
 	private WebApiHelper apiHelper;
 	private AppPreferences appPreferences;
-	// private FeedlyData result;
 	private ProgressBar progressBar;
 	private ExpandableListView listView;
 	private FeedlyListViewAdapter notiAdapter;
@@ -67,22 +68,6 @@ public class MainActivity extends ActionBarActivity
 
 		getSupportActionBar().setDisplayUseLogoEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-		// getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-		// getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-		// final String[] dropdownValues =
-		// getResources().getStringArray(R.array.dropdown);
-		//
-		// // Specify a SpinnerAdapter to populate the dropdown list.
-		// ArrayAdapter<String> adapter = new
-		// ArrayAdapter<String>(getSupportActionBar().getThemedContext(),
-		// android.R.layout.simple_spinner_item, android.R.id.text1,
-		// dropdownValues);
-		//
-		// adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		//
-		// // Set up the dropdown list navigation in the action bar.
-		// getSupportActionBar().setListNavigationCallbacks(adapter, this);
 
 		listView.setOnGroupClickListener(new OnGroupClickListener()
 		{
@@ -147,9 +132,6 @@ public class MainActivity extends ActionBarActivity
 			.penaltyLog().build());
 		}
 
-		// StrictMode.setVmPolicy(new
-		// StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects().detectLeakedClosableObjects().penaltyLog().penaltyDeath().build());
-
 	}
 
 	private void GetFeedlyData(boolean forceRefresh)
@@ -162,12 +144,6 @@ public class MainActivity extends ActionBarActivity
 		new GetFeedlyDataTask(feedly, forceRefresh).execute(0);
 
 	}
-
-	// private APPVIEW GetCurrentView()
-	// {
-	// int index = getSupportActionBar().getSelectedNavigationIndex();
-	// return APPVIEW.values()[index];
-	// }
 
 	private void GetFeedlyData()
 	{
@@ -238,12 +214,23 @@ public class MainActivity extends ActionBarActivity
 				Logout();
 				break;
 
+			case R.id.action_switchtheme:
+				ChangeTheme();
+				break;
+
 			default:
 				return super.onOptionsItemSelected(item);
 		}
 
 		return super.onOptionsItemSelected(item);
 
+	}
+
+	private void ChangeTheme()
+	{
+		DialogFragment themeDialog = new ThemeDialog();
+
+		themeDialog.show(getSupportFragmentManager(), "theme");
 	}
 
 	private void Logout()
@@ -313,18 +300,12 @@ public class MainActivity extends ActionBarActivity
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main, menu);
 
-		// Associate searchable configuration with the SearchView
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		// SearchView searchView = (SearchView)
-		// menu.findItem(R.id.action_search).getActionView();
 		MenuItem searchitem = menu.findItem(R.id.action_search);
 		SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchitem);
 		SearchableInfo info = searchManager.getSearchableInfo(getComponentName());
-		// // if (info != null && searchView != null)
-		// {
 		searchView.setSearchableInfo(info);
 
 		SearchView.OnQueryTextListener textChangeListener = new SearchView.OnQueryTextListener()
@@ -339,7 +320,6 @@ public class MainActivity extends ActionBarActivity
 					@Override
 					public void onFilterComplete(int count)
 					{
-						//Toast.makeText(MainActivity.this, String.valueOf(count), Toast.LENGTH_SHORT).show();
 
 					}
 				});
@@ -357,7 +337,6 @@ public class MainActivity extends ActionBarActivity
 					@Override
 					public void onFilterComplete(int count)
 					{
-						//Toast.makeText(MainActivity.this, String.valueOf(count), Toast.LENGTH_SHORT).show();
 
 					}
 				});
@@ -366,7 +345,6 @@ public class MainActivity extends ActionBarActivity
 			}
 		};
 		searchView.setOnQueryTextListener(textChangeListener);
-		// }
 
 		return true;
 	}
@@ -391,12 +369,6 @@ public class MainActivity extends ActionBarActivity
 			super.onPreExecute();
 			progressBar.setVisibility(View.VISIBLE);
 			listView.setVisibility(View.GONE);
-			// Crouton.showText(MainActivity.this,
-			// "Getting the latest categories and feeds from Feedly",
-			// Style.INFO, null, Configuration.DURATION_INFINITE)
-			// Crouton.makeText(MainActivity.this,
-			// "Getting the latest categories and feeds from Feedly",
-			// Style.INFO).show();
 			Configuration.Builder builder = new Builder();
 			builder.setDuration(Configuration.DURATION_INFINITE);
 
@@ -409,7 +381,6 @@ public class MainActivity extends ActionBarActivity
 			Profile profile;
 			List<Subscription> subscriptions;
 			Map<Category, List<Subscription>> categorySubscriptions = new HashMap<Category, List<Subscription>>();
-			// Markers markers;
 
 			try
 			{
@@ -429,30 +400,11 @@ public class MainActivity extends ActionBarActivity
 					dbHelper.TruncateSubscriptions();
 					dbHelper.WriteSubscriptions(subscriptions);
 
-					// markers = feedly.GetUnreadCounts();
-					// dbHelper.TruncateMarkers();
-					// dbHelper.WriteMarkers(markers);
-
 					for (Category category : categories)
 					{
 						categorySubscriptions.put(category, dbHelper.GetSubScriptionsForCategory(category.getId()));
-						// category.setSubscriptions(dbHelper.GetSubScriptionsForCategory(category.getId()));
-
-						// Log.v("Tag", category.getLabel());
 					}
 
-					// for (Subscription sub : subscriptions)
-					// {
-					// if (sub.getWebsite() != null)
-					// //Log.v("Tag", sub.getWebsite());
-					// }
-
-					// List<Marker> markerList = markers.getUnreadcounts();
-					//
-					// for (Marker marker : markerList)
-					// {
-					// Log.v("Tag", String.valueOf(marker.getCount()));
-					// }
 				}
 				else
 				{
@@ -463,14 +415,9 @@ public class MainActivity extends ActionBarActivity
 					for (Category category : categories)
 					{
 						categorySubscriptions.put(category, dbHelper.GetSubScriptionsForCategory(category.getId()));
-						// category.setSubscriptions(dbHelper.GetSubScriptionsForCategory(category.getId()));
-						// Log.v("Tag", category.getLabel());
 					}
 
 					subscriptions = dbHelper.GetSubscriptions();
-
-					// markers = dbHelper.GetUnreadCounts();
-
 				}
 
 				return new FeedlyData(profile, categories, subscriptions, categorySubscriptions, null);
@@ -497,75 +444,16 @@ public class MainActivity extends ActionBarActivity
 
 	private void UpdateUI(FeedlyData result)
 	{
-		FeedlyListViewAdapter adapter = null;
-		// this.result=result;
 		if (result.isError())
 		{
 			// Show error
 			return;
 		}
 
-		// APPVIEW currentView = GetCurrentView();
-
-		// widgetAdapter = new WidgetViewAdapter(result, this);
 		notiAdapter = new NotificationViewAdapter(result, this);
-
-		// Are these both required ?
-		// widgetAdapter.GetSelectedValuesFromPreferences();
 		notiAdapter.GetSelectedValuesFromPreferences();
 		listView.setAdapter(notiAdapter);
 
-		// if (currentView == APPVIEW.WIDGET)
-		// {
-		// adapter = widgetAdapter;
-		// }
-		// else if (currentView == APPVIEW.NOTIFICATIONS)
-		// {
-		// adapter = notiAdapter;
-		// }
-		//
-		// if (adapter != null)
-		// listView.setAdapter(adapter);
-
 	}
-
-	// @Override
-	// public boolean onNavigationItemSelected(int itemPosition, long itemId)
-	// {
-	// if (initializing)
-	// {
-	// initializing = false;
-	// return true;
-	// }
-	//
-	// switch (APPVIEW.values()[itemPosition])
-	// {
-	//
-	// case WIDGET:
-	//
-	// if (notiAdapter != null && widgetAdapter != null)
-	// {
-	// notiAdapter.SaveSelectedValuestoPreferences();
-	// widgetAdapter.GetSelectedValuesFromPreferences();
-	// listView.setAdapter(widgetAdapter);
-	// }
-	// else
-	// Log.e(App.TAG, "Error");
-	// return true;
-	//
-	// case NOTIFICATIONS:
-	// if (notiAdapter != null && widgetAdapter != null)
-	// {
-	// widgetAdapter.SaveSelectedValuestoPreferences();
-	// notiAdapter.GetSelectedValuesFromPreferences();
-	// listView.setAdapter(notiAdapter);
-	// }
-	// else
-	// Log.e(App.TAG, "Error");
-	// return true;
-	//
-	// }
-	// return false;
-	// }
 
 }

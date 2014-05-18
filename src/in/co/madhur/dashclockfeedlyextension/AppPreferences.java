@@ -39,7 +39,9 @@ public class AppPreferences
 		LAST_SUCCESSFUL_SYNC("last_successful_sync"),
 		ACCESS_TOKEN("access_token"),
 		REFRESH_TOKEN("refresh_token"),
-		TOKEN_EXPIRES_IN("expires_in");
+		TOKEN_EXPIRES_IN("expires_in"),
+		PICK_THEME("pick_theme"),
+		FOLLOW_TWITTER("follow_twitter");
 
 		public final String key;
 

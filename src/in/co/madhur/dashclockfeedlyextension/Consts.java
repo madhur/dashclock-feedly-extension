@@ -15,5 +15,5 @@ public class Consts
 	public static final String UPDATE_ACTION="in.co.madhur.ACTION.UPDATE";
 	public static final String CATEGORY_DASHCLOCK="in.co.madhur.CATEGORY.DASHCLOCK";
 	public static final String CATEGORY_WIDGET="in.co.madhur.ACTION.CATEGORY.WIDGET";
-	
+	public static final String TWITTER_URL="https://twitter.com/intent/user?screen_name=madhur25";
 }

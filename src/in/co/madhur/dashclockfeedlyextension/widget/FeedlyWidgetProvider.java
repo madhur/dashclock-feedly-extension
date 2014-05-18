@@ -56,9 +56,6 @@ public class FeedlyWidgetProvider extends AppWidgetProvider
 	private RemoteViews updateWidgetListView(Context context, int appWidgetId)
 	{
 
-		Toast.makeText(context, "updateWidgetListView "
-				+ String.valueOf(appWidgetId), Toast.LENGTH_SHORT).show();
-		
 		RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.feedly_appwidget);
 
 		Intent svcIntent = new Intent(context, FeedlyWidgetsService.class);

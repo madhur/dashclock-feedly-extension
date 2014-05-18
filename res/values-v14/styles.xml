@@ -9,9 +9,23 @@
         <!-- API 14 theme customizations can go here. -->
     </style>
 
-    <style name="AppMainTheme" parent="android:Theme.Holo">
+    <style name="Dark" parent="android:Theme.Holo">
         <!-- API 14 theme customizations can go here. -->
     </style>
+    
+     <style name="Black" parent="android:Theme.Holo.Light">
+        <!-- API 14 theme customizations can go here. -->
+    </style>
+    
+    <style name="Light" parent="android:Theme.Holo.Light">
+        <!-- API 14 theme customizations can go here. -->
+    </style>
+    
+    <style name="Sepia" parent="android:Theme.Holo.Light">
+        <!-- API 14 theme customizations can go here. -->
+    </style>
+    
+    
 
   
 </resources>

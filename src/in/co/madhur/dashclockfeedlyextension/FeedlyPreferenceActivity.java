@@ -5,17 +5,20 @@ import in.co.madhur.dashclockfeedlyextension.service.Alarms;
 
 import com.google.android.apps.dashclock.configuration.AppChooserPreference;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.text.TextUtils;
 
 public class FeedlyPreferenceActivity extends PreferenceActivity
 {
 	private AppPreferences appPreferences;
-	
+
 	protected final OnPreferenceChangeListener listPreferenceChangeListerner = new OnPreferenceChangeListener()
 	{
 
@@ -26,7 +29,6 @@ public class FeedlyPreferenceActivity extends PreferenceActivity
 			return true;
 		}
 	};
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -47,6 +49,7 @@ public class FeedlyPreferenceActivity extends PreferenceActivity
 
 		UpdateLabel((ListPreference) findPreference(Keys.SYNC_INTERVAL.key), null);
 		UpdateLabel((ListPreference) findPreference(Keys.MINIMUM_UNREAD.key), null);
+		UpdateLabel((ListPreference) findPreference(Keys.PICK_THEME.key), null);
 	}
 
 	protected void UpdateLabel(ListPreference listPreference, String newValue)
@@ -66,11 +69,12 @@ public class FeedlyPreferenceActivity extends PreferenceActivity
 
 	}
 
+	@SuppressWarnings("deprecation")
 	protected void SetListeners()
 	{
 
 		final Keys clickIntentKey = Keys.CLICK_INTENT;
-		
+
 		findPreference(Keys.SYNC_INTERVAL.key).setOnPreferenceChangeListener(listPreferenceChangeListerner);
 		findPreference(Keys.MINIMUM_UNREAD.key).setOnPreferenceChangeListener(listPreferenceChangeListerner);
 
@@ -78,11 +82,11 @@ public class FeedlyPreferenceActivity extends PreferenceActivity
 		getPreferenceScreen().findPreference(clickIntentKey.key).setSummary(TextUtils.isEmpty(intentSummary)
 				|| intentSummary.equals(getString(R.string.pref_shortcut_default)) ? ""
 				: intentSummary);
-		
-		 intentSummary = AppChooserPreference.getDisplayValue(this, appPreferences.getMetadata(Keys.NOTIFICATION_CLICK_INTENT));
-			getPreferenceScreen().findPreference(Keys.NOTIFICATION_CLICK_INTENT.key).setSummary(TextUtils.isEmpty(intentSummary)
-					|| intentSummary.equals(getString(R.string.pref_shortcut_default)) ? ""
-					: intentSummary);
+
+		intentSummary = AppChooserPreference.getDisplayValue(this, appPreferences.getMetadata(Keys.NOTIFICATION_CLICK_INTENT));
+		getPreferenceScreen().findPreference(Keys.NOTIFICATION_CLICK_INTENT.key).setSummary(TextUtils.isEmpty(intentSummary)
+				|| intentSummary.equals(getString(R.string.pref_shortcut_default)) ? ""
+				: intentSummary);
 
 		getPreferenceScreen().findPreference(clickIntentKey.key).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
 		{
@@ -98,7 +102,7 @@ public class FeedlyPreferenceActivity extends PreferenceActivity
 			}
 
 		});
-		
+
 		getPreferenceScreen().findPreference(Keys.NOTIFICATION_CLICK_INTENT.key).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
 		{
 
@@ -113,23 +117,44 @@ public class FeedlyPreferenceActivity extends PreferenceActivity
 			}
 
 		});
-		
-		
+
 		findPreference(Keys.ENABLE_AUTOSYNC.key).setOnPreferenceChangeListener(new OnPreferenceChangeListener()
 		{
-			
+
 			@Override
 			public boolean onPreferenceChange(Preference preference, Object newValue)
 			{
-				Boolean newVal=(Boolean) newValue;
-				Alarms alarms=new Alarms(FeedlyPreferenceActivity.this);
-				
-				if(newVal)
+				Boolean newVal = (Boolean) newValue;
+				Alarms alarms = new Alarms(FeedlyPreferenceActivity.this);
+
+				if (newVal)
 					alarms.Schedule();
 				else
 					alarms.cancel();
-				
+
 				return true;
+			}
+		});
+
+		findPreference(Keys.FOLLOW_TWITTER.key).setOnPreferenceClickListener(new OnPreferenceClickListener()
+		{
+
+			@Override
+			public boolean onPreferenceClick(Preference preference)
+			{
+				startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(Consts.TWITTER_URL)));
+				return true;
+			}
+		});
+		
+		findPreference(Keys.PICK_THEME.key).setOnPreferenceClickListener(new OnPreferenceClickListener()
+		{
+			
+			@Override
+			public boolean onPreferenceClick(Preference preference)
+			{
+				// TODO Auto-generated method stub
+				return false;
 			}
 		});
 	}
