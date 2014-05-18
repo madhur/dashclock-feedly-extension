@@ -14,6 +14,7 @@ import com.infospace.android.oauth2.WebApiHelper;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.TextUtils;
 import android.util.Log;
 
 public class UpdateFeedCountService extends WakefulIntentService
@@ -34,9 +35,14 @@ public class UpdateFeedCountService extends WakefulIntentService
 	}
 
 	@Override
-	protected void doWakefulWork(Intent arg0)
+	protected void doWakefulWork(Intent intent)
 	{
-		Log.v(App.TAG, "do WakefulWork");
+		
+		String source=intent.getStringExtra(Consts.UPDATE_SOURCE);
+		if(!TextUtils.isEmpty(source))
+		{
+			Log.d(App.TAG, "Starting update because of " + source);
+		}
 
 		appPreferences = new AppPreferences(this);
 		if (!appPreferences.IsTokenPresent())
@@ -65,8 +71,6 @@ public class UpdateFeedCountService extends WakefulIntentService
 			appPreferences.SaveSuccessfulSync();
 			
 			// Update Dashclock and widgets
-			
-			
 			SendUpdateBroadcast();
 
 			if (appPreferences.GetBoolPreferences(Keys.ENABLE_NOTIFICATIONS))

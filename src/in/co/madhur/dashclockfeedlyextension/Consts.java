@@ -16,4 +16,20 @@ public class Consts
 	public static final String CATEGORY_DASHCLOCK="in.co.madhur.CATEGORY.DASHCLOCK";
 	public static final String CATEGORY_WIDGET="in.co.madhur.ACTION.CATEGORY.WIDGET";
 	public static final String TWITTER_URL="https://twitter.com/intent/user?screen_name=madhur25";
+	public static final String UPDATE_SOURCE="update_source";
+	
+	public enum UPDATESOURCE
+	{
+		ALARM("alarm"),
+		ACCEPT_BUTTON("accept_button"),
+		NETWORK_CHANGE("network_change");
+		
+		public final String key;
+
+		private UPDATESOURCE(String key)
+		{
+			this.key = key;
+		}
+		
+	}
 }

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import in.co.madhur.dashclockfeedlyextension.Consts.UPDATESOURCE;
 import in.co.madhur.dashclockfeedlyextension.api.Category;
 import in.co.madhur.dashclockfeedlyextension.api.Feedly;
 import in.co.madhur.dashclockfeedlyextension.api.FeedlyData;
@@ -181,7 +182,7 @@ public class MainActivity extends ActionBarActivity
 
 			case R.id.action_accept:
 				SaveSelectedCategories();
-				new Alarms(this).StartUpdate();
+				new Alarms(this).StartUpdate(UPDATESOURCE.ACCEPT_BUTTON);
 				finish();
 				break;
 

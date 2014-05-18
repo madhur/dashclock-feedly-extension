@@ -1,6 +1,8 @@
 package in.co.madhur.dashclockfeedlyextension.receiver;
 
 import in.co.madhur.dashclockfeedlyextension.App;
+import in.co.madhur.dashclockfeedlyextension.Consts;
+import in.co.madhur.dashclockfeedlyextension.Consts.UPDATESOURCE;
 import in.co.madhur.dashclockfeedlyextension.service.UpdateFeedCountService;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -20,9 +22,8 @@ public class NetworkStateReceiver extends BroadcastReceiver
 			NetworkInfo ni = (NetworkInfo) intent.getExtras().get(ConnectivityManager.EXTRA_NETWORK_INFO);
 			if (ni != null && ni.getState() == NetworkInfo.State.CONNECTED)
 			{
-				Log.d(App.TAG, "Network " + ni.getTypeName() + " connected");
-				
 				Intent serviceIntent=new Intent();
+				serviceIntent.putExtra(Consts.UPDATE_SOURCE, UPDATESOURCE.NETWORK_CHANGE.key);
 				serviceIntent.setClass(context, UpdateFeedCountService.class);
 				context.startService(serviceIntent);
 			}

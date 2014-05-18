@@ -2,6 +2,7 @@ package in.co.madhur.dashclockfeedlyextension.service;
 
 import in.co.madhur.dashclockfeedlyextension.AppPreferences;
 import in.co.madhur.dashclockfeedlyextension.Consts;
+import in.co.madhur.dashclockfeedlyextension.Consts.UPDATESOURCE;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -55,13 +56,14 @@ public class Alarms
 	{
 		Intent updateIntent=new Intent();
 		updateIntent.setAction(Consts.UPDATE_COUNT_ACTION);
+		updateIntent.putExtra(Consts.UPDATE_SOURCE, UPDATESOURCE.ALARM.key);
 		return PendingIntent.getBroadcast(context, REQUEST_CODE, updateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 	}
 	
-	public  void StartUpdate()
+	public  void StartUpdate(UPDATESOURCE source)
 	{
 		Intent updateIntent=new Intent();
-		//updateIntent.setAction(Consts.UPDATE_COUNT_ACTION);
+		updateIntent.putExtra(Consts.UPDATE_SOURCE, source.key);
 		updateIntent.setClass(context, UpdateFeedCountService.class);
 		context.startService(updateIntent);
 	}
