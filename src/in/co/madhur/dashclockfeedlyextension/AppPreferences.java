@@ -41,7 +41,8 @@ public class AppPreferences
 		REFRESH_TOKEN("refresh_token"),
 		TOKEN_EXPIRES_IN("expires_in"),
 		PICK_THEME("pick_theme"),
-		FOLLOW_TWITTER("follow_twitter");
+		FOLLOW_TWITTER("follow_twitter"),
+		ACTION_ABOUT("action_about");
 
 		public final String key;
 
@@ -50,6 +51,7 @@ public class AppPreferences
 			this.key = key;
 
 		}
+		
 	}
 
 	public boolean IsTokenPresent()

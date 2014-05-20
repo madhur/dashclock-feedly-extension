@@ -4,6 +4,7 @@ import in.co.madhur.dashclockfeedlyextension.App;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences.Keys;
 import in.co.madhur.dashclockfeedlyextension.Consts;
+import in.co.madhur.dashclockfeedlyextension.Consts.UPDATESOURCE;
 import in.co.madhur.dashclockfeedlyextension.api.Feedly;
 import in.co.madhur.dashclockfeedlyextension.api.Markers;
 import in.co.madhur.dashclockfeedlyextension.db.DbHelper;
@@ -37,9 +38,9 @@ public class UpdateFeedCountService extends WakefulIntentService
 	@Override
 	protected void doWakefulWork(Intent intent)
 	{
-		
-		String source=intent.getStringExtra(Consts.UPDATE_SOURCE);
-		if(!TextUtils.isEmpty(source))
+
+		String source = intent.getStringExtra(Consts.UPDATE_SOURCE);
+		if (!TextUtils.isEmpty(source))
 		{
 			Log.d(App.TAG, "Starting update because of " + source);
 		}
@@ -58,45 +59,49 @@ public class UpdateFeedCountService extends WakefulIntentService
 
 			RefreshTokenIfRequired();
 
-			// if(!CheckLastSync())
-			// {
-			//
-			// Log.d(App.TAG, "Successful sync within time interval. aborting");
-			// return;
-			// }
+			if (!CheckLastSync())
+			{
+
+				Log.d(App.TAG, "Successful sync within time interval. aborting");
+				return;
+			}
 
 			if (!GetUnreadCountsAndSave())
 				return;
 
 			appPreferences.SaveSuccessfulSync();
-			
+
 			// Update Dashclock and widgets
 			SendUpdateBroadcast();
 
-			if (appPreferences.GetBoolPreferences(Keys.ENABLE_NOTIFICATIONS))
+			if (!source.equals(UPDATESOURCE.ACCEPT_BUTTON.key)
+					&& !source.equals(UPDATESOURCE.LOGOUT_BUTTON))
 			{
-				PrepareAndSendNotifications();
+
+				if (appPreferences.GetBoolPreferences(Keys.ENABLE_NOTIFICATIONS))
+				{
+					PrepareAndSendNotifications();
+				}
 			}
 
 		}
 
 	}
-	
+
 	private void SendUpdateBroadcast()
 	{
 		// Send update broadcast for widgets
-		Intent updateIntent=new Intent();
+		Intent updateIntent = new Intent();
 		updateIntent.setAction(Consts.UPDATE_ACTION);
 		updateIntent.addCategory(Consts.CATEGORY_WIDGET);
 		sendBroadcast(updateIntent);
-		
+
 		// Send update broadcast for dashclock widget
-		updateIntent=new Intent();
+		updateIntent = new Intent();
 		updateIntent.setAction(Consts.UPDATE_ACTION);
 		updateIntent.addCategory(Consts.CATEGORY_DASHCLOCK);
 		LocalBroadcastManager.getInstance(this).sendBroadcast(updateIntent);
-		
-		
+
 	}
 
 	// Return false if unsucessful, true if successful

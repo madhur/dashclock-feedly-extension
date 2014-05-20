@@ -135,6 +135,19 @@ public class FeedlyPreferenceActivity extends PreferenceActivity
 				return true;
 			}
 		});
+		
+		findPreference(Keys.ACTION_ABOUT.key).setOnPreferenceClickListener(new OnPreferenceClickListener()
+		{
+			
+			@Override
+			public boolean onPreferenceClick(Preference preference)
+			{
+				Intent aboutIntent=new Intent();
+				aboutIntent.setClass(FeedlyPreferenceActivity.this, AboutActivity.class);
+				startActivity(aboutIntent);
+				return true;
+			}
+		});
 
 		findPreference(Keys.FOLLOW_TWITTER.key).setOnPreferenceClickListener(new OnPreferenceClickListener()
 		{

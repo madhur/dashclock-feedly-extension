@@ -116,6 +116,7 @@ public class MainActivity extends ActionBarActivity
 	{
 		Intent loginIntent = new Intent();
 		loginIntent.setClass(this, LoginActivity.class);
+		loginIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivityForResult(loginIntent, LOGIN_REQUEST_CODE);
 
 	}
@@ -212,11 +213,16 @@ public class MainActivity extends ActionBarActivity
 				break;
 
 			case R.id.action_logout:
+				new Alarms(this).StartUpdate(UPDATESOURCE.LOGOUT_BUTTON);
 				Logout();
 				break;
 
 			case R.id.action_switchtheme:
 				ChangeTheme();
+				break;
+				
+			case R.id.action_about:
+				ShowDialog();
 				break;
 
 			default:
@@ -227,11 +233,18 @@ public class MainActivity extends ActionBarActivity
 
 	}
 
+	private void ShowDialog()
+	{
+		AboutDialog dialog=new AboutDialog();
+		dialog.show(getSupportFragmentManager(), Consts.ABOUT_TAG);
+		
+	}
+
 	private void ChangeTheme()
 	{
 		DialogFragment themeDialog = new ThemeDialog();
 
-		themeDialog.show(getSupportFragmentManager(), "theme");
+		themeDialog.show(getSupportFragmentManager(), Consts.THEME_TAG);
 	}
 
 	private void Logout()

@@ -1,7 +1,5 @@
 package in.co.madhur.dashclockfeedlyextension;
 
-import com.crittercism.app.Crittercism;
-
 import android.app.Application;
 
 public class App extends Application

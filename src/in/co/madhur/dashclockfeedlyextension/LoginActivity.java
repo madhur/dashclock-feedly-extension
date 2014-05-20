@@ -29,12 +29,6 @@ public class LoginActivity extends FragmentActivity implements LoginListener
 	}
 	
 	@Override
-	protected void onResume()
-	{
-		super.onResume();
-	}
-	
-	@Override
 	public void Login()
 	{
 		AuthenticationFragment fr = new AuthenticationFragment();

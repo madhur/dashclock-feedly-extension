@@ -76,4 +76,9 @@
     <string name="pick_theme">Pick Theme</string>
     <string name="themes">Themes</string>
     <string name="follow_twitter">Follow @madhur25 on Twitter</string>
+    <string name="feedback_button">Feedback</string>
+    <string name="rate_button">Rate</string>
+    <string name="whatsnew_tab" formatted="false">What\'s new</string>
+    <string name="send_email">Send Email</string>
+    
 </resources>
