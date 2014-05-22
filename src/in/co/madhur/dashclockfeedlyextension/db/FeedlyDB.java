@@ -1,6 +1,5 @@
 package in.co.madhur.dashclockfeedlyextension.db;
 
-import in.co.madhur.dashclockfeedlyextension.api.Category;
 import in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.Categories;
 import in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.FeedCountView;
 import in.co.madhur.dashclockfeedlyextension.db.FeedlyContract.FeedlyUser;
