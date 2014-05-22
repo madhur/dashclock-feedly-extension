@@ -12,11 +12,12 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.preference.PreferenceActivity;
+import android.support.v4.preference.PreferenceFragment;
 import android.text.TextUtils;
 
-public class FeedlyPreferenceActivity extends PreferenceActivity
+public class FeedlyPreferenceFragment extends PreferenceFragment
 {
+	
 	private AppPreferences appPreferences;
 
 	protected final OnPreferenceChangeListener listPreferenceChangeListerner = new OnPreferenceChangeListener()
@@ -29,19 +30,20 @@ public class FeedlyPreferenceActivity extends PreferenceActivity
 			return true;
 		}
 	};
-
+	
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
+	public void onCreate(Bundle paramBundle)
 	{
-		super.onCreate(savedInstanceState);
+		super.onCreate(paramBundle);
+		
 		addPreferencesFromResource(R.xml.settings_layout);
-
-		appPreferences = new AppPreferences(this);
-
+		
+		appPreferences = new AppPreferences(getActivity());
 	}
+	
 
 	@Override
-	protected void onResume()
+	public void onResume()
 	{
 		super.onResume();
 
@@ -69,7 +71,6 @@ public class FeedlyPreferenceActivity extends PreferenceActivity
 
 	}
 
-	@SuppressWarnings("deprecation")
 	protected void SetListeners()
 	{
 
@@ -78,12 +79,12 @@ public class FeedlyPreferenceActivity extends PreferenceActivity
 		findPreference(Keys.SYNC_INTERVAL.key).setOnPreferenceChangeListener(listPreferenceChangeListerner);
 		findPreference(Keys.MINIMUM_UNREAD.key).setOnPreferenceChangeListener(listPreferenceChangeListerner);
 
-		CharSequence intentSummary = AppChooserPreference.getDisplayValue(this, appPreferences.getMetadata(clickIntentKey));
+		CharSequence intentSummary = AppChooserPreference.getDisplayValue(getActivity(), appPreferences.getMetadata(clickIntentKey));
 		getPreferenceScreen().findPreference(clickIntentKey.key).setSummary(TextUtils.isEmpty(intentSummary)
 				|| intentSummary.equals(getString(R.string.pref_shortcut_default)) ? ""
 				: intentSummary);
 
-		intentSummary = AppChooserPreference.getDisplayValue(this, appPreferences.getMetadata(Keys.NOTIFICATION_CLICK_INTENT));
+		intentSummary = AppChooserPreference.getDisplayValue(getActivity(), appPreferences.getMetadata(Keys.NOTIFICATION_CLICK_INTENT));
 		getPreferenceScreen().findPreference(Keys.NOTIFICATION_CLICK_INTENT.key).setSummary(TextUtils.isEmpty(intentSummary)
 				|| intentSummary.equals(getString(R.string.pref_shortcut_default)) ? ""
 				: intentSummary);
@@ -94,7 +95,7 @@ public class FeedlyPreferenceActivity extends PreferenceActivity
 			@Override
 			public boolean onPreferenceChange(Preference preference, Object newValue)
 			{
-				CharSequence intentSummary = AppChooserPreference.getDisplayValue(getBaseContext(), newValue.toString());
+				CharSequence intentSummary = AppChooserPreference.getDisplayValue(getActivity(), newValue.toString());
 				getPreferenceScreen().findPreference(clickIntentKey.key).setSummary(TextUtils.isEmpty(intentSummary)
 						|| intentSummary.equals(getResources().getString(R.string.pref_shortcut_default)) ? ""
 						: intentSummary);
@@ -109,7 +110,7 @@ public class FeedlyPreferenceActivity extends PreferenceActivity
 			@Override
 			public boolean onPreferenceChange(Preference preference, Object newValue)
 			{
-				CharSequence intentSummary = AppChooserPreference.getDisplayValue(getBaseContext(), newValue.toString());
+				CharSequence intentSummary = AppChooserPreference.getDisplayValue(getActivity(), newValue.toString());
 				getPreferenceScreen().findPreference(Keys.NOTIFICATION_CLICK_INTENT.key).setSummary(TextUtils.isEmpty(intentSummary)
 						|| intentSummary.equals(getResources().getString(R.string.pref_shortcut_default)) ? ""
 						: intentSummary);
@@ -125,7 +126,7 @@ public class FeedlyPreferenceActivity extends PreferenceActivity
 			public boolean onPreferenceChange(Preference preference, Object newValue)
 			{
 				Boolean newVal = (Boolean) newValue;
-				Alarms alarms = new Alarms(FeedlyPreferenceActivity.this);
+				Alarms alarms = new Alarms(getActivity());
 
 				if (newVal)
 					alarms.Schedule();
@@ -142,9 +143,9 @@ public class FeedlyPreferenceActivity extends PreferenceActivity
 			@Override
 			public boolean onPreferenceClick(Preference preference)
 			{
-				Intent aboutIntent=new Intent();
-				aboutIntent.setClass(FeedlyPreferenceActivity.this, AboutActivity.class);
-				startActivity(aboutIntent);
+				AboutDialog dialog = new AboutDialog();
+				dialog.show(getFragmentManager(), Consts.ABOUT_TAG);
+				
 				return true;
 			}
 		});

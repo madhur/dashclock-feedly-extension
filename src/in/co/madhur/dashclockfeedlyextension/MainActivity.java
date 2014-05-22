@@ -116,7 +116,8 @@ public class MainActivity extends ActionBarActivity
 	{
 		Intent loginIntent = new Intent();
 		loginIntent.setClass(this, LoginActivity.class);
-		loginIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+		loginIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
+				| Intent.FLAG_ACTIVITY_NEW_TASK);
 		startActivityForResult(loginIntent, LOGIN_REQUEST_CODE);
 
 	}
@@ -177,8 +178,16 @@ public class MainActivity extends ActionBarActivity
 				break;
 
 			case R.id.action_settings:
-				Intent prefIntent = new Intent(this, FeedlyPreferenceActivity.class);
+				// Intent prefIntent = new Intent(this,
+				// FeedlyPreferenceActivity.class);
+				// startActivity(prefIntent);
+
+				Intent prefIntent = new Intent(this, FeedlyPreferenceFragmentActivity.class);
 				startActivity(prefIntent);
+				// getSupportFragmentManager().beginTransaction().replace(R.id.mainframe,
+				// new FeedlyPreferenceFragment()).commit();
+				// getSupportFragmentManager().beginTransaction().replace(android.,
+				// arg1)
 				break;
 
 			case R.id.action_accept:
@@ -220,7 +229,7 @@ public class MainActivity extends ActionBarActivity
 			case R.id.action_switchtheme:
 				ChangeTheme();
 				break;
-				
+
 			case R.id.action_about:
 				ShowDialog();
 				break;
@@ -235,9 +244,9 @@ public class MainActivity extends ActionBarActivity
 
 	private void ShowDialog()
 	{
-		AboutDialog dialog=new AboutDialog();
+		AboutDialog dialog = new AboutDialog();
 		dialog.show(getSupportFragmentManager(), Consts.ABOUT_TAG);
-		
+
 	}
 
 	private void ChangeTheme()
