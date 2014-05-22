@@ -53,12 +53,6 @@
         android:title="@string/action_settings"/>
     
      <item
-        android:id="@+id/action_switchtheme"
-        android:orderInCategory="106"
-        app:showAsAction="never"
-        android:title="@string/action_switchtheme"/>
-    
-     <item
         android:id="@+id/action_refresh"
         android:orderInCategory="107"
         app:showAsAction="always"

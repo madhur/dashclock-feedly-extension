@@ -69,13 +69,13 @@
     <string name="widget_title_color">Title Color</string>
     <string name="widget_count_color_desc">Set the count color</string>
     <string name="widget_count_color">Count color</string>
-    <string name="dark">Dark</string>        
+    <string name="dark">Holo Dark</string>        
     <string name="black">Black</string>
     <string name="sepia">Sepia</string>
-    <string name="light">Light</string>
+    <string name="light">Holo Light</string>
     <string name="pick_theme">Pick Theme</string>
-    <string name="themes">Themes</string>
-    <string name="follow_twitter">Follow @madhur25 on Twitter</string>
+    <string name="themes">Theme</string>
+    <string name="follow_twitter">Follow me on Twitter</string>
     <string name="feedback_button">Feedback</string>
     <string name="rate_button">Rate</string>
     <string name="whatsnew_tab" formatted="false">What\'s new</string>

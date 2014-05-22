@@ -61,7 +61,6 @@ public class UpdateFeedCountService extends WakefulIntentService
 
 			if (!CheckLastSync())
 			{
-
 				Log.d(App.TAG, "Successful sync within time interval. aborting");
 				return;
 			}
@@ -74,14 +73,9 @@ public class UpdateFeedCountService extends WakefulIntentService
 			// Update Dashclock and widgets
 			SendUpdateBroadcast();
 
-			if (!source.equals(UPDATESOURCE.ACCEPT_BUTTON.key)
-					&& !source.equals(UPDATESOURCE.LOGOUT_BUTTON))
+			if (appPreferences.GetBoolPreferences(Keys.ENABLE_NOTIFICATIONS))
 			{
-
-				if (appPreferences.GetBoolPreferences(Keys.ENABLE_NOTIFICATIONS))
-				{
-					PrepareAndSendNotifications();
-				}
+				PrepareAndSendNotifications();
 			}
 
 		}
@@ -117,7 +111,7 @@ public class UpdateFeedCountService extends WakefulIntentService
 		}
 		catch (Exception e)
 		{
-			Log.e(App.TAG, e.getMessage());
+			e.printStackTrace();
 			return false;
 
 		}
@@ -129,7 +123,6 @@ public class UpdateFeedCountService extends WakefulIntentService
 		}
 		catch (Exception e)
 		{
-			Log.e(App.TAG, e.getMessage());
 			e.printStackTrace();
 			return false;
 		}

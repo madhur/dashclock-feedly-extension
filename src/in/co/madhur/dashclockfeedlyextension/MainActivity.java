@@ -226,10 +226,6 @@ public class MainActivity extends ActionBarActivity
 				Logout();
 				break;
 
-			case R.id.action_switchtheme:
-				ChangeTheme();
-				break;
-
 			case R.id.action_about:
 				ShowDialog();
 				break;
@@ -247,13 +243,6 @@ public class MainActivity extends ActionBarActivity
 		AboutDialog dialog = new AboutDialog();
 		dialog.show(getSupportFragmentManager(), Consts.ABOUT_TAG);
 
-	}
-
-	private void ChangeTheme()
-	{
-		DialogFragment themeDialog = new ThemeDialog();
-
-		themeDialog.show(getSupportFragmentManager(), Consts.THEME_TAG);
 	}
 
 	private void Logout()
