@@ -66,7 +66,7 @@
     </PreferenceScreen>
     <PreferenceScreen android:title="@string/widget_configuration" >
         <com.google.android.apps.dashclock.configuration.AppChooserPreference
-            android:key="click_intent"
+            android:key="widget_click_intent"
             android:title="@string/click_behave_title" />
 
         <ListPreference

@@ -77,29 +77,28 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 	protected void SetListeners()
 	{
 
-		final Keys clickIntentKey = Keys.CLICK_INTENT;
 
 		findPreference(Keys.SYNC_INTERVAL.key).setOnPreferenceChangeListener(listPreferenceChangeListerner);
 		findPreference(Keys.MINIMUM_UNREAD.key).setOnPreferenceChangeListener(listPreferenceChangeListerner);
 
-		CharSequence intentSummary = AppChooserPreference.getDisplayValue(getActivity(), appPreferences.getMetadata(clickIntentKey));
-		getPreferenceScreen().findPreference(clickIntentKey.key).setSummary(TextUtils.isEmpty(intentSummary)
+		CharSequence intentSummary = AppChooserPreference.getDisplayValue(getActivity(), appPreferences.getMetadata(Keys.CLICK_INTENT));
+		findPreference(Keys.CLICK_INTENT.key).setSummary(TextUtils.isEmpty(intentSummary)
 				|| intentSummary.equals(getString(R.string.pref_shortcut_default)) ? ""
 				: intentSummary);
 
 		intentSummary = AppChooserPreference.getDisplayValue(getActivity(), appPreferences.getMetadata(Keys.NOTIFICATION_CLICK_INTENT));
-		getPreferenceScreen().findPreference(Keys.NOTIFICATION_CLICK_INTENT.key).setSummary(TextUtils.isEmpty(intentSummary)
+		findPreference(Keys.NOTIFICATION_CLICK_INTENT.key).setSummary(TextUtils.isEmpty(intentSummary)
 				|| intentSummary.equals(getString(R.string.pref_shortcut_default)) ? ""
 				: intentSummary);
 
-		getPreferenceScreen().findPreference(clickIntentKey.key).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+		findPreference(Keys.CLICK_INTENT.key).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
 		{
 
 			@Override
 			public boolean onPreferenceChange(Preference preference, Object newValue)
 			{
 				CharSequence intentSummary = AppChooserPreference.getDisplayValue(getActivity(), newValue.toString());
-				getPreferenceScreen().findPreference(clickIntentKey.key).setSummary(TextUtils.isEmpty(intentSummary)
+				getPreferenceScreen().findPreference(Keys.CLICK_INTENT.key).setSummary(TextUtils.isEmpty(intentSummary)
 						|| intentSummary.equals(getResources().getString(R.string.pref_shortcut_default)) ? ""
 						: intentSummary);
 				return true;
@@ -107,7 +106,7 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 
 		});
 
-		getPreferenceScreen().findPreference(Keys.NOTIFICATION_CLICK_INTENT.key).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+		findPreference(Keys.NOTIFICATION_CLICK_INTENT.key).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
 		{
 
 			@Override

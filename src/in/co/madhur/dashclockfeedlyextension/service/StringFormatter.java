@@ -14,56 +14,48 @@ import android.util.Log;
 
 public class StringFormatter
 {
-	public DashClockData GetDashclockData(Context context)
+	public ResultData GetResultData(Context context)
 	{
-		AppPreferences appPreferences=new AppPreferences(context);
-		long lastSync=appPreferences.GetLastSuccessfulSync();
-		NotificationData data=GetNotificationData(context, appPreferences );
-		
-		return new DashClockData(data, lastSync);
-		
+		return GetResultData(context, new AppPreferences(context));
 	}
-	
-	public NotificationData GetNotificationData(Context context)
+
+	public ResultData GetResultData(Context context, AppPreferences appPreferences)
 	{
-		return GetNotificationData(context, new AppPreferences(context));
-	}
-	
-	public NotificationData GetNotificationData(Context context, AppPreferences appPreferences)
-	{
-		
-		DbHelper dbHelper=DbHelper.getInstance(context);
+
+		DbHelper dbHelper = DbHelper.getInstance(context);
 
 		ArrayList<String> selectedValues = appPreferences.GetSelectedValuesNotifications();
 		HashMap<String, Integer> seek_states = appPreferences.GetSeekValues();
-		Markers markers=dbHelper.GetUnreadCountsView();
-		
+		Markers markers = dbHelper.GetUnreadCountsView();
+
 		if (selectedValues.size() == 0)
 		{
 			Log.d(App.TAG, "No feeds selected for notification");
 			return null;
 		}
-		
-		int totalUnread=0;
-		
-		
+
 		ArrayList<String> notiText = new ArrayList<String>();
-		
-		totalUnread=GetUnreadItems(context, markers, notiText, selectedValues, seek_states);
-		
-		String contentText = String.format(context.getString(R.string.noti_content_text), totalUnread);
-		
-		NotificationData data=new NotificationData(contentText, notiText, totalUnread);
-		
+
+		ResultData data  = GetUnreadItems(context, markers, notiText, selectedValues, seek_states);
+
+		String contentText = String.format(context.getString(R.string.noti_content_text), data.getUnreadCount());
+
+		data.setTitle(contentText);
+
+		long lastSync = appPreferences.GetLastSuccessfulSync();
+
+		data.setLastUpdated(lastSync);
+
 		return data;
-		
+
 	}
-	
-	
-	private int GetUnreadItems(Context context,  Markers markers, ArrayList<String> notiText, ArrayList<String> selectedValues, HashMap<String, Integer> seek_states  )
+
+	private ResultData GetUnreadItems(Context context,  Markers markers, ArrayList<String> notiText, ArrayList<String> selectedValues, HashMap<String, Integer> seek_states)
 	{
-		int totalUnread=0;
+		ResultData resultData=new ResultData();
 		
+		int totalUnread = 0;
+		AppPreferences appPreferences = new AppPreferences(context);
 		for (String selValue : selectedValues)
 		{
 			for (Marker marker : markers.getUnreadcounts())
@@ -75,17 +67,22 @@ public class StringFormatter
 					if (marker.getCount() == 0)
 						continue;
 
+					int limitCount;
+
 					if (!seek_states.containsKey(marker.getId()))
 					{
-						Log.e(App.TAG, "Seek state not found for id "
+						Log.w(App.TAG, "Seek state not found taking default "
 								+ marker.getId());
-						continue;
+						limitCount = appPreferences.GetMinimumUnreadDefault();
 					}
+					else
+						limitCount = seek_states.get(marker.getId());
 
-					if (marker.getCount() > seek_states.get(marker.getId()))
+					if (marker.getCount() > limitCount)
 					{
 						totalUnread = totalUnread + marker.getCount();
-						notiText.add(String.format(context.getString(R.string.noti_inbox_text), marker.getCount(),marker.getTitle()  ));
+						resultData.getExpandedBody().add(String.format(context.getString(R.string.noti_inbox_text), marker.getCount(), marker.getTitle()));
+						resultData.getWidgetData().add(new WidgetData(marker.getTitle(), String.valueOf(marker.getCount())));
 
 					}
 
@@ -93,8 +90,10 @@ public class StringFormatter
 			}
 		}
 		
-		return totalUnread;
-		
+		resultData.setUnreadCount(totalUnread);
+
+		return resultData;
+
 	}
 
 }

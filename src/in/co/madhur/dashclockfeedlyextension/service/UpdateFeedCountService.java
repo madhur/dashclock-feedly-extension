@@ -171,14 +171,14 @@ public class UpdateFeedCountService extends WakefulIntentService
 	{
 		Notifications notifications = new Notifications(this);
 		StringFormatter formatter = new StringFormatter();
-		NotificationData data = formatter.GetNotificationData(this);
+		ResultData data = formatter.GetResultData(this);
 
 		if (data == null)
 			return;
 
-		if (data.getStatus() != 0 && data.getExpandedBody().size() > 0)
+		if (data.getUnreadCount() != 0 && data.getExpandedBody().size() > 0)
 		{
-			NotificationCompat.Builder builder = notifications.GetNotificationBuilder(data.getTitle(), data.getStatus());
+			NotificationCompat.Builder builder = notifications.GetNotificationBuilder(data.getTitle(), data.getUnreadCount());
 			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN)
 			{
 				builder = notifications.GetExpandedBuilder(builder, data.getExpandedBody(), data.getTitle());

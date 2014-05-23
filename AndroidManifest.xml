@@ -49,15 +49,6 @@
             android:name="in.co.madhur.dashclockfeedlyextension.ui.LauncherActivity"
             android:label="@string/app_name" >
         </activity>
-       
-        <activity
-            android:name=".FeedlyPreferenceActivity"
-            android:label="@string/app_name"
-            android:parentActivityName="in.co.madhur.dashclockfeedlyextension.ui.MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
         
          <activity
             android:name="in.co.madhur.dashclockfeedlyextension.ui.FeedlyPreferenceFragmentActivity"
@@ -105,8 +96,6 @@
             android:exported="false"
             android:icon="@drawable/ic_launcher"
             android:label="@string/app_short_name" >
-            <intent-filter>
-            </intent-filter>
         </service>
         <service
             android:name=".widget.FeedlyWidgetsService"

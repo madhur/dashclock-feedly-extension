@@ -1,15 +1,13 @@
 package in.co.madhur.dashclockfeedlyextension.widget;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import in.co.madhur.dashclockfeedlyextension.App;
-import in.co.madhur.dashclockfeedlyextension.AppPreferences;
 import in.co.madhur.dashclockfeedlyextension.R;
-import in.co.madhur.dashclockfeedlyextension.api.Marker;
-import in.co.madhur.dashclockfeedlyextension.api.Markers;
-import in.co.madhur.dashclockfeedlyextension.db.DbHelper;
+import in.co.madhur.dashclockfeedlyextension.service.ResultData;
+import in.co.madhur.dashclockfeedlyextension.service.StringFormatter;
+import in.co.madhur.dashclockfeedlyextension.service.WidgetData;
 import android.content.Context;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -18,10 +16,7 @@ import android.widget.RemoteViewsService.RemoteViewsFactory;
 public class FeedlyWidgetListProvider implements RemoteViewsFactory
 {
 	private Context context;
-	private DbHelper dbHelper;
-	private Markers markers;
 	private List<WidgetData> widgetData;
-	private AppPreferences appPreferences;
 	
 	public FeedlyWidgetListProvider(Context context)
 	{
@@ -33,49 +28,18 @@ public class FeedlyWidgetListProvider implements RemoteViewsFactory
 	{
 		Log.v(App.TAG, "FeedlyWidgetListProvider:  onCreate  ;");
 		
-		dbHelper=DbHelper.getInstance(context);
-		
-		appPreferences=new AppPreferences(context);
-		
 		PullData();
 		
 	}
 	
 	private void PullData()
 	{
-		markers=dbHelper.GetUnreadCountsView();
-		ArrayList<String> selectedValues = appPreferences.GetSelectedValuesNotifications();
-		HashMap<String, Integer> seek_states = appPreferences.GetSeekValues();
-		widgetData=new ArrayList<WidgetData>();
+		ResultData data=new StringFormatter().GetResultData(context);
 		
-		for (String selValue : selectedValues)
-		{
-			for (Marker marker : markers.getUnreadcounts())
-			{
-
-				if (selValue.equalsIgnoreCase(marker.getId()))
-				{
-
-					if (marker.getCount() == 0)
-						continue;
-
-					if (!seek_states.containsKey(marker.getId()))
-					{
-						Log.e(App.TAG, "Seek state not found for id "
-								+ marker.getId());
-						continue;
-					}
-
-					if (marker.getCount() > seek_states.get(marker.getId()))
-					{
-						widgetData.add(new WidgetData(marker.getTitle(), marker.getCount()));
-
-					}
-
-				}
-			}
-		}
-		
+		if(data!=null)
+			widgetData=data.getWidgetData();
+		else
+			widgetData=new ArrayList<WidgetData>();
 	}
 
 	@Override

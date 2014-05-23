@@ -26,7 +26,7 @@ public class FeedlyExtensionService extends DashClockExtension
 	protected void onInitialize(boolean isReconnect)
 	{
 		super.onInitialize(isReconnect);
-		
+
 		appPreferences = new AppPreferences(this);
 		if (changeReceiver != null)
 		{
@@ -35,7 +35,7 @@ public class FeedlyExtensionService extends DashClockExtension
 
 		IntentFilter filter = new IntentFilter(Consts.UPDATE_ACTION);
 		filter.addCategory(Consts.CATEGORY_DASHCLOCK);
-		
+
 		changeReceiver = new FeedChangeReceiver();
 		LocalBroadcastManager.getInstance(this).registerReceiver(changeReceiver, filter);
 	}
@@ -51,11 +51,12 @@ public class FeedlyExtensionService extends DashClockExtension
 		}
 
 		StringFormatter formatter = new StringFormatter();
-		DashClockData data = formatter.GetDashclockData(this);
+		ResultData data = formatter.GetResultData(this);
 		String expandedBody = "";
 
-		// If there are no feeds selected or unread count is zero, we dismiss the dashclock widget
-		if (data == null || data.getStatus()==0)
+		// If there are no feeds selected or unread count is zero, we dismiss
+		// the dashclock widget
+		if (data == null || data.getUnreadCount() == 0)
 		{
 			publishUpdate(null);
 			return;
@@ -70,15 +71,15 @@ public class FeedlyExtensionService extends DashClockExtension
 
 		Log.d(App.TAG, "Dashclock" + expandedBody);
 
-		UpdateData(String.valueOf(data.getStatus()), data.getTitle(), expandedBody);
+		UpdateData(String.valueOf(data.getUnreadCount()), data.getTitle(), expandedBody, appPreferences.GetWidgetIntent());
 
 	}
 
-	private void UpdateData(String status, String title, String body)
+	private void UpdateData(String status, String title, String body, Intent targetIntent)
 	{
 		try
 		{
-			publishUpdate(new ExtensionData().visible(true).status(status).icon(R.drawable.ic_dashclock).expandedTitle(title).expandedBody(body));
+			publishUpdate(new ExtensionData().visible(true).status(status).icon(R.drawable.ic_dashclock).expandedTitle(title).expandedBody(body).clickIntent(targetIntent));
 		}
 		catch (Exception e)
 		{
@@ -88,13 +89,19 @@ public class FeedlyExtensionService extends DashClockExtension
 
 	}
 
+	private void UpdateData(String status, String title, String body)
+	{
+		UpdateData(status, title, body, null);
+	}
+
 	private class FeedChangeReceiver extends BroadcastReceiver
 	{
 
 		@Override
 		public void onReceive(Context context, Intent intent)
 		{
-			Toast.makeText(context, "on recieve dashclock " + intent.getAction(), Toast.LENGTH_SHORT).show();
+			Toast.makeText(context, "on recieve dashclock "
+					+ intent.getAction(), Toast.LENGTH_SHORT).show();
 			onUpdateData(DashClockExtension.UPDATE_REASON_CONTENT_CHANGED);
 		}
 	}

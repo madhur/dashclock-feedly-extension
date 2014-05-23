@@ -1,11 +1,11 @@
-package in.co.madhur.dashclockfeedlyextension.widget;
+package in.co.madhur.dashclockfeedlyextension.service;
 
 public class WidgetData
 {
 	private String title;
-	private int count;
+	private String count;
 	
-	public WidgetData(String title, int count)
+	public WidgetData(String title, String count)
 	{
 		this.title=title;
 		this.count=count;
@@ -19,13 +19,13 @@ public class WidgetData
 	{
 		this.title = title;
 	}
-	public int getCount()
+	public String getCount()
 	{
 		return count;
 	}
-	public void setCount(int count)
+	public void setCount(String count)
 	{
 		this.count = count;
 	}
-
+	
 }

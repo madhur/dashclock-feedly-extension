@@ -24,10 +24,12 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 	private ViewHolderItemNotification item;
 	private ViewHolderGroupNotification groupItem;
 	private HashMap<String, Integer> seek_states = new HashMap<String, Integer>();
+	private AppPreferences appPreferences;
 	
 	public NotificationViewAdapter(FeedlyData result, Context context)
 	{
 		super(result, context);
+		appPreferences=new AppPreferences(context);
 	}
 
 	
@@ -87,6 +89,7 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 		});
 
 		groupItem.textViewItem.setText(category.getLabel());
+		//groupItem.groupSeekCount.setText(String.valueOf(GetMinimumUnreadDefault()));
 		
 		groupItem.groupSeekbar.setOnSeekBarChangeListener(new OnSeekBarChangeListener()
 		{
