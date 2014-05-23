@@ -12,6 +12,7 @@ import in.co.madhur.dashclockfeedlyextension.api.Profile;
 import in.co.madhur.dashclockfeedlyextension.api.Subscription;
 import in.co.madhur.dashclockfeedlyextension.db.DbHelper;
 import in.co.madhur.dashclockfeedlyextension.service.Alarms;
+import in.co.madhur.dashclockfeedlyextension.service.Connection;
 
 import com.infospace.android.oauth2.WebApiHelper;
 
@@ -41,6 +42,8 @@ import android.widget.ExpandableListView.OnGroupClickListener;
 import android.widget.Filter.FilterListener;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity
 
@@ -51,7 +54,8 @@ public class MainActivity extends ActionBarActivity
 	private ExpandableListView listView;
 	private FeedlyListViewAdapter notiAdapter;
 	private int LOGIN_REQUEST_CODE = 1;
-
+	private TextView statusText;
+	
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -63,7 +67,8 @@ public class MainActivity extends ActionBarActivity
 
 		progressBar = (ProgressBar) findViewById(R.id.pbHeaderProgress);
 		listView = (ExpandableListView) findViewById(R.id.listview);
-
+		statusText=(TextView) findViewById(R.id.statusMessage);
+		
 		getSupportActionBar().setDisplayUseLogoEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
@@ -296,7 +301,12 @@ public class MainActivity extends ActionBarActivity
 
 	private void Refresh()
 	{
-		GetFeedlyData(true);
+		if (Connection.isConnected(this))
+		{
+			GetFeedlyData(true);
+		}
+		else
+			Toast.makeText(this, getString(R.string.internet_error), Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -378,6 +388,7 @@ public class MainActivity extends ActionBarActivity
 			super.onPreExecute();
 			progressBar.setVisibility(View.VISIBLE);
 			listView.setVisibility(View.GONE);
+			
 			Configuration.Builder builder = new Builder();
 			builder.setDuration(Configuration.DURATION_INFINITE);
 
@@ -444,8 +455,7 @@ public class MainActivity extends ActionBarActivity
 		protected void onPostExecute(FeedlyData result)
 		{
 			super.onPostExecute(result);
-			progressBar.setVisibility(View.GONE);
-			listView.setVisibility(View.VISIBLE);
+			
 			UpdateUI(result);
 		}
 
@@ -453,11 +463,19 @@ public class MainActivity extends ActionBarActivity
 
 	private void UpdateUI(FeedlyData result)
 	{
+		
+		progressBar.setVisibility(View.GONE);
+		
 		if (result.isError())
 		{
-			// Show error
+			statusText.setVisibility(View.VISIBLE);
+			
+			statusText.setText(result.getErrorMessage());
 			return;
 		}
+		
+		
+		listView.setVisibility(View.VISIBLE);
 
 		notiAdapter = new NotificationViewAdapter(result, this);
 		notiAdapter.GetSelectedValuesFromPreferences();

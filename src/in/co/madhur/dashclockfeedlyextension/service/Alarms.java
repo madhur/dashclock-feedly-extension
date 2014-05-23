@@ -56,7 +56,6 @@ public class Alarms
 	{
 		Intent updateIntent=new Intent();
 		updateIntent.setAction(Consts.UPDATE_COUNT_ACTION);
-		updateIntent.putExtra(Consts.UPDATE_SOURCE, UPDATESOURCE.ALARM.key);
 		return PendingIntent.getBroadcast(context, REQUEST_CODE, updateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 	}
 	
