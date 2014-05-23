@@ -3,7 +3,10 @@ package in.co.madhur.dashclockfeedlyextension;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.google.android.apps.dashclock.configuration.AppChooserPreference;
+
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
@@ -26,12 +29,11 @@ public class AppPreferences
 	{
 		SELECTED_VALUES_NOTIFICATIONS("selected_values_notifications"),
 		NOTIFICATION_SEEK_STATES("notifications_seek_states"),
-		SELECTED_VALUES_WIDGETS("selected_values_widgets"),
 		ENABLE_NOTIFICATIONS("enable_notifications"),
 		ENABLE_SOUND("enable_sound"),
 		ENABLE_VIBRATE("enable_vibrate"),
 		ENABLE_LED("enable_led"),
-		CLICK_INTENT("click_intent"),
+		CLICK_INTENT("widget_click_intent"),
 		NOTIFICATION_CLICK_INTENT("notification_click_intent"),
 		SYNC_INTERVAL("sync_interval"),
 		MINIMUM_UNREAD("minimum_unread"),
@@ -51,6 +53,17 @@ public class AppPreferences
 			this.key = key;
 
 		}
+		
+	}
+	
+	public Intent GetWidgetIntent()
+	{
+		return AppChooserPreference.getIntentValue(getMetadata(Keys.CLICK_INTENT), null);
+	}
+	
+	public Intent GetNotificationIntent()
+	{
+		return AppChooserPreference.getIntentValue(getMetadata(Keys.NOTIFICATION_CLICK_INTENT), null);
 		
 	}
 

@@ -1,1 +1,2 @@
 include ':android_oauth2_webview'
+include ':android-support-v4-preferencefragment'

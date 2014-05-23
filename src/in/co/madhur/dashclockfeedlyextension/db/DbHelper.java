@@ -25,7 +25,6 @@ import android.util.Log;
 
 public class DbHelper
 {
-	private static Context context;
 	private static FeedlyDB db;
 	private static DbHelper dbHelper;
 
@@ -33,7 +32,6 @@ public class DbHelper
 	{
 		if (dbHelper == null)
 		{
-			DbHelper.context = context;
 			db = new FeedlyDB(context);
 			dbHelper = new DbHelper();
 			return dbHelper;

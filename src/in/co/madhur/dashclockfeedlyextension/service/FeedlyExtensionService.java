@@ -6,20 +6,13 @@ import in.co.madhur.dashclockfeedlyextension.App;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences;
 import in.co.madhur.dashclockfeedlyextension.Consts;
 import in.co.madhur.dashclockfeedlyextension.R;
-import in.co.madhur.dashclockfeedlyextension.api.Marker;
-import in.co.madhur.dashclockfeedlyextension.api.Markers;
-import in.co.madhur.dashclockfeedlyextension.db.DbHelper;
-
 import com.google.android.apps.dashclock.api.DashClockExtension;
 import com.google.android.apps.dashclock.api.ExtensionData;
 
-import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.DashPathEffect;
-import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
