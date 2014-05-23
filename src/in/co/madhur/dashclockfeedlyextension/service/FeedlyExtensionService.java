@@ -71,7 +71,7 @@ public class FeedlyExtensionService extends DashClockExtension
 			expandedBody = String.format(getString(R.string.lastupdate_display_format), dateFormat.format(date));
 		}
 
-		Log.d(App.TAG, data.getTitle());
+		Log.d(App.TAG, "Dashclock" + expandedBody);
 
 		UpdateData(String.valueOf(data.getStatus()), data.getTitle(), expandedBody);
 
@@ -97,6 +97,7 @@ public class FeedlyExtensionService extends DashClockExtension
 		@Override
 		public void onReceive(Context context, Intent intent)
 		{
+			Toast.makeText(context, "on recieve dashclock " + intent.getAction(), Toast.LENGTH_SHORT).show();
 			onUpdateData(DashClockExtension.UPDATE_REASON_CONTENT_CHANGED);
 		}
 	}

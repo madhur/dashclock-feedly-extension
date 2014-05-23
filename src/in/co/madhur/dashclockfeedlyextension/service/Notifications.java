@@ -86,13 +86,21 @@ public class Notifications
 			notification.defaults |= Notification.DEFAULT_LIGHTS;
 		
 		mNotificationManager.notify(id, builder.build());
-
+		
 	}
 	
 	public void FireNotification(int id, NotificationCompat.Builder builder)
 	{
 		FireNotification(id, builder, true, true, true);
-
+		
 	}
+	
+	public void Cancel(int id)
+	{
+		NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		mNotificationManager.cancel(id);
+	}
+	
+	
 
 }

@@ -24,6 +24,7 @@ public class UpdateFeedCountService extends WakefulIntentService
 	private DbHelper dbHelper;
 	private AppPreferences appPreferences;
 	private Markers markers;
+	private final int NOTIFICATION_ID=0;
 
 	public UpdateFeedCountService()
 	{
@@ -183,9 +184,10 @@ public class UpdateFeedCountService extends WakefulIntentService
 				builder = notifications.GetExpandedBuilder(builder, data.getExpandedBody(), data.getTitle());
 			}
 
-			notifications.FireNotification(0, builder, appPreferences.getBoolMetadata(Keys.ENABLE_VIBRATE), appPreferences.getBoolMetadata(Keys.ENABLE_SOUND), appPreferences.getBoolMetadata(Keys.ENABLE_LED));
-
+			notifications.FireNotification(NOTIFICATION_ID, builder, appPreferences.getBoolMetadata(Keys.ENABLE_VIBRATE), appPreferences.getBoolMetadata(Keys.ENABLE_SOUND), appPreferences.getBoolMetadata(Keys.ENABLE_LED));
 		}
+		else
+			notifications.Cancel(NOTIFICATION_ID);
 
 	}
 
