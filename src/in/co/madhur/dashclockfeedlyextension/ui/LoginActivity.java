@@ -1,5 +1,8 @@
-package in.co.madhur.dashclockfeedlyextension;
+package in.co.madhur.dashclockfeedlyextension.ui;
 
+import in.co.madhur.dashclockfeedlyextension.AppPreferences;
+import in.co.madhur.dashclockfeedlyextension.LoginListener;
+import in.co.madhur.dashclockfeedlyextension.R;
 import com.infospace.android.oauth2.AuthenticationFragment;
 import com.infospace.android.oauth2.WebApiHelper;
 

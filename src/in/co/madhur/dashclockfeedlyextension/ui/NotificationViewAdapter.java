@@ -1,22 +1,21 @@
-package in.co.madhur.dashclockfeedlyextension;
+package in.co.madhur.dashclockfeedlyextension.ui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import in.co.madhur.dashclockfeedlyextension.AppPreferences;
+import in.co.madhur.dashclockfeedlyextension.R;
 import in.co.madhur.dashclockfeedlyextension.api.Category;
 import in.co.madhur.dashclockfeedlyextension.api.FeedlyData;
 import in.co.madhur.dashclockfeedlyextension.api.Subscription;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.opengl.Visibility;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
 import android.widget.SeekBar;
-import android.widget.Toast;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
@@ -70,7 +69,6 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 					
 					if(!seek_states.containsKey(category.getId()))
 					{
-						
 						seek_states.put(category.getId(), GetMinimumUnreadDefault());
 					}
 				}
@@ -280,19 +278,21 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 	
 	private void SetSeek(SeekBar seekBar, String id, int progress)
 	{
-		for (int i = Consts.stepValues.length - 1; i > -1; --i)
-		{
-			if (progress > Consts.stepValues[i])
-			{
-				progress = progress / Consts.stepValues[i];
-				progress = progress * Consts.stepValues[i];
-				
-				seek_states.put(id, Consts.stepValues[i+1]);
-				break;
-
-			}
-
-		}
+//		for (int i = Consts.stepValues.length - 1; i > -1; --i)
+//		{
+//			if (progress > Consts.stepValues[i])
+//			{
+//				progress = progress / Consts.stepValues[i];
+//				progress = progress * Consts.stepValues[i];
+//				
+//				seek_states.put(id, Consts.stepValues[i+1]);
+//				break;
+//
+//			}
+//
+//		}
+		
+		seek_states.put(id, progress);
 	}
 
 	private static class ViewHolderGroupNotification extends ViewHolderGroup

@@ -1,5 +1,8 @@
-package in.co.madhur.dashclockfeedlyextension;
+package in.co.madhur.dashclockfeedlyextension.ui;
 
+import in.co.madhur.dashclockfeedlyextension.AppPreferences;
+import in.co.madhur.dashclockfeedlyextension.Consts;
+import in.co.madhur.dashclockfeedlyextension.R;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences.Keys;
 import in.co.madhur.dashclockfeedlyextension.service.Alarms;
 

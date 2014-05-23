@@ -1,6 +1,8 @@
-package in.co.madhur.dashclockfeedlyextension;
+package in.co.madhur.dashclockfeedlyextension.ui;
 
 
+import in.co.madhur.dashclockfeedlyextension.LoginListener;
+import in.co.madhur.dashclockfeedlyextension.R;
 import in.co.madhur.dashclockfeedlyextension.service.Connection;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

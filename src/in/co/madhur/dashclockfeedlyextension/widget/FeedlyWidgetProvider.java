@@ -1,7 +1,6 @@
 package in.co.madhur.dashclockfeedlyextension.widget;
 
 import in.co.madhur.dashclockfeedlyextension.R;
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;

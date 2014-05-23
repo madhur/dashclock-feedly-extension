@@ -59,10 +59,16 @@ public class UpdateFeedCountService extends WakefulIntentService
 
 			RefreshTokenIfRequired();
 
-			if (!CheckLastSync())
+			// Sync is always performed on accept/logout button irrespective of scheduled
+			// Regular sync and network change sync are constrained by sync schedule
+			if (source.equalsIgnoreCase(UPDATESOURCE.ALARM.key)
+					|| source.equalsIgnoreCase(UPDATESOURCE.NETWORK_CHANGE.key))
 			{
-				Log.d(App.TAG, "Successful sync within time interval. aborting");
-				return;
+				if (!CheckLastSync())
+				{
+					Log.d(App.TAG, "Successful sync within time interval. aborting");
+					return;
+				}
 			}
 
 			if (!GetUnreadCountsAndSave())
@@ -171,8 +177,6 @@ public class UpdateFeedCountService extends WakefulIntentService
 
 		if (data.getStatus() != 0 && data.getExpandedBody().size() > 0)
 		{
-			Log.d(App.TAG, "Firing notification");
-
 			NotificationCompat.Builder builder = notifications.GetNotificationBuilder(data.getTitle(), data.getStatus());
 			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN)
 			{

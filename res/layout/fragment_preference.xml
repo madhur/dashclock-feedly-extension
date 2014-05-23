@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/preference_fragment"
-        android:name="in.co.madhur.dashclockfeedlyextension.FeedlyPreferenceFragment"
+        android:name="in.co.madhur.dashclockfeedlyextension.ui.FeedlyPreferenceFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

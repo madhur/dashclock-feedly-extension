@@ -11,7 +11,7 @@
 
      <fragment
          android:id="@+id/headlines_fragment"
-         android:name="in.co.madhur.dashclockfeedlyextension.SplashFragment"
+         android:name="in.co.madhur.dashclockfeedlyextension.ui.SplashFragment"
          android:layout_width="match_parent"
          android:layout_height="match_parent"
         

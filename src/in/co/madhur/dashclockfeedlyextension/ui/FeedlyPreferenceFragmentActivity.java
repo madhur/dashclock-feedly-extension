@@ -1,5 +1,6 @@
-package in.co.madhur.dashclockfeedlyextension;
+package in.co.madhur.dashclockfeedlyextension.ui;
 
+import in.co.madhur.dashclockfeedlyextension.R;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 

@@ -2,9 +2,9 @@ package in.co.madhur.dashclockfeedlyextension.service;
 
 import java.util.ArrayList;
 
-import in.co.madhur.dashclockfeedlyextension.LauncherActivity;
 import in.co.madhur.dashclockfeedlyextension.R;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences.Keys;
+import in.co.madhur.dashclockfeedlyextension.ui.LauncherActivity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;

@@ -1,9 +1,13 @@
-package in.co.madhur.dashclockfeedlyextension;
+package in.co.madhur.dashclockfeedlyextension.ui;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import in.co.madhur.dashclockfeedlyextension.App;
+import in.co.madhur.dashclockfeedlyextension.AppPreferences;
+import in.co.madhur.dashclockfeedlyextension.Consts;
+import in.co.madhur.dashclockfeedlyextension.R;
 import in.co.madhur.dashclockfeedlyextension.Consts.UPDATESOURCE;
 import in.co.madhur.dashclockfeedlyextension.api.Category;
 import in.co.madhur.dashclockfeedlyextension.api.Feedly;

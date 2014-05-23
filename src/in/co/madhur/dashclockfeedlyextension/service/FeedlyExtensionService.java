@@ -33,12 +33,11 @@ public class FeedlyExtensionService extends DashClockExtension
 	protected void onInitialize(boolean isReconnect)
 	{
 		super.onInitialize(isReconnect);
+		
 		appPreferences = new AppPreferences(this);
 		if (changeReceiver != null)
 		{
 			LocalBroadcastManager.getInstance(this).unregisterReceiver(changeReceiver);
-			//unregisterReceiver(changeReceiver);
-
 		}
 
 		IntentFilter filter = new IntentFilter(Consts.UPDATE_ACTION);
@@ -46,14 +45,11 @@ public class FeedlyExtensionService extends DashClockExtension
 		
 		changeReceiver = new FeedChangeReceiver();
 		LocalBroadcastManager.getInstance(this).registerReceiver(changeReceiver, filter);
-		//registerReceiver(changeReceiver, filter);
 	}
 
 	@Override
 	protected void onUpdateData(int arg0)
 	{
-		
-
 		if (!appPreferences.IsTokenPresent())
 		{
 			Log.d(App.TAG, "Auth token not present, returning");
@@ -101,7 +97,6 @@ public class FeedlyExtensionService extends DashClockExtension
 		@Override
 		public void onReceive(Context context, Intent intent)
 		{
-			Toast.makeText(context, "on recieve dashclock " + intent.getAction(), Toast.LENGTH_SHORT).show();
 			onUpdateData(DashClockExtension.UPDATE_REASON_CONTENT_CHANGED);
 		}
 	}
