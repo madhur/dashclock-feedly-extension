@@ -61,8 +61,12 @@ public class FeedlyExtensionService extends DashClockExtension
 		DashClockData data = formatter.GetDashclockData(this);
 		String expandedBody = "";
 
-		if (data == null)
+		// If there are no feeds selected or unread count is zero, we dismiss the dashclock widget
+		if (data == null || data.getStatus()==0)
+		{
+			publishUpdate(null);
 			return;
+		}
 
 		if (data.getLastUpdated() != 0)
 		{
