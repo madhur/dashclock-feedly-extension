@@ -17,6 +17,14 @@
             android:key="sync_interval"
             android:summary="@string/sync_interval_desc"
             android:title="@string/sync_interval" />
+          <ListPreference
+            android:defaultValue="10"
+            android:dependency="enable_notifications"
+            android:entries="@array/minimum_unread"
+            android:entryValues="@array/minimum_unread_values"
+            android:key="minimum_unread"
+            android:summary="@string/minimum_unread_desc"
+            android:title="@string/minimum_unread" />
         <ListPreference
             android:entries="@array/themes"
             android:entryValues="@array/themes_values"
@@ -55,14 +63,7 @@
             android:key="notification_click_intent"
             android:title="@string/click_behave_title" />
 
-        <ListPreference
-            android:defaultValue="10"
-            android:dependency="enable_notifications"
-            android:entries="@array/minimum_unread"
-            android:entryValues="@array/minimum_unread_values"
-            android:key="minimum_unread"
-            android:summary="@string/minimum_unread_desc"
-            android:title="@string/minimum_unread" />
+      
     </PreferenceScreen>
     <PreferenceScreen android:title="@string/widget_configuration" >
         <com.google.android.apps.dashclock.configuration.AppChooserPreference

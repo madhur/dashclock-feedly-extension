@@ -78,7 +78,7 @@ public class StringFormatter
 					else
 						limitCount = seek_states.get(marker.getId());
 
-					if (marker.getCount() > limitCount)
+					if (marker.getCount() >= limitCount)
 					{
 						totalUnread = totalUnread + marker.getCount();
 						resultData.getExpandedBody().add(String.format(context.getString(R.string.noti_inbox_text), marker.getCount(), marker.getTitle()));

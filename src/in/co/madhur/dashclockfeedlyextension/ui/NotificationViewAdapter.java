@@ -3,6 +3,7 @@ package in.co.madhur.dashclockfeedlyextension.ui;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import in.co.madhur.dashclockfeedlyextension.App;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences;
 import in.co.madhur.dashclockfeedlyextension.R;
 import in.co.madhur.dashclockfeedlyextension.api.Category;
@@ -10,11 +11,14 @@ import in.co.madhur.dashclockfeedlyextension.api.FeedlyData;
 import in.co.madhur.dashclockfeedlyextension.api.Subscription;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
@@ -23,16 +27,15 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 {
 	private ViewHolderItemNotification item;
 	private ViewHolderGroupNotification groupItem;
-	private HashMap<String, Integer> seek_states = new HashMap<String, Integer>();
-	private AppPreferences appPreferences;
 	
+	private AppPreferences appPreferences;
+
 	public NotificationViewAdapter(FeedlyData result, Context context)
 	{
 		super(result, context);
-		appPreferences=new AppPreferences(context);
+		appPreferences = new AppPreferences(context);
 	}
 
-	
 	@Override
 	public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent)
 	{
@@ -48,7 +51,7 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 			groupItem.checked = (CheckBox) convertView.findViewById(R.id.GroupCheckBox);
 			groupItem.groupSeekbar = (SeekBar) convertView.findViewById(R.id.GroupSeekbar);
 			groupItem.groupSeekCount = (TextView) convertView.findViewById(R.id.GroupSeekCount);
-			groupItem.selectedChildCount=(TextView) convertView.findViewById(R.id.SelectedCountTextView);
+			groupItem.selectedChildCount = (TextView) convertView.findViewById(R.id.SelectedCountTextView);
 
 			convertView.setTag(groupItem);
 		}
@@ -58,6 +61,35 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 			groupItem = (ViewHolderGroupNotification) convertView.getTag();
 		}
 
+//		groupItem.checked.setOnCheckedChangeListener(new OnCheckedChangeListener()
+//		{
+
+//			@Override
+//			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+//			{
+//				if (isChecked)
+//				{
+//
+//					Log.v(App.TAG, "on checked change");
+//
+//					check_states.put(category.getId(), true);
+//
+//					if (!seek_states.containsKey(category.getId()))
+//					{
+//						seek_states.put(category.getId(), GetMinimumUnreadDefault());
+//					}
+//				}
+//				else
+//				{
+//					check_states.remove(category.getId());
+//
+//				}
+//				
+//				notifyDataSetChanged();
+//
+//			}
+//		});
+
 		groupItem.checked.setOnClickListener(new OnClickListener()
 		{
 
@@ -65,20 +97,22 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 			public void onClick(View v)
 			{
 				CheckBox checkbox = (CheckBox) v;
-				if(checkbox.isChecked())
+				if (checkbox.isChecked())
 				{
+					Log.v(App.TAG, "on click");
+
 					check_states.put(category.getId(), true);
-					
-					if(!seek_states.containsKey(category.getId()))
-					{
-						seek_states.put(category.getId(), GetMinimumUnreadDefault());
-					}
+
+					AddSeekState(category.getId());
 				}
 				else
 				{
 					check_states.remove(category.getId());
+					seek_states.remove(category.getId());
 					
-					//We do not remove seek states for unchecked items in a hope that they will be checked later and user will not have to set them agian
+					// We do not remove seek states for unchecked items in a
+					// hope that they will be checked later and user will not
+					// have to set them agian
 					// These values also go into preference
 					// check_states should be subset of seek_states always
 				}
@@ -89,36 +123,37 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 		});
 
 		groupItem.textViewItem.setText(category.getLabel());
-		//groupItem.groupSeekCount.setText(String.valueOf(GetMinimumUnreadDefault()));
-		
+		// groupItem.groupSeekCount.setText(String.valueOf(GetMinimumUnreadDefault()));
+
 		groupItem.groupSeekbar.setOnSeekBarChangeListener(new OnSeekBarChangeListener()
 		{
-			
+
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar)
 			{
 				notifyDataSetChanged();
 			}
-			
+
 			@Override
 			public void onStartTrackingTouch(SeekBar seekBar)
 			{
-				
+
 			}
-			
+
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
 			{
 				SetSeek(seekBar, category.getId(), progress);
-				
+
 			}
 		});
 
-		if (check_states.containsKey(category.getId()) && seek_states.containsKey(category.getId()))
+		if (check_states.containsKey(category.getId())
+				&& seek_states.containsKey(category.getId()))
 		{
 			groupItem.groupSeekCount.setText(String.valueOf(seek_states.get(category.getId())));
 			groupItem.groupSeekbar.setProgress(seek_states.get(category.getId()));
-			
+
 			boolean checkCondition = check_states.get(category.getId());
 
 			groupItem.checked.setChecked(checkCondition);
@@ -126,7 +161,7 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 			{
 				groupItem.groupSeekbar.setVisibility(View.VISIBLE);
 				groupItem.groupSeekCount.setVisibility(View.VISIBLE);
-			
+
 			}
 			else
 			{
@@ -142,29 +177,30 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 			groupItem.groupSeekCount.setVisibility(View.GONE);
 
 		}
-		
+
 		HighlightGroup(groupPosition);
-		
+
 		return convertView;
 	}
-	
+
 	private void HighlightGroup(int groupPosition)
 	{
-		int selectedChild=0;
-		for(int i=0;i<getChildrenCount(groupPosition); ++i)
+		int selectedChild = 0;
+		for (int i = 0; i < getChildrenCount(groupPosition); ++i)
 		{
-			Subscription sub=(Subscription) getChild(groupPosition, i);
-			if(check_states.containsKey(sub.getId()))
+			Subscription sub = (Subscription) getChild(groupPosition, i);
+			if (check_states.containsKey(sub.getId()))
 			{
 				selectedChild++;
 			}
-			
+
 		}
-		
-		if(selectedChild!=0)
+
+		if (selectedChild != 0)
 		{
 			groupItem.selectedChildCount.setVisibility(View.VISIBLE);
-			groupItem.selectedChildCount.setText("("+String.valueOf(selectedChild)+")");
+			groupItem.selectedChildCount.setText("("
+					+ String.valueOf(selectedChild) + ")");
 
 			groupItem.textViewItem.setTypeface(null, Typeface.BOLD);
 		}
@@ -201,6 +237,24 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 			item = (ViewHolderItemNotification) convertView.getTag();
 
 		}
+		
+//		item.checked.setOnCheckedChangeListener(new OnCheckedChangeListener()
+//		{
+//			
+//			@Override
+//			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+//			{
+//				if(isChecked)
+//				{
+//					check_states.put(subscription.getId(), true);
+//				}
+//				else
+//					check_states.remove(subscription.getId());
+//					
+//				notifyDataSetChanged();
+//			}
+//		});
+		
 
 		item.checked.setOnClickListener(new OnClickListener()
 		{
@@ -210,7 +264,7 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 			{
 				CheckBox checkbox = (CheckBox) v;
 
-				if(checkbox.isChecked())
+				if (checkbox.isChecked())
 					check_states.put(subscription.getId(), true);
 				else
 					check_states.remove(subscription.getId());
@@ -260,8 +314,7 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 			{
 				item.childSeekbar.setVisibility(View.VISIBLE);
 				item.chidlSeekCount.setVisibility(View.VISIBLE);
-				
-				
+
 			}
 			else
 			{
@@ -278,23 +331,23 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 
 		return convertView;
 	}
-	
+
 	private void SetSeek(SeekBar seekBar, String id, int progress)
 	{
-//		for (int i = Consts.stepValues.length - 1; i > -1; --i)
-//		{
-//			if (progress > Consts.stepValues[i])
-//			{
-//				progress = progress / Consts.stepValues[i];
-//				progress = progress * Consts.stepValues[i];
-//				
-//				seek_states.put(id, Consts.stepValues[i+1]);
-//				break;
-//
-//			}
-//
-//		}
-		
+		// for (int i = Consts.stepValues.length - 1; i > -1; --i)
+		// {
+		// if (progress > Consts.stepValues[i])
+		// {
+		// progress = progress / Consts.stepValues[i];
+		// progress = progress * Consts.stepValues[i];
+		//
+		// seek_states.put(id, Consts.stepValues[i+1]);
+		// break;
+		//
+		// }
+		//
+		// }
+
 		seek_states.put(id, progress);
 	}
 
@@ -310,27 +363,21 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 		TextView chidlSeekCount;
 
 	}
-	
-	private int GetMinimumUnreadDefault()
-	{
-		AppPreferences appPreferences = new AppPreferences(context);
-		return appPreferences.GetMinimumUnreadDefault();
-		
-	}
+
 
 	@Override
 	public void SaveSelectedValuestoPreferences()
 	{
 		AppPreferences appPreferences = new AppPreferences(context);
 		appPreferences.SaveSelectedValuesNotifications(check_states, seek_states);
-		
+
 	}
 
 	@Override
 	public void GetSelectedValuesFromPreferences()
 	{
 		check_states.clear();
-		
+
 		AppPreferences appPreferences = new AppPreferences(context);
 		ArrayList<String> selectedValues = appPreferences.GetSelectedValuesNotifications();
 
@@ -338,10 +385,10 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 		{
 			check_states.put(s, true);
 		}
-		
-		HashMap<String, Integer> seekValues=appPreferences.GetSeekValues();
-		seek_states=seekValues;
-		
+
+		HashMap<String, Integer> seekValues = appPreferences.GetSeekValues();
+		seek_states = seekValues;
+
 	}
 
 }

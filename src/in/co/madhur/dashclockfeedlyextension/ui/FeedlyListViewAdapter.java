@@ -3,8 +3,11 @@ package in.co.madhur.dashclockfeedlyextension.ui;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
+import in.co.madhur.dashclockfeedlyextension.App;
+import in.co.madhur.dashclockfeedlyextension.AppPreferences;
 import in.co.madhur.dashclockfeedlyextension.ISaveable;
 import in.co.madhur.dashclockfeedlyextension.api.Category;
 import in.co.madhur.dashclockfeedlyextension.api.FeedlyData;
@@ -29,6 +32,7 @@ public abstract class FeedlyListViewAdapter extends BaseExpandableListAdapter im
 	private ArrayList<Subscription> blankSub = new ArrayList<Subscription>();
 	protected Context context;
 	protected final HashMap<String, Boolean> check_states = new HashMap<String, Boolean>();
+	protected HashMap<String, Integer> seek_states = new HashMap<String, Integer>();
 	private FeedItemsFilter feedItemsFilter;
 
 	public FeedlyListViewAdapter(FeedlyData result, Context context)
@@ -67,7 +71,6 @@ public abstract class FeedlyListViewAdapter extends BaseExpandableListAdapter im
 	public int getChildrenCount(int groupPosition)
 	{
 		Category category = getCategories().get(groupPosition);
-		// return category.getSubscriptions().size();
 		return categorySubscriptions.get(category).size();
 
 	}
@@ -131,15 +134,6 @@ public abstract class FeedlyListViewAdapter extends BaseExpandableListAdapter im
 
 	@Override
 	public abstract void GetSelectedValuesFromPreferences();
-//	{
-//		AppPreferences appPreferences = new AppPreferences(context);
-//		ArrayList<String> selectedValues = appPreferences.GetSelectedValues();
-//
-//		for (String s : selectedValues)
-//		{
-//			check_states.put(s, true);
-//		}
-//	}
 
 	@Override
 	public Filter getFilter()
@@ -156,6 +150,7 @@ public abstract class FeedlyListViewAdapter extends BaseExpandableListAdapter im
 	public void selectNone()
 	{
 		check_states.clear();
+		seek_states.clear();
 		notifyDataSetChanged();
 	}
 	
@@ -164,10 +159,12 @@ public abstract class FeedlyListViewAdapter extends BaseExpandableListAdapter im
 		for(Category category: getCategories())
 		{
 			check_states.put(category.getId(), true);
-			
+			AddSeekState(category.getId());
 			for(Subscription sub: categorySubscriptions.get(category))
 			{
 				check_states.put(sub.getId(), true);
+				AddSeekState(sub.getId());
+				
 			}
 			
 		}
@@ -176,15 +173,32 @@ public abstract class FeedlyListViewAdapter extends BaseExpandableListAdapter im
 		
 	}
 	
+	protected void AddSeekState(String id)
+	{
+		if(!seek_states.containsKey(id))
+			seek_states.put(id, GetMinimumUnreadDefault());
+		
+	}
+	
+
+	private int GetMinimumUnreadDefault()
+	{
+		AppPreferences appPreferences = new AppPreferences(context);
+		return appPreferences.GetMinimumUnreadDefault();
+
+	}
+	
 	public void selectAllFeeds()
 	{
-		selectNone();
+		//selectNone();
+		check_states.clear();
 		for(Category category: getCategories())
 		{
-			
+			Log.v(App.TAG, "Adding " + category.getLabel());
 			for(Subscription sub: categorySubscriptions.get(category))
 			{
 				check_states.put(sub.getId(), true);
+				AddSeekState(sub.getId());
 			}
 			
 		}
@@ -195,10 +209,13 @@ public abstract class FeedlyListViewAdapter extends BaseExpandableListAdapter im
 	
 	public void selectAllCategories()
 	{
-		selectNone();
+		check_states.clear();
+		
 		for(Category category: getCategories())
 		{
+			Log.v(App.TAG, "Adding " + category.getLabel());
 			check_states.put(category.getId(), true);
+			AddSeekState(category.getId());
 		}
 		
 		notifyDataSetChanged();
@@ -242,7 +259,6 @@ public abstract class FeedlyListViewAdapter extends BaseExpandableListAdapter im
 
 			if (results.count > 0)
 			{
-				Log.println(Log.INFO, "Results", "FOUND");
 				categories = filteredData.getCategories();
 				subscriptions = filteredData.getSubscriptions();
 				categorySubscriptions = filteredData.getCategorySubscriptions();
@@ -251,7 +267,6 @@ public abstract class FeedlyListViewAdapter extends BaseExpandableListAdapter im
 			}
 			else
 			{
-				Log.println(Log.INFO, "Results", "-");
 				categories = blank;
 				subscriptions = blankSub;
 				notifyDataSetInvalidated();
@@ -278,8 +293,8 @@ public abstract class FeedlyListViewAdapter extends BaseExpandableListAdapter im
 					for (Subscription sub : originalCategorySubscriptions.get(category))
 					{
 
-						if (sub.getTitle().trim().toLowerCase().contains(constraint.toString().trim().toLowerCase())
-								|| category.getLabel().trim().toLowerCase().contains(constraint.toString().trim().toLowerCase()))
+						if (sub.getTitle().trim().toLowerCase(Locale.US).contains(constraint.toString().trim().toLowerCase(Locale.US))
+								|| category.getLabel().trim().toLowerCase(Locale.US).contains(constraint.toString().trim().toLowerCase(Locale.US)))
 						{
 							if (!filteredcategories.contains(category))
 							{
