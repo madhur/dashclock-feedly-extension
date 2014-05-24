@@ -90,7 +90,7 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 				listPreference.setTitle(String.format(getString(R.string.min_unread), newValue));
 			}
 			else
-			listPreference.setTitle(newValue);
+				listPreference.setTitle(newValue);
 		}
 
 	}
@@ -101,6 +101,7 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 
 		findPreference(Keys.SYNC_INTERVAL.key).setOnPreferenceChangeListener(listPreferenceChangeListerner);
 		findPreference(Keys.MINIMUM_UNREAD.key).setOnPreferenceChangeListener(listPreferenceChangeListerner);
+		findPreference(Keys.PICK_THEME.key).setOnPreferenceChangeListener(listPreferenceChangeListerner);
 
 		CharSequence intentSummary = AppChooserPreference.getDisplayValue(getActivity(), appPreferences.getMetadata(Keys.CLICK_INTENT));
 		findPreference(Keys.CLICK_INTENT.key).setSummary(TextUtils.isEmpty(intentSummary)
@@ -198,7 +199,17 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 		findPreference(Keys.WIDGET_BACKGROUND_COLOR.key).setOnPreferenceChangeListener(widgetChangeListener);
 		findPreference(Keys.WIDGET_COUNT_COLOR.key).setOnPreferenceChangeListener(widgetChangeListener);
 		findPreference(Keys.WIDGET_TITLE_COLOR.key).setOnPreferenceChangeListener(widgetChangeListener);
-		findPreference(Keys.WIDGET_TEXT_SIZE.key).setOnPreferenceChangeListener(widgetChangeListener);
+		findPreference(Keys.WIDGET_TEXT_SIZE.key).setOnPreferenceChangeListener(new OnPreferenceChangeListener()
+		{
+			
+			@Override
+			public boolean onPreferenceChange(Preference preference, Object newValue)
+			{
+				UpdateLabel((ListPreference) preference, newValue.toString());
+				WidgetSettingsChanged();
+				return true;
+			}
+		});
 		
 		
 	}
