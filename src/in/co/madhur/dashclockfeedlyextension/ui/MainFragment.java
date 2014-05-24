@@ -27,7 +27,6 @@ import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -56,13 +55,11 @@ public class MainFragment extends Fragment
 	private ProgressBar progressBar;
 	private ExpandableListView listView;
 	private FeedlyListViewAdapter notiAdapter;
-	private int LOGIN_REQUEST_CODE = 1;
 	private TextView statusText;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		
 		setHasOptionsMenu(true);
@@ -137,18 +134,6 @@ public class MainFragment extends Fragment
 	}
 
 	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data)
-	{
-		super.onActivityResult(requestCode, resultCode, data);
-
-		if (resultCode == 1 && requestCode == LOGIN_REQUEST_CODE)
-		{
-			GetFeedlyData();
-
-		}
-	}
-
-	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
 		FeedlyListViewAdapter adapter = (FeedlyListViewAdapter) listView.getExpandableListAdapter();
@@ -161,8 +146,6 @@ public class MainFragment extends Fragment
 				break;
 
 			case R.id.action_settings:
-			//	Intent prefIntent = new Intent(getActivity(), FeedlyPreferenceFragmentActivity.class);
-			//	startActivity(prefIntent);
 				getFragmentManager().beginTransaction().replace(android.R.id.content, new FeedlyPreferenceFragment()).addToBackStack("settings").commit();
 				break;
 
@@ -235,7 +218,7 @@ public class MainFragment extends Fragment
 		{
 			public void onClick(DialogInterface dialog, int which)
 			{
-				// do nothing
+				dialog.dismiss();
 			}
 		}).setIcon(android.R.drawable.ic_dialog_alert).show();
 
@@ -282,12 +265,6 @@ public class MainFragment extends Fragment
 			Toast.makeText(getActivity(), getString(R.string.internet_error), Toast.LENGTH_SHORT).show();
 	}
 
-	@Override
-	public void onDestroy()
-	{
-		super.onDestroy();
-	}
-	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
 	{
@@ -341,23 +318,10 @@ public class MainFragment extends Fragment
 		
 		super.onCreateOptionsMenu(menu, inflater);
 	}
-//
-//	public boolean onCreateOptionsMenu(Menu menu)
-//	{
-//		
-//		return true;
-//	}
 	
 	private void StartLoginProcedure()
 	{
-//		Intent loginIntent = new Intent();
-//		loginIntent.setClass(getActivity(), LoginActivity.class);
-//		loginIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
-//				| Intent.FLAG_ACTIVITY_NEW_TASK);
-//		startActivityForResult(loginIntent, LOGIN_REQUEST_CODE);
-		
 		getFragmentManager().beginTransaction().replace(android.R.id.content, new SplashFragment()).commit();
-
 	}
 
 	private class GetFeedlyDataTask extends
@@ -464,6 +428,14 @@ public class MainFragment extends Fragment
 
 			statusText.setText(result.getErrorMessage());
 			return;
+		}
+		if(result.getCategories().size()==0)
+		{
+			statusText.setVisibility(View.VISIBLE);
+
+			statusText.setText(getString(R.string.no_feed_subscriptions));
+			return;
+			
 		}
 
 		listView.setVisibility(View.VISIBLE);

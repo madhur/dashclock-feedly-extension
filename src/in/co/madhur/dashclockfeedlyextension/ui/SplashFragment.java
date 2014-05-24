@@ -18,7 +18,6 @@ import android.widget.Toast;
 public class SplashFragment extends Fragment implements OnClickListener
 {
 	private Button loginButton;
-	//private WebApiHelper apiHelper;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -38,13 +37,8 @@ public class SplashFragment extends Fragment implements OnClickListener
 		{
 			if(Connection.isConnected(getActivity()))
 			{
-//				LoginListener loginListener=(LoginListener) getActivity();
-//				
-//				loginListener.Login();
 				
 				WebApiHelper.register(getActivity());
-				
-				//apiHelper=WebApiHelper.getInstance();
 				
 				getFragmentManager().beginTransaction().replace(android.R.id.content,  new AuthenticationFragment()).commit();
 				
