@@ -184,16 +184,8 @@ public class MainActivity extends ActionBarActivity
 				break;
 
 			case R.id.action_settings:
-				// Intent prefIntent = new Intent(this,
-				// FeedlyPreferenceActivity.class);
-				// startActivity(prefIntent);
-
 				Intent prefIntent = new Intent(this, FeedlyPreferenceFragmentActivity.class);
 				startActivity(prefIntent);
-				// getSupportFragmentManager().beginTransaction().replace(R.id.mainframe,
-				// new FeedlyPreferenceFragment()).commit();
-				// getSupportFragmentManager().beginTransaction().replace(android.,
-				// arg1)
 				break;
 
 			case R.id.action_accept:
@@ -228,7 +220,7 @@ public class MainActivity extends ActionBarActivity
 				break;
 
 			case R.id.action_logout:
-				new Alarms(this).StartUpdate(UPDATESOURCE.LOGOUT_BUTTON);
+			
 				Logout();
 				break;
 
@@ -257,10 +249,9 @@ public class MainActivity extends ActionBarActivity
 		{
 			public void onClick(DialogInterface dialog, int which)
 			{
-				// continue with delete
-
 				appPreferences.ClearTokens();
 				StartLoginProcedure();
+				new Alarms(MainActivity.this).StartUpdate(UPDATESOURCE.LOGOUT_BUTTON);
 			}
 		}).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener()
 		{

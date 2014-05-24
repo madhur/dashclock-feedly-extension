@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="match_parent" android:id="@+id/widget_host"
      >
-
-    <ListView
-        android:id="@+id/widgetListView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </ListView>
-    
-     <!-- Empty view is show if list items are empty -->
+     
+       <!-- Empty view is show if list items are empty -->
     <TextView
         android:id="@+id/empty_view"
         android:layout_width="match_parent"
@@ -19,5 +13,13 @@
         android:textColor="#ffffff"
         android:textSize="20sp"
         android:visibility="gone" />
+
+    <ListView
+        android:id="@+id/widgetListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
+    
+  
 
 </RelativeLayout>

@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.co.madhur.dashclockfeedlyextension.App;
+import in.co.madhur.dashclockfeedlyextension.AppPreferences;
 import in.co.madhur.dashclockfeedlyextension.R;
+import in.co.madhur.dashclockfeedlyextension.AppPreferences.Keys;
 import in.co.madhur.dashclockfeedlyextension.service.ResultData;
 import in.co.madhur.dashclockfeedlyextension.service.StringFormatter;
 import in.co.madhur.dashclockfeedlyextension.service.WidgetData;
@@ -17,36 +19,38 @@ public class FeedlyWidgetListProvider implements RemoteViewsFactory
 {
 	private Context context;
 	private List<WidgetData> widgetData;
-	
+	private AppPreferences appPreferences;
+
 	public FeedlyWidgetListProvider(Context context)
 	{
-		this.context=context;
+		this.context = context;
+		this.appPreferences = new AppPreferences(context);
 	}
 
 	@Override
 	public void onCreate()
 	{
 		Log.v(App.TAG, "FeedlyWidgetListProvider:  onCreate  ;");
-		
+
 		PullData();
-		
+
 	}
-	
+
 	private void PullData()
 	{
-		ResultData data=new StringFormatter().GetResultData(context);
-		
-		if(data!=null)
-			widgetData=data.getWidgetData();
+		ResultData data = new StringFormatter().GetResultData(context);
+
+		if (data != null)
+			widgetData = data.getWidgetData();
 		else
-			widgetData=new ArrayList<WidgetData>();
+			widgetData = new ArrayList<WidgetData>();
 	}
 
 	@Override
 	public void onDataSetChanged()
 	{
 		Log.v(App.TAG, "FeedlyWidgetListProvider:  onDataSetChanged  ;");
-		
+
 		PullData();
 
 	}
@@ -66,13 +70,19 @@ public class FeedlyWidgetListProvider implements RemoteViewsFactory
 	@Override
 	public RemoteViews getViewAt(int position)
 	{
-		RemoteViews view=new RemoteViews(context.getPackageName(), R.layout.widget_row);
-		WidgetData data=widgetData.get(position);
-		
-		view.setTextViewText(R.id.TitleTextView, data.getTitle());
-		view.setTextViewText(R.id.CountTextView, String.valueOf(data.getCount()));
-		
-		
+		RemoteViews view = new RemoteViews(context.getPackageName(), R.layout.widget_row);
+		WidgetData data = widgetData.get(position);
+
+		if (data != null && view != null)
+		{
+			view.setTextViewText(R.id.TitleTextView, data.getTitle());
+			view.setTextViewText(R.id.CountTextView, String.valueOf(data.getCount()));
+
+			view.setTextColor(R.id.TitleTextView, appPreferences.GetColor(Keys.WIDGET_TITLE_COLOR));
+			view.setTextColor(R.id.CountTextView,  appPreferences.GetColor(Keys.WIDGET_COUNT_COLOR));
+			
+		}
+
 		return view;
 	}
 

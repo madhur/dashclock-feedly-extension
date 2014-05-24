@@ -29,6 +29,7 @@ public class Consts
 		ALARM("alarm"),
 		ACCEPT_BUTTON("accept_button"),
 		NETWORK_CHANGE("network_change"),
+		SETTINGS_CHANGE("settings_change"),
 		LOGOUT_BUTTON("logout_button");
 		
 		public final String key;

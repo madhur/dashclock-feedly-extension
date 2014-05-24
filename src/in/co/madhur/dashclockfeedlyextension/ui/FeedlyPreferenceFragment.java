@@ -69,6 +69,11 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 		if (index != -1)
 		{
 			newValue = (String) listPreference.getEntries()[index];
+			if(listPreference.getKey().equals(Keys.MINIMUM_UNREAD.key))
+			{
+				listPreference.setTitle(String.format(getString(R.string.min_unread), newValue));
+			}
+			else
 			listPreference.setTitle(newValue);
 		}
 

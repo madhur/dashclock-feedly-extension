@@ -3,7 +3,6 @@ package in.co.madhur.dashclockfeedlyextension.ui;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import in.co.madhur.dashclockfeedlyextension.App;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences;
 import in.co.madhur.dashclockfeedlyextension.R;
 import in.co.madhur.dashclockfeedlyextension.api.Category;
@@ -11,14 +10,11 @@ import in.co.madhur.dashclockfeedlyextension.api.FeedlyData;
 import in.co.madhur.dashclockfeedlyextension.api.Subscription;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
@@ -27,13 +23,10 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 {
 	private ViewHolderItemNotification item;
 	private ViewHolderGroupNotification groupItem;
-	
-	private AppPreferences appPreferences;
 
 	public NotificationViewAdapter(FeedlyData result, Context context)
 	{
 		super(result, context);
-		appPreferences = new AppPreferences(context);
 	}
 
 	@Override
@@ -61,35 +54,6 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 			groupItem = (ViewHolderGroupNotification) convertView.getTag();
 		}
 
-//		groupItem.checked.setOnCheckedChangeListener(new OnCheckedChangeListener()
-//		{
-
-//			@Override
-//			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-//			{
-//				if (isChecked)
-//				{
-//
-//					Log.v(App.TAG, "on checked change");
-//
-//					check_states.put(category.getId(), true);
-//
-//					if (!seek_states.containsKey(category.getId()))
-//					{
-//						seek_states.put(category.getId(), GetMinimumUnreadDefault());
-//					}
-//				}
-//				else
-//				{
-//					check_states.remove(category.getId());
-//
-//				}
-//				
-//				notifyDataSetChanged();
-//
-//			}
-//		});
-
 		groupItem.checked.setOnClickListener(new OnClickListener()
 		{
 
@@ -99,8 +63,6 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 				CheckBox checkbox = (CheckBox) v;
 				if (checkbox.isChecked())
 				{
-					Log.v(App.TAG, "on click");
-
 					check_states.put(category.getId(), true);
 
 					AddSeekState(category.getId());
@@ -110,11 +72,6 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 					check_states.remove(category.getId());
 					seek_states.remove(category.getId());
 					
-					// We do not remove seek states for unchecked items in a
-					// hope that they will be checked later and user will not
-					// have to set them agian
-					// These values also go into preference
-					// check_states should be subset of seek_states always
 				}
 
 				notifyDataSetChanged();
@@ -123,7 +80,6 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 		});
 
 		groupItem.textViewItem.setText(category.getLabel());
-		// groupItem.groupSeekCount.setText(String.valueOf(GetMinimumUnreadDefault()));
 
 		groupItem.groupSeekbar.setOnSeekBarChangeListener(new OnSeekBarChangeListener()
 		{
@@ -238,24 +194,6 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 
 		}
 		
-//		item.checked.setOnCheckedChangeListener(new OnCheckedChangeListener()
-//		{
-//			
-//			@Override
-//			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-//			{
-//				if(isChecked)
-//				{
-//					check_states.put(subscription.getId(), true);
-//				}
-//				else
-//					check_states.remove(subscription.getId());
-//					
-//				notifyDataSetChanged();
-//			}
-//		});
-		
-
 		item.checked.setOnClickListener(new OnClickListener()
 		{
 
@@ -265,7 +203,10 @@ public class NotificationViewAdapter extends FeedlyListViewAdapter
 				CheckBox checkbox = (CheckBox) v;
 
 				if (checkbox.isChecked())
+				{
 					check_states.put(subscription.getId(), true);
+					AddSeekState(subscription.getId());
+				}
 				else
 					check_states.remove(subscription.getId());
 

@@ -1,7 +1,11 @@
 package in.co.madhur.dashclockfeedlyextension.widget;
 
+import in.co.madhur.dashclockfeedlyextension.App;
+import in.co.madhur.dashclockfeedlyextension.AppPreferences;
+import in.co.madhur.dashclockfeedlyextension.AppPreferences.Keys;
 import in.co.madhur.dashclockfeedlyextension.R;
 import android.annotation.TargetApi;
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
@@ -9,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -51,9 +56,15 @@ public class FeedlyWidgetProvider extends AppWidgetProvider
 		
 	}
 
+	/**
+	 * @param context
+	 * @param appWidgetId
+	 * @return
+	 */
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	private RemoteViews updateWidgetListView(Context context, int appWidgetId)
 	{
+		AppPreferences appPreferences=new AppPreferences(context);
 
 		RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.feedly_appwidget);
 
@@ -62,8 +73,26 @@ public class FeedlyWidgetProvider extends AppWidgetProvider
 		svcIntent.setData(Uri.parse(svcIntent.toUri(Intent.URI_INTENT_SCHEME)));
 		remoteViews.setRemoteAdapter(R.id.widgetListView, svcIntent);
 		remoteViews.setEmptyView(R.id.widgetListView, R.id.empty_view);
+		//remoteViews.setOnClickPendingIntent(R.id.widgetListView, GetPendingIntent(context));
+		remoteViews.setOnClickFillInIntent(R.id.widgetListView, appPreferences.GetWidgetIntent());
+		remoteViews.setInt(R.id.widget_host, "setBackgroundColor", appPreferences.GetColor(Keys.WIDGET_BACKGROUND_COLOR));
+	
+		
 		
 		return remoteViews;
+	}
+	
+	private PendingIntent GetPendingIntent(Context context)
+	{
+		
+		Intent widgetIntent=new AppPreferences(context).GetWidgetIntent();
+		if(widgetIntent!=null)
+		{
+			PendingIntent pendingIntent=PendingIntent.getActivity(context, 0, widgetIntent, 0);
+			return pendingIntent;
+		}
+		
+		return null;
 	}
 
 	// convenience method to count the number of installed widgets

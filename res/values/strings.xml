@@ -44,7 +44,7 @@
     <string name="notification_configuration">Notification configuration</string>
     <string name="action_switchtheme">Theme</string>
     <string name="minimum_unread">Default minimum unread feeds</string>
-    <string name="minimum_unread_desc">Select default minimum unread feeds after which notification will fire. A custom value can be configured per feed in notification configuration</string>
+    <string name="minimum_unread_desc">Select default minimum unread feeds. This value can be overriden per feed by using slider on main screen</string>
     <string name="widget_appearance">Widget Appearance</string>
     <string name="widget_appearance_desc">Configure the appearance of widget</string>
     <string name="action_expandall">Expand All</string>
@@ -80,5 +80,8 @@
     <string name="rate_button">Rate</string>
     <string name="whatsnew_tab" formatted="false">What\'s new</string>
     <string name="send_email">Send Email</string>
+    <string name="min_unread">Minimum unread: %s</string>
+    <string name="widget_background_color">Background color / Opacity</string>
+    <string name="widget_background_color_desc">Set the background color and opacity of the widget</string>
     
 </resources>

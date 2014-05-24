@@ -1,6 +1,6 @@
 #Feed Notifier#
 
-[](!ic_launcher.png)
+[](!https://raw.githubusercontent.com/madhur/dashclock-feedly-extension/develop/res/drawable-xhdpi/ic_launcher.png)
 
 Feed notifier is a simple, highly customizable and an intuitive notifier for your favorite unread articles in Feedly.
 

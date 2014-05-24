@@ -1,7 +1,11 @@
 package in.co.madhur.dashclockfeedlyextension;
 
+import in.co.madhur.dashclockfeedlyextension.service.Alarms;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import net.margaritov.preference.colorpicker.ColorPickerPreference;
 
 import com.google.android.apps.dashclock.configuration.AppChooserPreference;
 
@@ -9,11 +13,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
-public class AppPreferences
+public class AppPreferences implements OnSharedPreferenceChangeListener
 {
 	private Context context;
 	private SharedPreferences sharedPreferences;
@@ -23,6 +28,7 @@ public class AppPreferences
 
 		this.context = context;
 		this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+		this.sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 	}
 
 	public enum Keys
@@ -44,7 +50,11 @@ public class AppPreferences
 		TOKEN_EXPIRES_IN("expires_in"),
 		PICK_THEME("pick_theme"),
 		FOLLOW_TWITTER("follow_twitter"),
-		ACTION_ABOUT("action_about");
+		ACTION_ABOUT("action_about"),
+		WIDGET_TITLE_COLOR("widget_title_color"),
+		WIDGET_COUNT_COLOR("widget_count_color"),
+		WIDGET_BACKGROUND_COLOR("widget_background_color"),
+		WIDGET_BACKGROUND_OPACITY("widget_background_opacity");
 
 		public final String key;
 
@@ -54,6 +64,12 @@ public class AppPreferences
 
 		}
 		
+	}
+	
+	public int GetColor(Keys key)
+	{
+		int color=sharedPreferences.getInt(key.key, 0);
+		return color;
 	}
 	
 	public Intent GetWidgetIntent()
@@ -268,6 +284,20 @@ public class AppPreferences
 	{
 		return sharedPreferences.getLong(Keys.LAST_SUCCESSFUL_SYNC.key, 0);
 
+	}
+
+	@Override
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
+	{
+		if(key.contains("widget"))
+		{
+			Intent updateIntent = new Intent();
+			updateIntent.setAction(Consts.UPDATE_ACTION);
+			updateIntent.addCategory(Consts.CATEGORY_WIDGET);
+			context.sendBroadcast(updateIntent);
+			
+		}
+			
 	}
 
 }
