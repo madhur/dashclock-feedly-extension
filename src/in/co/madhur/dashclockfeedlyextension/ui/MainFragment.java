@@ -350,11 +350,13 @@ public class MainFragment extends Fragment
 	
 	private void StartLoginProcedure()
 	{
-		Intent loginIntent = new Intent();
-		loginIntent.setClass(getActivity(), LoginActivity.class);
-		loginIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
-				| Intent.FLAG_ACTIVITY_NEW_TASK);
-		startActivityForResult(loginIntent, LOGIN_REQUEST_CODE);
+//		Intent loginIntent = new Intent();
+//		loginIntent.setClass(getActivity(), LoginActivity.class);
+//		loginIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
+//				| Intent.FLAG_ACTIVITY_NEW_TASK);
+//		startActivityForResult(loginIntent, LOGIN_REQUEST_CODE);
+		
+		getFragmentManager().beginTransaction().replace(android.R.id.content, new SplashFragment()).commit();
 
 	}
 

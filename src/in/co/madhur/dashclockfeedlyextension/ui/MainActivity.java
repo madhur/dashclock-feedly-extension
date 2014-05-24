@@ -1,5 +1,7 @@
 package in.co.madhur.dashclockfeedlyextension.ui;
 
+import com.infospace.android.oauth2.LoginListener;
+
 import in.co.madhur.dashclockfeedlyextension.App;
 import android.os.Build;
 import android.os.Bundle;
@@ -8,7 +10,7 @@ import android.annotation.TargetApi;
 import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
 import android.support.v7.app.ActionBarActivity;
 
-public class MainActivity extends ActionBarActivity implements OnBackStackChangedListener
+public class MainActivity extends ActionBarActivity implements OnBackStackChangedListener, LoginListener
 
 {
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -66,6 +68,12 @@ public class MainActivity extends ActionBarActivity implements OnBackStackChange
 		// back stack.
 		getSupportFragmentManager().popBackStack();
 		return true;
+	}
+
+	@Override
+	public void Login()
+	{
+		getSupportFragmentManager().beginTransaction().replace(android.R.id.content, new MainFragment()).commit();
 	}
 
 }

@@ -1,7 +1,9 @@
 package in.co.madhur.dashclockfeedlyextension.ui;
 
 
-import in.co.madhur.dashclockfeedlyextension.LoginListener;
+import com.infospace.android.oauth2.AuthenticationFragment;
+import com.infospace.android.oauth2.WebApiHelper;
+
 import in.co.madhur.dashclockfeedlyextension.R;
 import in.co.madhur.dashclockfeedlyextension.service.Connection;
 import android.os.Bundle;
@@ -15,7 +17,8 @@ import android.widget.Toast;
 
 public class SplashFragment extends Fragment implements OnClickListener
 {
-	Button loginButton;
+	private Button loginButton;
+	//private WebApiHelper apiHelper;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -35,9 +38,15 @@ public class SplashFragment extends Fragment implements OnClickListener
 		{
 			if(Connection.isConnected(getActivity()))
 			{
-				LoginListener loginListener=(LoginListener) getActivity();
+//				LoginListener loginListener=(LoginListener) getActivity();
+//				
+//				loginListener.Login();
 				
-				loginListener.Login();
+				WebApiHelper.register(getActivity());
+				
+				//apiHelper=WebApiHelper.getInstance();
+				
+				getFragmentManager().beginTransaction().replace(android.R.id.content,  new AuthenticationFragment()).commit();
 				
 			}
 			else

@@ -42,10 +42,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="in.co.madhur.dashclockfeedlyextension.ui.LoginActivity"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
             android:name="in.co.madhur.dashclockfeedlyextension.ui.LauncherActivity"
             android:label="@string/app_name" >
         </activity>
