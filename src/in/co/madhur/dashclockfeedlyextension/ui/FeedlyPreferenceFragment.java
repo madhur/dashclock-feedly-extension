@@ -8,19 +8,29 @@ import in.co.madhur.dashclockfeedlyextension.service.Alarms;
 
 import com.google.android.apps.dashclock.configuration.AppChooserPreference;
 
+import android.annotation.TargetApi;
+import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.preference.PreferenceScreen;
 import android.support.v4.preference.PreferenceFragment;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 public class FeedlyPreferenceFragment extends PreferenceFragment
 {
-	
+
 	private AppPreferences appPreferences;
 
 	private final OnPreferenceChangeListener listPreferenceChangeListerner = new OnPreferenceChangeListener()
@@ -33,8 +43,7 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 			return true;
 		}
 	};
-	
-	
+
 	private final OnPreferenceChangeListener widgetChangeListener = new OnPreferenceChangeListener()
 	{
 
@@ -46,19 +55,17 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 		}
 	};
 
-	
-	
-	
+	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	@Override
 	public void onCreate(Bundle paramBundle)
 	{
 		super.onCreate(paramBundle);
-		
+
 		addPreferencesFromResource(R.xml.settings_layout);
-		
+
 		appPreferences = new AppPreferences(getActivity());
+
 	}
-	
 
 	@Override
 	public void onResume()
@@ -85,7 +92,7 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 		if (index != -1)
 		{
 			newValue = (String) listPreference.getEntries()[index];
-			if(listPreference.getKey().equals(Keys.MINIMUM_UNREAD.key))
+			if (listPreference.getKey().equals(Keys.MINIMUM_UNREAD.key))
 			{
 				listPreference.setTitle(String.format(getString(R.string.min_unread), newValue));
 			}
@@ -97,7 +104,6 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 
 	protected void SetListeners()
 	{
-
 
 		findPreference(Keys.SYNC_INTERVAL.key).setOnPreferenceChangeListener(listPreferenceChangeListerner);
 		findPreference(Keys.MINIMUM_UNREAD.key).setOnPreferenceChangeListener(listPreferenceChangeListerner);
@@ -160,16 +166,16 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 				return true;
 			}
 		});
-		
+
 		findPreference(Keys.ACTION_ABOUT.key).setOnPreferenceClickListener(new OnPreferenceClickListener()
 		{
-			
+
 			@Override
 			public boolean onPreferenceClick(Preference preference)
 			{
 				AboutDialog dialog = new AboutDialog();
 				dialog.show(getFragmentManager(), Consts.ABOUT_TAG);
-				
+
 				return true;
 			}
 		});
@@ -184,10 +190,10 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 				return true;
 			}
 		});
-		
+
 		findPreference(Keys.PICK_THEME.key).setOnPreferenceClickListener(new OnPreferenceClickListener()
 		{
-			
+
 			@Override
 			public boolean onPreferenceClick(Preference preference)
 			{
@@ -195,13 +201,13 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 				return false;
 			}
 		});
-		
+
 		findPreference(Keys.WIDGET_BACKGROUND_COLOR.key).setOnPreferenceChangeListener(widgetChangeListener);
 		findPreference(Keys.WIDGET_COUNT_COLOR.key).setOnPreferenceChangeListener(widgetChangeListener);
 		findPreference(Keys.WIDGET_TITLE_COLOR.key).setOnPreferenceChangeListener(widgetChangeListener);
 		findPreference(Keys.WIDGET_TEXT_SIZE.key).setOnPreferenceChangeListener(new OnPreferenceChangeListener()
 		{
-			
+
 			@Override
 			public boolean onPreferenceChange(Preference preference, Object newValue)
 			{
@@ -210,20 +216,90 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 				return true;
 			}
 		});
-		
-		
+
 	}
-	
+
 	private void WidgetSettingsChanged()
 	{
 		// Broadcast intent to update widget
-		
+
 		Intent updateIntent = new Intent();
 		updateIntent.setAction(Consts.UPDATE_ACTION);
 		updateIntent.addCategory(Consts.CATEGORY_WIDGET);
 		getActivity().sendBroadcast(updateIntent);
-		
-		
+
+	}
+
+	@Override
+	public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference)
+	{
+		super.onPreferenceTreeClick(preferenceScreen, preference);
+
+		// If the user has clicked on a preference screen, set up the action bar
+		if (preference instanceof PreferenceScreen)
+		{
+			initializeActionBar((PreferenceScreen) preference);
+		}
+
+		return false;
+	}
+
+	/** Sets up the action bar for an {@link PreferenceScreen} */
+	public static void initializeActionBar(PreferenceScreen preferenceScreen)
+	{
+		final Dialog dialog = preferenceScreen.getDialog();
+
+		if (dialog != null)
+		{
+			// Inialize the action bar
+			dialog.getActionBar().setDisplayHomeAsUpEnabled(true);
+
+			// Apply custom home button area click listener to close the
+			// PreferenceScreen because PreferenceScreens are dialogs which
+			// swallow
+			// events instead of passing to the activity
+			// Related Issue:
+			// https://code.google.com/p/android/issues/detail?id=4611
+			View homeBtn = dialog.findViewById(android.R.id.home);
+
+			if (homeBtn != null)
+			{
+				OnClickListener dismissDialogClickListener = new OnClickListener()
+				{
+					@Override
+					public void onClick(View v)
+					{
+						dialog.dismiss();
+					}
+				};
+
+				// Prepare yourselves for some hacky programming
+				ViewParent homeBtnContainer = homeBtn.getParent();
+
+				// The home button is an ImageView inside a FrameLayout
+				if (homeBtnContainer instanceof FrameLayout)
+				{
+					ViewGroup containerParent = (ViewGroup) homeBtnContainer.getParent();
+
+					if (containerParent instanceof LinearLayout)
+					{
+						// This view also contains the title text, set the whole
+						// view as clickable
+						((LinearLayout) containerParent).setOnClickListener(dismissDialogClickListener);
+					}
+					else
+					{
+						// Just set it on the home button
+						((FrameLayout) homeBtnContainer).setOnClickListener(dismissDialogClickListener);
+					}
+				}
+				else
+				{
+					// The 'If all else fails' default case
+					homeBtn.setOnClickListener(dismissDialogClickListener);
+				}
+			}
+		}
 	}
 
 }

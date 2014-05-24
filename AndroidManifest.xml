@@ -50,15 +50,6 @@
             android:label="@string/app_name" >
         </activity>
         
-         <activity
-            android:name="in.co.madhur.dashclockfeedlyextension.ui.FeedlyPreferenceFragmentActivity"
-            android:label="@string/app_name"
-            android:parentActivityName="in.co.madhur.dashclockfeedlyextension.ui.MainActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
-        </activity>
-
         <receiver android:name=".widget.FeedlyWidgetProvider" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
