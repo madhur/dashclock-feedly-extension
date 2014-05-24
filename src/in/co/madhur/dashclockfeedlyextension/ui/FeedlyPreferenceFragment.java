@@ -23,7 +23,7 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 	
 	private AppPreferences appPreferences;
 
-	protected final OnPreferenceChangeListener listPreferenceChangeListerner = new OnPreferenceChangeListener()
+	private final OnPreferenceChangeListener listPreferenceChangeListerner = new OnPreferenceChangeListener()
 	{
 
 		@Override
@@ -33,6 +33,21 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 			return true;
 		}
 	};
+	
+	
+	private final OnPreferenceChangeListener widgetChangeListener = new OnPreferenceChangeListener()
+	{
+
+		@Override
+		public boolean onPreferenceChange(Preference preference, Object newValue)
+		{
+			WidgetSettingsChanged();
+			return true;
+		}
+	};
+
+	
+	
 	
 	@Override
 	public void onCreate(Bundle paramBundle)
@@ -55,6 +70,7 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 		UpdateLabel((ListPreference) findPreference(Keys.SYNC_INTERVAL.key), null);
 		UpdateLabel((ListPreference) findPreference(Keys.MINIMUM_UNREAD.key), null);
 		UpdateLabel((ListPreference) findPreference(Keys.PICK_THEME.key), null);
+		UpdateLabel((ListPreference) findPreference(Keys.WIDGET_TEXT_SIZE.key), null);
 	}
 
 	protected void UpdateLabel(ListPreference listPreference, String newValue)
@@ -178,6 +194,25 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 				return false;
 			}
 		});
+		
+		findPreference(Keys.WIDGET_BACKGROUND_COLOR.key).setOnPreferenceChangeListener(widgetChangeListener);
+		findPreference(Keys.WIDGET_COUNT_COLOR.key).setOnPreferenceChangeListener(widgetChangeListener);
+		findPreference(Keys.WIDGET_TITLE_COLOR.key).setOnPreferenceChangeListener(widgetChangeListener);
+		findPreference(Keys.WIDGET_TEXT_SIZE.key).setOnPreferenceChangeListener(widgetChangeListener);
+		
+		
+	}
+	
+	private void WidgetSettingsChanged()
+	{
+		// Broadcast intent to update widget
+		
+		Intent updateIntent = new Intent();
+		updateIntent.setAction(Consts.UPDATE_ACTION);
+		updateIntent.addCategory(Consts.CATEGORY_WIDGET);
+		getActivity().sendBroadcast(updateIntent);
+		
+		
 	}
 
 }

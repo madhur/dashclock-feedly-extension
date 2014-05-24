@@ -10,8 +10,12 @@ import in.co.madhur.dashclockfeedlyextension.AppPreferences.Keys;
 import in.co.madhur.dashclockfeedlyextension.service.ResultData;
 import in.co.madhur.dashclockfeedlyextension.service.StringFormatter;
 import in.co.madhur.dashclockfeedlyextension.service.WidgetData;
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Typeface;
+import android.os.Build;
 import android.util.Log;
+import android.util.TypedValue;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService.RemoteViewsFactory;
 
@@ -38,7 +42,7 @@ public class FeedlyWidgetListProvider implements RemoteViewsFactory
 
 	private void PullData()
 	{
-		ResultData data = new StringFormatter().GetResultData(context);
+		ResultData data = new StringFormatter(context).GetResultData(context);
 
 		if (data != null)
 			widgetData = data.getWidgetData();
@@ -67,6 +71,7 @@ public class FeedlyWidgetListProvider implements RemoteViewsFactory
 		return widgetData.size();
 	}
 
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	@Override
 	public RemoteViews getViewAt(int position)
 	{
@@ -80,6 +85,9 @@ public class FeedlyWidgetListProvider implements RemoteViewsFactory
 
 			view.setTextColor(R.id.TitleTextView, appPreferences.GetColor(Keys.WIDGET_TITLE_COLOR));
 			view.setTextColor(R.id.CountTextView,  appPreferences.GetColor(Keys.WIDGET_COUNT_COLOR));
+			
+			view.setTextViewTextSize(R.id.TitleTextView, TypedValue.COMPLEX_UNIT_SP, appPreferences.GetFontSize());
+			view.setTextViewTextSize(R.id.CountTextView, TypedValue.COMPLEX_UNIT_SP, appPreferences.GetFontSize());
 			
 		}
 

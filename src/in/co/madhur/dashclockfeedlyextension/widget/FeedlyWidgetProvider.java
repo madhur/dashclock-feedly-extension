@@ -1,6 +1,5 @@
 package in.co.madhur.dashclockfeedlyextension.widget;
 
-import in.co.madhur.dashclockfeedlyextension.App;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences.Keys;
 import in.co.madhur.dashclockfeedlyextension.R;
@@ -13,7 +12,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -76,7 +74,7 @@ public class FeedlyWidgetProvider extends AppWidgetProvider
 		//remoteViews.setOnClickPendingIntent(R.id.widgetListView, GetPendingIntent(context));
 		remoteViews.setOnClickFillInIntent(R.id.widgetListView, appPreferences.GetWidgetIntent());
 		remoteViews.setInt(R.id.widget_host, "setBackgroundColor", appPreferences.GetColor(Keys.WIDGET_BACKGROUND_COLOR));
-	
+		remoteViews.setEmptyView(R.id.widgetListView, R.id.empty_view);
 		
 		
 		return remoteViews;

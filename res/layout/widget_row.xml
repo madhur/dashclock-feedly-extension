@@ -12,13 +12,15 @@
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"
-        android:ellipsize="marquee"
+        android:layout_toLeftOf="@+id/CountTextView"
+        android:ellipsize="end"
+        android:maxLines="1"
        android:paddingLeft="@attr/padding_large"
         android:textSize="17sp" />
 
 
    <TextView
-        android:id="@+id/CountTextView"
+        android:id="@id/CountTextView"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_alignParentRight="true"

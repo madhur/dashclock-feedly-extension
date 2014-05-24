@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+
     <string-array name="sync_interval">
         <item>@string/every1hour</item>
         <item>@string/every2hour</item>
@@ -9,7 +9,14 @@
         <item>@string/every12hour</item>
         <item>@string/every24hour</item>
     </string-array>
-    
+    <string-array name="sync_interval_values">
+        <item>1</item>
+        <item>2</item>
+        <item>4</item>
+        <item>6</item>
+        <item>12</item>
+        <item>24</item>
+    </string-array>
     <string-array name="themes">
         <item>@string/dark</item>
         <item>@string/light</item>
@@ -20,42 +27,35 @@
         <item>2</item>
         <item>3</item>
     </string-array>
-    
-     <string-array name="sync_interval_values">
+    <string-array name="minimum_unread">
         <item>1</item>
-        <item>2</item>
-        <item>4</item>
-        <item>6</item>
+        <item>5</item>
+        <item>10</item>
+        <item>20</item>
+        <item>50</item>
+        <item>100</item>
+        <item>500</item>
+        <item>1000</item>
+    </string-array>
+    <string-array name="minimum_unread_values">
+        <item>1</item>
+        <item>5</item>
+        <item>10</item>
+        <item>20</item>
+        <item>50</item>
+        <item>100</item>
+        <item>500</item>
+        <item>1000</item>
+    </string-array>
+    <string-array name="widget_textsize">
+        <item>@string/small</item>
+        <item>@string/medium</item>
+        <item>@string/large</item>
+    </string-array>
+    <string-array name="widget_textsize_values">
         <item>12</item>
-        <item>24</item>
-        
+        <item>14</item>
+        <item>16</item>
     </string-array>
-     <string-array name="minimum_unread">
-        <item>1</item>
-        <item>5</item>
-        <item>10</item>
-        <item>20</item>
-        <item>50</item>
-        <item>100</item>
-        <item>500</item>
-        <item>1000</item>
-        
-    </string-array>
-     <string-array name="minimum_unread_values">
-        <item>1</item>
-        <item>5</item>
-        <item>10</item>
-        <item>20</item>
-        <item>50</item>
-        <item>100</item>
-        <item>500</item>
-        <item>1000</item>
-        
-    </string-array>
-    
-     <string-array name="dropdown">
-         <item>@string/widget_configuration</item>
-         <item>@string/notification_configuration</item>
-     </string-array>
 
 </resources>

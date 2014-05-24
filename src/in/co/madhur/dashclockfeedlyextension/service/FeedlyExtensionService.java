@@ -50,7 +50,7 @@ public class FeedlyExtensionService extends DashClockExtension
 			return;
 		}
 
-		StringFormatter formatter = new StringFormatter();
+		StringFormatter formatter = new StringFormatter(this);
 		ResultData data = formatter.GetResultData(this);
 		String expandedBody = "";
 

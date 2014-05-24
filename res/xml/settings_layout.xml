@@ -17,7 +17,7 @@
             android:key="sync_interval"
             android:summary="@string/sync_interval_desc"
             android:title="@string/sync_interval" />
-          <ListPreference
+        <ListPreference
             android:defaultValue="10"
             android:dependency="enable_notifications"
             android:entries="@array/minimum_unread"
@@ -26,9 +26,9 @@
             android:summary="@string/minimum_unread_desc"
             android:title="@string/minimum_unread" />
         <ListPreference
+            android:dialogTitle="@string/pick_theme"
             android:entries="@array/themes"
             android:entryValues="@array/themes_values"
-            android:dialogTitle="@string/pick_theme"
             android:key="pick_theme"
             android:title="@string/themes" />
     </PreferenceCategory>
@@ -62,8 +62,6 @@
         <com.google.android.apps.dashclock.configuration.AppChooserPreference
             android:key="notification_click_intent"
             android:title="@string/click_behave_title" />
-
-      
     </PreferenceScreen>
     <PreferenceScreen android:title="@string/widget_configuration" >
         <com.google.android.apps.dashclock.configuration.AppChooserPreference
@@ -71,27 +69,31 @@
             android:title="@string/click_behave_title" />
 
         <ListPreference
+            android:defaultValue="14"
+            android:entries="@array/widget_textsize"
+            android:entryValues="@array/widget_textsize_values"
             android:key="widget_text_size"
             android:summary="@string/widget_text_size_desc"
             android:title="@string/widget_text_size" />
 
         <net.margaritov.preference.colorpicker.ColorPickerPreference
+            alphaSlider="true"
             android:key="widget_background_color"
             android:summary="@string/widget_background_color_desc"
-            android:title="@string/widget_background_color" alphaSlider="true" >
-    		alphaSlider="true"                              
+            android:title="@string/widget_background_color" >
+    		alphaSlider="true"                              
         </net.margaritov.preference.colorpicker.ColorPickerPreference>
-
         <net.margaritov.preference.colorpicker.ColorPickerPreference
             android:key="widget_title_color"
             android:summary="@string/widget_title_color_desc"
             android:title="@string/widget_title_color" >
-    		alphaSlider="true"                                      </net.margaritov.preference.colorpicker.ColorPickerPreference>
+    		alphaSlider="true"                                      
+        </net.margaritov.preference.colorpicker.ColorPickerPreference>
         <net.margaritov.preference.colorpicker.ColorPickerPreference
             android:key="widget_count_color"
             android:summary="@string/widget_count_color_desc"
             android:title="@string/widget_count_color" >
-    alphaSlider="true"                              
+    alphaSlider="true"                              
         </net.margaritov.preference.colorpicker.ColorPickerPreference>
     </PreferenceScreen>
 

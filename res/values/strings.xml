@@ -83,5 +83,8 @@
     <string name="min_unread">Minimum unread: %s</string>
     <string name="widget_background_color">Background color / Opacity</string>
     <string name="widget_background_color_desc">Set the background color and opacity of the widget</string>
+    <string name="small">Small</string>
+    <string name="medium">Medium</string>
+    <string name="large">Large</string>
     
 </resources>

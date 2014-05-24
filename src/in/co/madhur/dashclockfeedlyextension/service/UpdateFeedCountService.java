@@ -50,6 +50,7 @@ public class UpdateFeedCountService extends WakefulIntentService
 		if (!appPreferences.IsTokenPresent())
 		{
 			Log.d(App.TAG, "Auth token not present, returning");
+			SendUpdateBroadcast();
 			return;
 		}
 		else
@@ -170,7 +171,7 @@ public class UpdateFeedCountService extends WakefulIntentService
 	private void PrepareAndSendNotifications()
 	{
 		Notifications notifications = new Notifications(this);
-		StringFormatter formatter = new StringFormatter();
+		StringFormatter formatter = new StringFormatter(this);
 		ResultData data = formatter.GetResultData(this);
 
 		if (data == null)

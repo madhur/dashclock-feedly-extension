@@ -1,11 +1,7 @@
 package in.co.madhur.dashclockfeedlyextension;
 
-import in.co.madhur.dashclockfeedlyextension.service.Alarms;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import net.margaritov.preference.colorpicker.ColorPickerPreference;
 
 import com.google.android.apps.dashclock.configuration.AppChooserPreference;
 
@@ -18,7 +14,7 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
-public class AppPreferences implements OnSharedPreferenceChangeListener
+public class AppPreferences
 {
 	private Context context;
 	private SharedPreferences sharedPreferences;
@@ -28,7 +24,6 @@ public class AppPreferences implements OnSharedPreferenceChangeListener
 
 		this.context = context;
 		this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-		this.sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 	}
 
 	public enum Keys
@@ -54,7 +49,7 @@ public class AppPreferences implements OnSharedPreferenceChangeListener
 		WIDGET_TITLE_COLOR("widget_title_color"),
 		WIDGET_COUNT_COLOR("widget_count_color"),
 		WIDGET_BACKGROUND_COLOR("widget_background_color"),
-		WIDGET_BACKGROUND_OPACITY("widget_background_opacity");
+		WIDGET_TEXT_SIZE("widget_text_size");
 
 		public final String key;
 
@@ -63,24 +58,43 @@ public class AppPreferences implements OnSharedPreferenceChangeListener
 			this.key = key;
 
 		}
-		
+
 	}
-	
+
 	public int GetColor(Keys key)
 	{
-		int color=sharedPreferences.getInt(key.key, 0);
+		int color = sharedPreferences.getInt(key.key, 0);
 		return color;
 	}
-	
+
+	public int GetFontSize()
+	{
+		int intFontSize;
+		String fontSize = sharedPreferences.getString(Keys.WIDGET_TEXT_SIZE.key, Defaults.FONT_SIZE);
+
+		try
+		{
+			intFontSize = Integer.parseInt(fontSize);
+		}
+		catch (NumberFormatException e)
+		{
+			Log.e(App.TAG, e.getMessage());
+			return 14;
+		}
+
+		return intFontSize;
+
+	}
+
 	public Intent GetWidgetIntent()
 	{
 		return AppChooserPreference.getIntentValue(getMetadata(Keys.CLICK_INTENT), null);
 	}
-	
+
 	public Intent GetNotificationIntent()
 	{
 		return AppChooserPreference.getIntentValue(getMetadata(Keys.NOTIFICATION_CLICK_INTENT), null);
-		
+
 	}
 
 	public boolean IsTokenPresent()
@@ -158,28 +172,10 @@ public class AppPreferences implements OnSharedPreferenceChangeListener
 		edit.putString(Keys.ACCESS_TOKEN.key, empty);
 		edit.putString(Keys.REFRESH_TOKEN.key, empty);
 		edit.putString(Keys.TOKEN_EXPIRES_IN.key, empty);
-		edit.putString(Keys.LAST_SUCCESSFUL_SYNC.key, empty);
+		edit.putLong(Keys.LAST_SUCCESSFUL_SYNC.key, 0);
 		edit.commit();
 
 	}
-
-//	public void SaveSelectedValuesWidgets(HashMap<String, Boolean> check_states)
-//	{
-//		StringBuilder sb = new StringBuilder();
-//		for (String Id : check_states.keySet())
-//		{
-//			if (check_states.get(Id))
-//			{
-//				sb.append(Id);
-//				sb.append(';');
-//			}
-//		}
-//
-//		Editor edit = sharedPreferences.edit();
-//		edit.putString(Keys.SELECTED_VALUES_WIDGETS.key, sb.toString());
-//		edit.commit();
-//
-//	}
 
 	public void SaveSelectedValuesNotifications(HashMap<String, Boolean> check_states, HashMap<String, Integer> seek_states)
 	{
@@ -247,26 +243,11 @@ public class AppPreferences implements OnSharedPreferenceChangeListener
 
 	}
 
-//	public ArrayList<String> GetSelectedValuesWidgets()
-//	{
-//		ArrayList<String> values = new ArrayList<String>();
-//
-//		String tokenValues = sharedPreferences.getString(Keys.SELECTED_VALUES_WIDGETS.key, "");
-//		if (tokenValues.equalsIgnoreCase(""))
-//			return values;
-//
-//		String[] splitValues = tokenValues.split(";");
-//		for (String s : splitValues)
-//			values.add(s);
-//
-//		return values;
-//	}
-
 	public String getMetadata(Keys key)
 	{
 		return sharedPreferences.getString(key.key, "");
 	}
-	
+
 	public boolean getBoolMetadata(Keys key)
 	{
 		return sharedPreferences.getBoolean(key.key, true);
@@ -282,22 +263,15 @@ public class AppPreferences implements OnSharedPreferenceChangeListener
 
 	public long GetLastSuccessfulSync()
 	{
-		return sharedPreferences.getLong(Keys.LAST_SUCCESSFUL_SYNC.key, 0);
-
-	}
-
-	@Override
-	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
-	{
-		if(key.contains("widget"))
+		try
 		{
-			Intent updateIntent = new Intent();
-			updateIntent.setAction(Consts.UPDATE_ACTION);
-			updateIntent.addCategory(Consts.CATEGORY_WIDGET);
-			context.sendBroadcast(updateIntent);
-			
+			return sharedPreferences.getLong(Keys.LAST_SUCCESSFUL_SYNC.key, 0);
 		}
-			
+		catch (ClassCastException e)
+		{
+			return 0;
+		}
+
 	}
 
 }

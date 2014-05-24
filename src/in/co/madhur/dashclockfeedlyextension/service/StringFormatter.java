@@ -14,9 +14,16 @@ import android.util.Log;
 
 public class StringFormatter
 {
+	private AppPreferences appPreferences;
+	
+	public StringFormatter(Context context)
+	{
+		appPreferences=new AppPreferences(context);
+	}
+	
 	public ResultData GetResultData(Context context)
 	{
-		return GetResultData(context, new AppPreferences(context));
+		return GetResultData(context, appPreferences);
 	}
 
 	public ResultData GetResultData(Context context, AppPreferences appPreferences)
@@ -55,7 +62,6 @@ public class StringFormatter
 		ResultData resultData=new ResultData();
 		
 		int totalUnread = 0;
-		AppPreferences appPreferences = new AppPreferences(context);
 		for (String selValue : selectedValues)
 		{
 			for (Marker marker : markers.getUnreadcounts())
