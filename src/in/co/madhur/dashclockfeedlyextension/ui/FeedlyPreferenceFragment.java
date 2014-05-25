@@ -235,16 +235,22 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 	{
 		super.onPreferenceTreeClick(preferenceScreen, preference);
 
-		// If the user has clicked on a preference screen, set up the action bar
-		if (preference instanceof PreferenceScreen)
+		// This code cannot run pre honeycomb
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 		{
-			initializeActionBar((PreferenceScreen) preference);
+			// If the user has clicked on a preference screen, set up the action
+			// bar
+			if (preference instanceof PreferenceScreen)
+			{
+				initializeActionBar((PreferenceScreen) preference);
+			}
 		}
 
 		return false;
 	}
 
 	/** Sets up the action bar for an {@link PreferenceScreen} */
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public static void initializeActionBar(PreferenceScreen preferenceScreen)
 	{
 		final Dialog dialog = preferenceScreen.getDialog();

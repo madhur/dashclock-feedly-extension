@@ -31,6 +31,8 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.Preference;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.IntentCompat;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -169,8 +171,10 @@ public class AppChooserPreference extends Preference
 		AppChooserDialogFragment fragment = AppChooserDialogFragment.newInstance();
 		fragment.setPreference(this);
 
-		Activity activity = (Activity) getContext();
-		activity.getFragmentManager().beginTransaction().add(fragment, getFragmentTag()).commit();
+		FragmentActivity activity = (FragmentActivity) getContext();
+		
+		activity.getSupportFragmentManager().beginTransaction().add(fragment, getFragmentTag()).commit();
+		//activity.getSupportFragmentManager().b
 	}
 
 	@Override
@@ -178,8 +182,8 @@ public class AppChooserPreference extends Preference
 	{
 		super.onAttachedToActivity();
 
-		Activity activity = (Activity) getContext();
-		AppChooserDialogFragment fragment = (AppChooserDialogFragment) activity.getFragmentManager().findFragmentByTag(getFragmentTag());
+		FragmentActivity activity = (FragmentActivity) getContext();
+		AppChooserDialogFragment fragment = (AppChooserDialogFragment) activity.getSupportFragmentManager().findFragmentByTag(getFragmentTag());
 		if (fragment != null)
 		{
 			// re-bind preference to fragment
@@ -204,7 +208,7 @@ public class AppChooserPreference extends Preference
 		return "app_chooser_" + getKey();
 	}
 
-	public static class AppChooserDialogFragment extends DialogFragment
+	public static class AppChooserDialogFragment extends android.support.v4.app.DialogFragment
 	{
 		public static int REQUEST_CREATE_SHORTCUT = 1;
 
@@ -265,7 +269,8 @@ public class AppChooserPreference extends Preference
 					Intent intent = mAppsAdapter.getIntent(position);
 					if (intent != null)
 					{
-						intent = Intent.makeMainActivity(intent.getComponent());
+						//intent = Intent.makeMainActivity(intent.getComponent());
+						intent=IntentCompat.makeMainActivity(intent.getComponent());
 					}
 					mPreference.setIntentValue(intent);
 					dismiss();
