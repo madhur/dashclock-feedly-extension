@@ -58,7 +58,11 @@
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/feedly_appwidget_info" />
+                android:resource="@xml/feedly_appwidget_info_large" />
+            
+             <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/feedly_appwidget_info_medium" />
         </receiver>
         <receiver android:name=".receiver.BootReceiver" >
             <intent-filter>
