@@ -73,7 +73,11 @@ public class MainActivity extends ActionBarActivity implements OnBackStackChange
 	@Override
 	public void Login()
 	{
-		getSupportFragmentManager().beginTransaction().replace(android.R.id.content, new MainFragment()).commit();
+		MainFragment mainFragment=new MainFragment();
+		Bundle data=new Bundle();
+		data.putBoolean("refresh", true);
+		mainFragment.setArguments(data);
+		getSupportFragmentManager().beginTransaction().replace(android.R.id.content, mainFragment).commit();
 	}
 
 }

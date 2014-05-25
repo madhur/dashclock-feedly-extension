@@ -56,18 +56,27 @@ public class MainFragment extends Fragment
 	private ExpandableListView listView;
 	private FeedlyListViewAdapter notiAdapter;
 	private TextView statusText;
+	private boolean forceRefresh;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-
+		Log.v(App.TAG, "Fragment oncreate");
 		setHasOptionsMenu(true);
+		
+		Bundle data=getArguments();
+		if(data!=null)
+		{
+			
+			forceRefresh=data.getBoolean("refresh");
+		}
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
+		Log.v(App.TAG, "Fragment oncreateView");
 		View v = inflater.inflate(R.layout.activity_main, container, false);
 
 		progressBar = (ProgressBar) v.findViewById(R.id.pbHeaderProgress);
@@ -110,7 +119,7 @@ public class MainFragment extends Fragment
 				apiHelper.refreshAccessTokenIfNeeded();
 			}
 
-			GetFeedlyData();
+			GetFeedlyData(forceRefresh);
 
 		}
 
@@ -126,11 +135,6 @@ public class MainFragment extends Fragment
 
 		new GetFeedlyDataTask(feedly, forceRefresh).execute(0);
 
-	}
-
-	private void GetFeedlyData()
-	{
-		GetFeedlyData(false);
 	}
 
 	@Override
