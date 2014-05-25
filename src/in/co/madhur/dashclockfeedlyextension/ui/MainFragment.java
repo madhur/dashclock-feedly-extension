@@ -56,12 +56,12 @@ public class MainFragment extends Fragment
 	private ExpandableListView listView;
 	private FeedlyListViewAdapter notiAdapter;
 	private TextView statusText;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		
+
 		setHasOptionsMenu(true);
 	}
 
@@ -146,7 +146,8 @@ public class MainFragment extends Fragment
 				break;
 
 			case R.id.action_settings:
-				getFragmentManager().beginTransaction().replace(android.R.id.content, new FeedlyPreferenceFragment()).addToBackStack("settings").commit();
+				
+				getActivity().getSupportFragmentManager().beginTransaction().replace(android.R.id.content, new FeedlyPreferenceFragment()).addToBackStack("settings").commit();
 				break;
 
 			case R.id.action_accept:
@@ -268,7 +269,7 @@ public class MainFragment extends Fragment
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
 	{
-		
+
 		inflater.inflate(R.menu.main, menu);
 
 		SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
@@ -283,15 +284,18 @@ public class MainFragment extends Fragment
 			public boolean onQueryTextChange(String newText)
 			{
 				FeedlyListViewAdapter adapter = (FeedlyListViewAdapter) listView.getExpandableListAdapter();
-				adapter.getFilter().filter(newText, new FilterListener()
+				if (adapter != null)
 				{
-
-					@Override
-					public void onFilterComplete(int count)
+					adapter.getFilter().filter(newText, new FilterListener()
 					{
 
-					}
-				});
+						@Override
+						public void onFilterComplete(int count)
+						{
+
+						}
+					});
+				}
 
 				return true;
 			}
@@ -300,25 +304,28 @@ public class MainFragment extends Fragment
 			public boolean onQueryTextSubmit(String query)
 			{
 				FeedlyListViewAdapter adapter = (FeedlyListViewAdapter) listView.getExpandableListAdapter();
-				adapter.getFilter().filter(query, new FilterListener()
+				if (adapter != null)
 				{
-
-					@Override
-					public void onFilterComplete(int count)
+					adapter.getFilter().filter(query, new FilterListener()
 					{
 
-					}
-				});
+						@Override
+						public void onFilterComplete(int count)
+						{
+
+						}
+					});
+				}
 
 				return true;
 			}
+
 		};
 		searchView.setOnQueryTextListener(textChangeListener);
 
-		
 		super.onCreateOptionsMenu(menu, inflater);
 	}
-	
+
 	private void StartLoginProcedure()
 	{
 		getFragmentManager().beginTransaction().replace(android.R.id.content, new SplashFragment()).commit();
@@ -429,13 +436,15 @@ public class MainFragment extends Fragment
 			statusText.setText(result.getErrorMessage());
 			return;
 		}
-		if(result.getCategories().size()==0)
+		if (result.getCategories().size() == 0)
 		{
 			statusText.setVisibility(View.VISIBLE);
 
 			statusText.setText(getString(R.string.no_feed_subscriptions));
+			notiAdapter = new NotificationViewAdapter(result, getActivity());
+			listView.setAdapter(notiAdapter);
 			return;
-			
+
 		}
 
 		listView.setVisibility(View.VISIBLE);
