@@ -64,13 +64,15 @@ public class MainFragment extends Fragment
 		super.onCreate(savedInstanceState);
 		Log.v(App.TAG, "Fragment oncreate");
 		setHasOptionsMenu(true);
-		
-		Bundle data=getArguments();
-		if(data!=null)
+
+		Bundle data = getArguments();
+		if (data != null)
 		{
-			
-			forceRefresh=data.getBoolean("refresh");
+
+			forceRefresh = data.getBoolean("refresh");
 		}
+		
+		
 	}
 
 	@Override
@@ -112,12 +114,7 @@ public class MainFragment extends Fragment
 		{
 			WebApiHelper.register(getActivity());
 			apiHelper = WebApiHelper.getInstance();
-
-			if (apiHelper.shouldRefreshAccesToken())
-			{
-
-				apiHelper.refreshAccessTokenIfNeeded();
-			}
+			apiHelper.refreshAccessTokenIfNeeded();
 
 			GetFeedlyData(forceRefresh);
 
@@ -150,7 +147,7 @@ public class MainFragment extends Fragment
 				break;
 
 			case R.id.action_settings:
-				
+
 				getActivity().getSupportFragmentManager().beginTransaction().replace(android.R.id.content, new FeedlyPreferenceFragment()).addToBackStack("settings").commit();
 				break;
 

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import in.co.madhur.dashclockfeedlyextension.R;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences.Keys;
-import in.co.madhur.dashclockfeedlyextension.ui.LauncherActivity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -43,12 +42,12 @@ public class Notifications
 	private PendingIntent GetNotificationIntent()
 	{
 		Intent launchIntent=new Intent();
-		launchIntent.setClass(context, LauncherActivity.class);
+		launchIntent.setClass(context, LaunchService.class);
 		Bundle data=new Bundle();
 		data.putString("key", Keys.NOTIFICATION_CLICK_INTENT.key);
 		launchIntent.putExtras(data);
 		launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		PendingIntent resultPendingIntent = PendingIntent.getActivity(context, 0, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent resultPendingIntent = PendingIntent.getService(context, 0, launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		
 		return resultPendingIntent;
 		

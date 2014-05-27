@@ -12,13 +12,13 @@ import in.co.madhur.dashclockfeedlyextension.service.StringFormatter;
 import in.co.madhur.dashclockfeedlyextension.service.WidgetData;
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.util.Log;
 import android.util.TypedValue;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService.RemoteViewsFactory;
 
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class FeedlyWidgetListProvider implements RemoteViewsFactory
 {
 	private Context context;

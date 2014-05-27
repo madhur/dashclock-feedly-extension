@@ -2,7 +2,7 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:minWidth="250dp"
     android:minHeight="250dp"
-    android:updatePeriodMillis="86400000"
+    android:updatePeriodMillis="864000"
     android:previewImage="@drawable/ic_launcher"
     android:initialLayout="@layout/feedly_appwidget"
     android:resizeMode="horizontal|vertical"

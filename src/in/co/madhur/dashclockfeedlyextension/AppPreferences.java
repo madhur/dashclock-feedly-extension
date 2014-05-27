@@ -9,10 +9,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.util.Log;
 
 public class AppPreferences
 {
@@ -40,16 +38,17 @@ public class AppPreferences
 		MINIMUM_UNREAD("minimum_unread"),
 		ENABLE_AUTOSYNC("enable_autosync"),
 		LAST_SUCCESSFUL_SYNC("last_successful_sync"),
-		ACCESS_TOKEN("access_token"),
-		REFRESH_TOKEN("refresh_token"),
-		TOKEN_EXPIRES_IN("expires_in"),
+		// ACCESS_TOKEN("access_token"),
+		// REFRESH_TOKEN("refresh_token"),
+		// TOKEN_EXPIRES_IN("expires_in"),
 		PICK_THEME("pick_theme"),
 		FOLLOW_TWITTER("follow_twitter"),
 		ACTION_ABOUT("action_about"),
 		WIDGET_TITLE_COLOR("widget_title_color"),
 		WIDGET_COUNT_COLOR("widget_count_color"),
 		WIDGET_BACKGROUND_COLOR("widget_background_color"),
-		WIDGET_TEXT_SIZE("widget_text_size");
+		WIDGET_TEXT_SIZE("widget_text_size"),
+		WIDGET_OPTIONS("widget_options");
 
 		public final String key;
 
@@ -70,17 +69,9 @@ public class AppPreferences
 	public int GetFontSize()
 	{
 		int intFontSize;
-		String fontSize = sharedPreferences.getString(Keys.WIDGET_TEXT_SIZE.key, Defaults.FONT_SIZE);
+		String fontSize = sharedPreferences.getString(Keys.WIDGET_TEXT_SIZE.key, context.getResources().getString(R.string.font_medium_default));
 
-		try
-		{
-			intFontSize = Integer.parseInt(fontSize);
-		}
-		catch (NumberFormatException e)
-		{
-			Log.e(App.TAG, e.getMessage());
-			return 14;
-		}
+		intFontSize = Integer.parseInt(fontSize);
 
 		return intFontSize;
 
@@ -112,23 +103,15 @@ public class AppPreferences
 	{
 		int num;
 
-		String s = sharedPreferences.getString(Keys.MINIMUM_UNREAD.key, Defaults.MIN_UNREAD);
-		try
-		{
-			num = Integer.parseInt(s);
-		}
-		catch (NumberFormatException e)
-		{
-			Log.e(App.TAG, e.getMessage());
-			return 10;
-		}
+		String s = sharedPreferences.getString(Keys.MINIMUM_UNREAD.key, context.getResources().getString(R.string.minimum_unread_default));
+		num = Integer.parseInt(s);
 
 		return num;
 	}
 
 	public boolean IsSyncEnabled()
 	{
-		return sharedPreferences.getBoolean(Keys.ENABLE_AUTOSYNC.key, Defaults.SYNC_ENABLED);
+		return sharedPreferences.getBoolean(Keys.ENABLE_AUTOSYNC.key, context.getResources().getBoolean(R.bool.enable_autosync));
 
 	}
 
@@ -149,16 +132,8 @@ public class AppPreferences
 
 		int interval;
 
-		String s = sharedPreferences.getString(Keys.SYNC_INTERVAL.key, Defaults.SYNC_INTERVAL);
-		try
-		{
-			interval = Integer.parseInt(s);
-		}
-		catch (NumberFormatException e)
-		{
-			Log.e(App.TAG, e.getMessage());
-			return 1;
-		}
+		String s = sharedPreferences.getString(Keys.SYNC_INTERVAL.key, context.getResources().getString(R.string.sync_interval_default));
+		interval = Integer.parseInt(s);
 
 		return interval;
 
@@ -169,9 +144,9 @@ public class AppPreferences
 
 		String empty = "";
 		Editor edit = sharedPreferences.edit();
-		edit.putString(Keys.ACCESS_TOKEN.key, empty);
-		edit.putString(Keys.REFRESH_TOKEN.key, empty);
-		edit.putString(Keys.TOKEN_EXPIRES_IN.key, empty);
+		edit.putString(context.getString(R.string.feedly_api_access_token), empty);
+		edit.putString(context.getString(R.string.feedly_api_refresh_token), empty);
+		edit.putString(context.getString(R.string.feedly_api_expires_in), empty);
 		edit.putLong(Keys.LAST_SUCCESSFUL_SYNC.key, 0);
 		edit.commit();
 

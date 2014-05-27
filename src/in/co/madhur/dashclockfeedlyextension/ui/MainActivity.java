@@ -3,9 +3,11 @@ package in.co.madhur.dashclockfeedlyextension.ui;
 import com.infospace.android.oauth2.LoginListener;
 
 import in.co.madhur.dashclockfeedlyextension.App;
+import in.co.madhur.dashclockfeedlyextension.R;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.preference.PreferenceManager;
 import android.annotation.TargetApi;
 import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
 import android.support.v7.app.ActionBarActivity;
@@ -17,7 +19,7 @@ public class MainActivity extends ActionBarActivity implements OnBackStackChange
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		SetupStrictMode();
+		//SetupStrictMode();
 
 		super.onCreate(savedInstanceState);
 
@@ -30,6 +32,8 @@ public class MainActivity extends ActionBarActivity implements OnBackStackChange
 		getSupportFragmentManager().addOnBackStackChangedListener(this);
 		// Handle when activity is recreated like on orientation Change
 		shouldDisplayHomeUp();
+		
+		PreferenceManager.setDefaultValues(this, R.xml.settings_layout, false);
 
 	}
 

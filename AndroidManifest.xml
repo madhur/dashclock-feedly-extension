@@ -41,12 +41,10 @@
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="in.co.madhur.dashclockfeedlyextension.ui.LauncherActivity"
-            android:label="@string/app_name" >
-        </activity>
-        
-        <receiver android:name=".widget.FeedlyWidgetProvider" >
+
+        <receiver
+            android:name=".widget.FeedlyLargeWidgetProvider"
+            android:label="Feedly Large" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -59,10 +57,38 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/feedly_appwidget_info_large" />
-            
-             <meta-data
+        </receiver>
+        <receiver
+            android:name=".widget.FeedlyMediumWidgetProvider"
+            android:label="Feedly Medium" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="in.co.madhur.ACTION.UPDATE" />
+
+                <category android:name="in.co.madhur.ACTION.CATEGORY.WIDGET" />
+            </intent-filter>
+
+            <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/feedly_appwidget_info_medium" />
+        </receiver>
+        <receiver
+            android:name=".widget.FeedlySmallWidgetProvider"
+            android:label="Feedly Small" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="in.co.madhur.ACTION.UPDATE" />
+
+                <category android:name="in.co.madhur.ACTION.CATEGORY.WIDGET" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/feedly_appwidget_info_small" />
         </receiver>
         <receiver android:name=".receiver.BootReceiver" >
             <intent-filter>
@@ -91,6 +117,9 @@
         <service
             android:name=".widget.FeedlyWidgetsService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
+        <service
+            android:name=".service.LaunchService"
+            android:exported="false" />
         <service
             android:name=".service.FeedlyExtensionService"
             android:icon="@drawable/ic_dashclock"

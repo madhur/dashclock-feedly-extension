@@ -64,6 +64,12 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 		addPreferencesFromResource(R.xml.settings_layout);
 
 		appPreferences = new AppPreferences(getActivity());
+		
+		// we cannot show widgets pre-honeycomb since we dont support them on those versions
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
+		{
+			getPreferenceScreen().removePreference(findPreference(Keys.WIDGET_OPTIONS.key));
+		}
 
 	}
 
