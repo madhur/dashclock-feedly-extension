@@ -1,3 +1,7 @@
 [submodule "android_oauth2_webview"]
       path = android_oauth2_webview
       url = https://github.com/madhur/android_oauth2_webview.git
+
+[submodule "android-support-v4-preferencefragment"]
+      path = android-support-v4-preferencefragment
+      url = https://github.com/madhur/android-support-v4-preferencefragment.git      
