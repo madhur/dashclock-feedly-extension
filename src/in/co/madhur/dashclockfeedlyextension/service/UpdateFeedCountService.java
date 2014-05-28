@@ -111,7 +111,7 @@ public class UpdateFeedCountService extends WakefulIntentService
 	{
 		String token = appPreferences.GetToken();
 
-		Feedly feedly = Feedly.getInstance(token);
+		Feedly feedly = Feedly.getInstance(token, this);
 
 		try
 		{

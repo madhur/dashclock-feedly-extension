@@ -128,7 +128,7 @@ public class MainFragment extends Fragment
 
 		String token = appPreferences.GetToken();
 
-		Feedly feedly = Feedly.getInstance(token);
+		Feedly feedly = Feedly.getInstance(token, getActivity());
 
 		new GetFeedlyDataTask(feedly, forceRefresh).execute(0);
 
@@ -449,7 +449,8 @@ public class MainFragment extends Fragment
 		}
 
 		listView.setVisibility(View.VISIBLE);
-
+		statusText.setVisibility(View.GONE);
+		
 		notiAdapter = new NotificationViewAdapter(result, getActivity());
 		notiAdapter.GetSelectedValuesFromPreferences();
 		listView.setAdapter(notiAdapter);

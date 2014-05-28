@@ -2,7 +2,9 @@ package in.co.madhur.dashclockfeedlyextension.api;
 
 import java.util.List;
 
-import in.co.madhur.dashclockfeedlyextension.Consts;
+import android.content.Context;
+
+import in.co.madhur.dashclockfeedlyextension.R;
 import retrofit.RestAdapter;
 
 public class Feedly
@@ -16,19 +18,23 @@ public class Feedly
 
 	}
 
-	public static Feedly getInstance(String token)
+	public static Feedly getInstance(String token, Context context)
 	{
 
-		if (feedly == null || Feedly.token == null
-				|| !Feedly.token.equalsIgnoreCase(token))
+		if (feedly == null || Feedly.token == null)
 		{
-			RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(Consts.FEEDLY_API_URL).build();
+			RestAdapter restAdapter = new RestAdapter.Builder().setEndpoint(context.getString(R.string.feedly_api_url)).build();
 
 			feedlyApi = restAdapter.create(FeedlyApi.class);
 			feedly = new Feedly();
 
 			Feedly.token = token;
 
+			return feedly;
+		}
+		else if(!Feedly.token.equalsIgnoreCase(token))
+		{
+			Feedly.token = token;
 			return feedly;
 		}
 		else
