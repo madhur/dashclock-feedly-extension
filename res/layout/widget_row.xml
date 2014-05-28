@@ -15,7 +15,7 @@
         android:layout_toLeftOf="@+id/CountTextView"
         android:ellipsize="end"
         android:maxLines="1"
-       android:paddingLeft="@attr/padding_large"
+       android:paddingLeft="@attr/padding_small"
         android:textSize="17sp" />
 
 
@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_alignParentRight="true"
-        android:paddingRight="@attr/padding_large"
+        android:paddingRight="@attr/padding_small"
         android:ellipsize="marquee"
         android:textSize="17sp" />
 

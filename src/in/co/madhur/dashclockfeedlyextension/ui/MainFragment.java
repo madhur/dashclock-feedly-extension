@@ -1,11 +1,8 @@
 package in.co.madhur.dashclockfeedlyextension.ui;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 
 import com.infospace.android.oauth2.WebApiHelper;
@@ -380,10 +377,12 @@ public class MainFragment extends Fragment
 					categories = feedly.GetCategories();
 					subscriptions = feedly.GetSubscriptions();
 
+					// Add handling for uncategorized feeds
 					for (Subscription sub : subscriptions)
 					{
 						if (sub.getCategories().size() == 0)
 						{
+							//Create a new category "Uncategorized", if not created, with a unique id
 							if (!isuncatSet)
 							{
 								Category uncategorizedCat = new Category();
@@ -402,6 +401,8 @@ public class MainFragment extends Fragment
 						}
 					}
 
+					// Dump all the information to db
+					
 					dbHelper.TruncateProfile();
 					dbHelper.WriteProfile(profile);
 
@@ -411,6 +412,7 @@ public class MainFragment extends Fragment
 					dbHelper.TruncateSubscriptions();
 					dbHelper.WriteSubscriptions(subscriptions);
 
+					// Create a helper Category -> Subscription map for list adapter so that we don't hit the disk again while scrolling in list.
 					for (Category category : categories)
 					{
 						categorySubscriptions.put(category, dbHelper.GetSubScriptionsForCategory(category.getId()));
