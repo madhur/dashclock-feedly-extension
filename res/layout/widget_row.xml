@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_alignParentRight="true"
-        android:paddingRight="@attr/padding_small"
+        android:paddingRight="@attr/padding_medium"
         android:ellipsize="marquee"
         android:textSize="17sp" />
 

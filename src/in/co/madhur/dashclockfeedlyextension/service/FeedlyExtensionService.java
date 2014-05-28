@@ -6,6 +6,8 @@ import in.co.madhur.dashclockfeedlyextension.App;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences;
 import in.co.madhur.dashclockfeedlyextension.Consts;
 import in.co.madhur.dashclockfeedlyextension.R;
+import in.co.madhur.dashclockfeedlyextension.Utils;
+
 import com.google.android.apps.dashclock.api.DashClockExtension;
 import com.google.android.apps.dashclock.api.ExtensionData;
 
@@ -64,9 +66,8 @@ public class FeedlyExtensionService extends DashClockExtension
 
 		if (data.getLastUpdated() != 0)
 		{
-			Date date = new Date(data.getLastUpdated());
-			java.text.DateFormat dateFormat = android.text.format.DateFormat.getTimeFormat(getBaseContext());
-			expandedBody = String.format(getString(R.string.lastupdate_display_format), dateFormat.format(date));
+
+			expandedBody = String.format(getString(R.string.lastupdate_display_format), Utils.GetFormattedDate(data.getLastUpdated(), this));
 		}
 
 		Log.d(App.TAG, "Dashclock" + expandedBody);

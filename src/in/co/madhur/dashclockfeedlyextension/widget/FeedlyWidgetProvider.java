@@ -2,6 +2,7 @@ package in.co.madhur.dashclockfeedlyextension.widget;
 
 import in.co.madhur.dashclockfeedlyextension.App;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences;
+import in.co.madhur.dashclockfeedlyextension.Utils;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences.Keys;
 import in.co.madhur.dashclockfeedlyextension.R;
 import android.annotation.TargetApi;
@@ -14,6 +15,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
+import android.util.TypedValue;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -26,7 +28,6 @@ public abstract class FeedlyWidgetProvider extends AppWidgetProvider
 	{
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
 
-		
 		// widgets are not supported pre-honeycomb
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 		{
@@ -64,7 +65,7 @@ public abstract class FeedlyWidgetProvider extends AppWidgetProvider
 				RemoteViews remoteViews = updateWidgetListView(context, appWidgetIds[i]);
 				appWidgetManager.updateAppWidget(appWidgetIds[i], remoteViews);
 				appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds[i], R.id.widgetListView);
-				
+
 			}
 			catch (NullPointerException e)
 			{
@@ -80,7 +81,7 @@ public abstract class FeedlyWidgetProvider extends AppWidgetProvider
 	 * @return
 	 */
 	@SuppressWarnings("deprecation")
-	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	private RemoteViews updateWidgetListView(Context context, int appWidgetId)
 	{
 		AppPreferences appPreferences = new AppPreferences(context);
@@ -90,7 +91,7 @@ public abstract class FeedlyWidgetProvider extends AppWidgetProvider
 		Intent svcIntent = new Intent(context, FeedlyWidgetsService.class);
 		svcIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 		svcIntent.setData(Uri.parse(svcIntent.toUri(Intent.URI_INTENT_SCHEME)));
-		
+
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 		{
 			remoteViews.setRemoteAdapter(R.id.widgetListView, svcIntent);
@@ -100,12 +101,20 @@ public abstract class FeedlyWidgetProvider extends AppWidgetProvider
 			remoteViews.setRemoteAdapter(appWidgetId, R.id.widgetListView, svcIntent);
 		}
 		remoteViews.setEmptyView(R.id.widgetListView, R.id.empty_view);
-		
-		if(appPreferences.GetWidgetIntent()!=null)
+
+		if (appPreferences.GetWidgetIntent() != null)
 			remoteViews.setOnClickFillInIntent(R.id.widgetListView, appPreferences.GetWidgetIntent());
+
+		remoteViews.setTextViewText(R.id.updatedTextView, String.format(context.getString(R.string.lastupdate_display_format), Utils.GetFormattedDate(appPreferences.GetLastSuccessfulSync(), context)));
+		remoteViews.setTextColor(R.id.CountTextView, appPreferences.GetColor(Keys.WIDGET_COUNT_COLOR));
 		
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+		{
+			remoteViews.setTextViewTextSize(R.id.updatedTextView, TypedValue.COMPLEX_UNIT_SP, appPreferences.GetFontSize());
+		}
+
 		remoteViews.setInt(R.id.widget_host, "setBackgroundColor", appPreferences.GetColor(Keys.WIDGET_BACKGROUND_COLOR));
-		//remoteViews.setEmptyView(R.id.widgetListView, R.id.empty_view);
+		// remoteViews.setEmptyView(R.id.widgetListView, R.id.empty_view);
 
 		return remoteViews;
 	}

@@ -6,6 +6,7 @@ import java.util.List;
 import in.co.madhur.dashclockfeedlyextension.App;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences;
 import in.co.madhur.dashclockfeedlyextension.R;
+import in.co.madhur.dashclockfeedlyextension.Utils;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences.Keys;
 import in.co.madhur.dashclockfeedlyextension.service.ResultData;
 import in.co.madhur.dashclockfeedlyextension.service.StringFormatter;
@@ -23,6 +24,7 @@ public class FeedlyWidgetListProvider implements RemoteViewsFactory
 {
 	private Context context;
 	private List<WidgetData> widgetData;
+	private ResultData data;
 	private AppPreferences appPreferences;
 
 	public FeedlyWidgetListProvider(Context context)
@@ -42,7 +44,7 @@ public class FeedlyWidgetListProvider implements RemoteViewsFactory
 
 	private void PullData()
 	{
-		ResultData data = new StringFormatter(context).GetResultData(context);
+		data = new StringFormatter(context).GetResultData(context);
 
 		if (data != null)
 			widgetData = data.getWidgetData();
@@ -76,19 +78,18 @@ public class FeedlyWidgetListProvider implements RemoteViewsFactory
 	public RemoteViews getViewAt(int position)
 	{
 		RemoteViews view = new RemoteViews(context.getPackageName(), R.layout.widget_row);
-		WidgetData data = widgetData.get(position);
+		WidgetData rowData = widgetData.get(position);
 
-		if (data != null && view != null)
+		if (rowData != null && view != null)
 		{
-			view.setTextViewText(R.id.TitleTextView, data.getTitle());
-			view.setTextViewText(R.id.CountTextView, String.valueOf(data.getCount()));
+			view.setTextViewText(R.id.TitleTextView, rowData.getTitle());
+			view.setTextViewText(R.id.CountTextView, String.valueOf(rowData.getCount()));
 
 			view.setTextColor(R.id.TitleTextView, appPreferences.GetColor(Keys.WIDGET_TITLE_COLOR));
-			view.setTextColor(R.id.CountTextView,  appPreferences.GetColor(Keys.WIDGET_COUNT_COLOR));
+			view.setTextColor(R.id.CountTextView, appPreferences.GetColor(Keys.WIDGET_COUNT_COLOR));
 			
 			view.setTextViewTextSize(R.id.TitleTextView, TypedValue.COMPLEX_UNIT_SP, appPreferences.GetFontSize());
 			view.setTextViewTextSize(R.id.CountTextView, TypedValue.COMPLEX_UNIT_SP, appPreferences.GetFontSize());
-			
 		}
 
 		return view;
