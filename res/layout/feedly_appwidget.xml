@@ -10,12 +10,14 @@
         android:id="@+id/widget_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="-10dp"
         android:layout_alignParentLeft="true"
         android:background="@drawable/widget_button"
         android:src="@drawable/ic_notification" />
 
     <TextView
         android:id="@+id/updatedTextView"
+        android:paddingTop="@attr/padding_medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/widget_icon" />
@@ -25,8 +27,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:layout_marginRight="-5dp"
         android:background="@drawable/widget_button"
-        android:src="@drawable/widget_settings" />
+        android:src="@drawable/ic_action_settings" />
 
     <ImageButton
         android:id="@+id/widget_refresh"
@@ -34,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@id/widget_settings"
         android:background="@drawable/widget_button"
-        android:src="@drawable/widget_refresh" />
+        android:src="@drawable/ic_action_refresh" />
 
     <!-- Empty view is show if list items are empty -->
 

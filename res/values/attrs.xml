@@ -11,7 +11,7 @@
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
-  limitations under the License.
+  limitations under the License.
 -->
 
 <resources>
@@ -30,9 +30,10 @@
     <item name="padding_xlarge" type="attr">25dp</item>
     <item name="padding_medium" type="attr">10dp</item>
     <item name="padding_xmedium" type="attr">15dp</item>
-    <item name="font_small" type="integer">12</item>
-    <item name="font_medium" type="integer">14</item>
-    <item name="font_large" type="string">16</item>
+
+    <integer name="font_small">12</integer>
+    <integer name="font_medium">14</integer>
+    <integer name="font_large">16</integer>
 
     <!-- Default values -->
 
@@ -50,7 +51,6 @@
     <string name="font_medium_default">12</string>
 
     <integer name="widget_background_color">-2130706432</integer>
-
     <integer name="widget_count_color">-9738393</integer>
     <integer name="widget_title_color">-1800</integer>
 
