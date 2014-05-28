@@ -23,6 +23,9 @@ public class Consts
 	public static final String THEME_TAG="theme";
 	public static final String WHATS_NEW_TAG="whatsnew";
 	public static final String MY_EMAIL="ahuja.madhur@gmail.com";
+	public static final String UNCATEGORIZED="Uncategorized";
+	public static final String UNCAT_ID="user/%s/category/global.uncategorized";
+	
 	
 	public enum UPDATESOURCE
 	{

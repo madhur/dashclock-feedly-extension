@@ -3,6 +3,4 @@ android:
   components:
     - build-tools-19.1
 
-install: gradle clean build
 
-script: gradle check

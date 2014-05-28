@@ -402,6 +402,7 @@ public class DbHelper
 
 	public List<Subscription> GetSubScriptionsForCategory(String categoryId)
 	{
+		Log.v(App.TAG, "Getting subs for " +categoryId);
 		SQLiteDatabase database = db.getReadableDatabase();
 		List<Subscription> subscriptions = new ArrayList<Subscription>();
 

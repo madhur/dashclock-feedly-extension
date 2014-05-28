@@ -1,7 +1,11 @@
 package in.co.madhur.dashclockfeedlyextension.ui;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 import com.infospace.android.oauth2.WebApiHelper;
@@ -12,8 +16,8 @@ import de.keyboardsurfer.android.widget.crouton.Configuration.Builder;
 import in.co.madhur.dashclockfeedlyextension.App;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences;
 import in.co.madhur.dashclockfeedlyextension.Consts;
-import in.co.madhur.dashclockfeedlyextension.R;
 import in.co.madhur.dashclockfeedlyextension.Consts.UPDATESOURCE;
+import in.co.madhur.dashclockfeedlyextension.R;
 import in.co.madhur.dashclockfeedlyextension.api.Category;
 import in.co.madhur.dashclockfeedlyextension.api.Feedly;
 import in.co.madhur.dashclockfeedlyextension.api.FeedlyData;
@@ -71,8 +75,7 @@ public class MainFragment extends Fragment
 
 			forceRefresh = data.getBoolean("refresh");
 		}
-		
-		
+
 	}
 
 	@Override
@@ -365,6 +368,7 @@ public class MainFragment extends Fragment
 			Profile profile;
 			List<Subscription> subscriptions;
 			Map<Category, List<Subscription>> categorySubscriptions = new HashMap<Category, List<Subscription>>();
+			boolean isuncatSet = false;
 
 			try
 			{
@@ -373,14 +377,37 @@ public class MainFragment extends Fragment
 				{
 
 					profile = feedly.GetProfile();
+					categories = feedly.GetCategories();
+					subscriptions = feedly.GetSubscriptions();
+
+					for (Subscription sub : subscriptions)
+					{
+						if (sub.getCategories().size() == 0)
+						{
+							if (!isuncatSet)
+							{
+								Category uncategorizedCat = new Category();
+								uncategorizedCat.setLabel(Consts.UNCATEGORIZED);
+								uncategorizedCat.setId(String.format(Consts.UNCAT_ID, profile.getId()));
+								categories.add(uncategorizedCat);
+								
+								isuncatSet=true;
+							}
+							
+							ArrayList<Category> uncatList=new ArrayList<Category>();
+							uncatList.add(categories.get(categories.size()-1));
+							sub.setCategories(uncatList);
+							
+
+						}
+					}
+
 					dbHelper.TruncateProfile();
 					dbHelper.WriteProfile(profile);
 
-					categories = feedly.GetCategories();
 					dbHelper.TruncateCategories();
 					dbHelper.WriteCategories(categories);
 
-					subscriptions = feedly.GetSubscriptions();
 					dbHelper.TruncateSubscriptions();
 					dbHelper.WriteSubscriptions(subscriptions);
 
@@ -450,7 +477,7 @@ public class MainFragment extends Fragment
 
 		listView.setVisibility(View.VISIBLE);
 		statusText.setVisibility(View.GONE);
-		
+
 		notiAdapter = new NotificationViewAdapter(result, getActivity());
 		notiAdapter.GetSelectedValuesFromPreferences();
 		listView.setAdapter(notiAdapter);
