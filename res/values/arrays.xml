@@ -55,5 +55,13 @@
         <item>14</item>
         <item>16</item>
     </string-array>
+    <string-array name="sort_order">
+        <item>@string/most_unread_first</item>
+        <item>@string/alphabetical</item>
+    </string-array>
+    <string-array name="sort_order_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
 
 </resources>

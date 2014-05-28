@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <bool name="enable_widget_header_default">true</bool>
+    <bool name="enable_autosync">true</bool>
+    <bool name="enable_notifications">true</bool>
+    <bool name="enable_sound">true</bool>
+    <bool name="enable_vibrate">true</bool>
+    <bool name="enable_led">true</bool>
+
+</resources>

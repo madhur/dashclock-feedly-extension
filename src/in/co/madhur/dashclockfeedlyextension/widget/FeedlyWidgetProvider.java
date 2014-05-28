@@ -110,7 +110,7 @@ public abstract class FeedlyWidgetProvider extends AppWidgetProvider
 		
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
 		{
-			remoteViews.setTextViewTextSize(R.id.updatedTextView, TypedValue.COMPLEX_UNIT_SP, context.getResources().getInteger(R.integer.font_medium));
+			remoteViews.setTextViewTextSize(R.id.updatedTextView, TypedValue.COMPLEX_UNIT_SP, appPreferences.GetFontSize());
 		}
 
 		remoteViews.setInt(R.id.widget_host, "setBackgroundColor", appPreferences.GetColor(Keys.WIDGET_BACKGROUND_COLOR));

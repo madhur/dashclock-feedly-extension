@@ -11,8 +11,7 @@
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
-  limitations under the License.
--->
+  limitations under the License.-->
 
 <resources>
 
@@ -31,24 +30,13 @@
     <item name="padding_medium" type="attr">10dp</item>
     <item name="padding_xmedium" type="attr">15dp</item>
 
-    <integer name="font_small">12</integer>
-    <integer name="font_medium">14</integer>
-    <integer name="font_large">16</integer>
-
-    <!-- Default values -->
-
-    <bool name="enable_autosync">true</bool>
+       <!-- Default values -->
 
     <string name="sync_interval_default">1</string>
     <string name="minimum_unread_default">10</string>
     <string name="pick_theme_default">0</string>
-
-    <bool name="enable_notifications">true</bool>
-    <bool name="enable_sound">true</bool>
-    <bool name="enable_vibrate">true</bool>
-    <bool name="enable_led">true</bool>
-
-    <string name="font_medium_default">12</string>
+    <string name="sort_order_default">0</string>
+    <string name="font_medium_default">14</string>
 
     <integer name="widget_background_color">-2130706432</integer>
     <integer name="widget_count_color">-9738393</integer>

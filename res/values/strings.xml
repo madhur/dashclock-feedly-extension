@@ -12,6 +12,7 @@
     <string name="sync_interval">Sync interval</string>
     <string name="sync_interval_desc">How often should synchronize?</string>
     <string name="notifications">Notification options</string>
+    <string name="notifications_desc">Configure the notification options</string>
     <string name="enable_notifications">Enable notifications</string>
     <string name="enable_notifications_desc">Enable notification information message</string>
     <string name="enable_sound_desc">Play sound on notification</string>
@@ -36,6 +37,7 @@
     <string name="title_shortcuts">Shortcuts</string>
     <string name="pref_shortcut_default">Default</string>
     <string name="widget_configuration">Widget options</string>
+    <string name="widget_configuration_desc">Configure the widget options</string>
     <string name="search_hint">search</string>
     <string name="action_selecteverything">Select everything</string>
     <string name="action_selectallcategories">Select All Categories</string>
@@ -69,12 +71,13 @@
     <string name="widget_title_color">Title Color</string>
     <string name="widget_count_color_desc">Set the count color</string>
     <string name="widget_count_color">Count color</string>
-    <string name="dark">Holo Dark</string>        
+    <string name="dark">Dark</string>        
     <string name="black">Black</string>
     <string name="sepia">Sepia</string>
-    <string name="light">Holo Light</string>
+    <string name="light">Light</string>
     <string name="pick_theme">Pick Theme</string>
     <string name="themes">Theme</string>
+    <string name="themes_desc">Set the theme for app and widget</string>
     <string name="follow_twitter">Follow me on Twitter</string>
     <string name="feedback_button">Feedback</string>
     <string name="rate_button">Rate</string>
@@ -87,5 +90,11 @@
     <string name="medium">Medium</string>
     <string name="large">Large</string>
     <string name="no_feed_subscriptions">No feed subscriptions found</string>
+    <string name="enable_widget_header">Show widget header</string>
+    <string name="enable_widget_header_desc">Show the header with icons and last updated time</string>
+    <string name="sort_order_desc">Weather to sort alphabetically or by most unread</string>
+    <string name="sort_order">Widget sort order</string>
+    <string name="most_unread_first">Most unread first</string>
+    <string name="alphabetical">Alphabetical</string>
     
 </resources>
