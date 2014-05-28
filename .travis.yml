@@ -1,4 +1,7 @@
 language: android
+android:
+  components:
+    - build-tools-19.0.2
 
 install: gradle clean build
 
