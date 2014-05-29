@@ -48,7 +48,10 @@ public class AppPreferences
 		WIDGET_COUNT_COLOR("widget_count_color"),
 		WIDGET_BACKGROUND_COLOR("widget_background_color"),
 		WIDGET_TEXT_SIZE("widget_text_size"),
-		WIDGET_OPTIONS("widget_options");
+		WIDGET_OPTIONS("widget_options"),
+		ENABLE_WIDGET_HEADER("enable_widget_header"),
+		WIDGET_SORT_ORDER("widget_sort_order");
+		
 
 		public final String key;
 
@@ -58,6 +61,17 @@ public class AppPreferences
 
 		}
 
+	}
+	
+	public boolean IsWidgetHeaderEnabled()
+	{
+		return sharedPreferences.getBoolean(Keys.ENABLE_WIDGET_HEADER.key, context.getResources().getBoolean(R.bool.enable_widget_header_default));
+	}
+	
+	public int GetWidgetSortOrder()
+	{
+		String s=sharedPreferences.getString(Keys.WIDGET_SORT_ORDER.key, context.getString(R.string.widget_sort_order_default));
+		return Integer.parseInt(s);
 	}
 
 	public int GetColor(Keys key)

@@ -52,7 +52,7 @@ public class Alarms
 		
 	}
 	
-	private PendingIntent GetPendingIntent(Context context)
+	public PendingIntent GetPendingIntent(Context context)
 	{
 		Intent updateIntent=new Intent();
 		updateIntent.setAction(Consts.UPDATE_COUNT_ACTION);

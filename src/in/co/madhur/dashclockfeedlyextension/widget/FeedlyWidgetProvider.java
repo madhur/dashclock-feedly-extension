@@ -5,6 +5,7 @@ import in.co.madhur.dashclockfeedlyextension.AppPreferences;
 import in.co.madhur.dashclockfeedlyextension.Utils;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences.Keys;
 import in.co.madhur.dashclockfeedlyextension.R;
+import in.co.madhur.dashclockfeedlyextension.service.Alarms;
 import android.annotation.TargetApi;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -16,6 +17,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -110,22 +112,54 @@ public abstract class FeedlyWidgetProvider extends AppWidgetProvider
 		
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
 		{
-			remoteViews.setTextViewTextSize(R.id.updatedTextView, TypedValue.COMPLEX_UNIT_SP, appPreferences.GetFontSize());
+			remoteViews.setTextViewTextSize(R.id.updatedTextView, TypedValue.COMPLEX_UNIT_SP, appPreferences.GetFontSize() );
+		}
+		else
+		{
+			remoteViews.setFloat(R.id.updatedTextView,"setTextSize",appPreferences.GetFontSize());
+		}
+		
+		if(appPreferences.IsWidgetHeaderEnabled())
+		{
+			remoteViews.setViewVisibility(R.id.widget_icon, View.VISIBLE);
+			remoteViews.setViewVisibility(R.id.updatedTextView, View.VISIBLE);
+			remoteViews.setViewVisibility(R.id.widget_refresh, View.VISIBLE);
+			remoteViews.setViewVisibility(R.id.widget_settings, View.VISIBLE);
+			
+		}
+		else
+		{
+			remoteViews.setViewVisibility(R.id.widget_icon, View.GONE);
+			remoteViews.setViewVisibility(R.id.updatedTextView, View.GONE);
+			remoteViews.setViewVisibility(R.id.widget_refresh, View.GONE);
+			remoteViews.setViewVisibility(R.id.widget_settings, View.GONE);
 		}
 
 		remoteViews.setInt(R.id.widget_host, "setBackgroundColor", appPreferences.GetColor(Keys.WIDGET_BACKGROUND_COLOR));
-		// remoteViews.setEmptyView(R.id.widgetListView, R.id.empty_view);
+		
+		remoteViews.setOnClickPendingIntent(R.id.widget_icon, GetPendingIntent(context.getPackageManager().getLaunchIntentForPackage(context.getPackageName()), context));
+		remoteViews.setOnClickPendingIntent(R.id.widget_refresh, new Alarms(context).GetPendingIntent(context));
+		remoteViews.setOnClickPendingIntent(R.id.widget_settings, GetSettingsPendingIntent(context));
 
 		return remoteViews;
 	}
+	
+	private PendingIntent GetSettingsPendingIntent(Context context)
+	{
+		Intent intent=context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
+		intent.putExtra("fragment", "settings");
+		
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+		return pendingIntent;
+		
+	}
 
-	private PendingIntent GetPendingIntent(Context context)
+	private PendingIntent GetPendingIntent(Intent intent, Context context)
 	{
 
-		Intent widgetIntent = new AppPreferences(context).GetWidgetIntent();
-		if (widgetIntent != null)
+		if (intent != null)
 		{
-			PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, widgetIntent, 0);
+			PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 			return pendingIntent;
 		}
 

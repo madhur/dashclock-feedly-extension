@@ -37,6 +37,7 @@
     <string name="pick_theme_default">0</string>
     <string name="sort_order_default">0</string>
     <string name="font_medium_default">14</string>
+    <string name="widget_sort_order_default">0</string>
 
     <integer name="widget_background_color">-2130706432</integer>
     <integer name="widget_count_color">-9738393</integer>
