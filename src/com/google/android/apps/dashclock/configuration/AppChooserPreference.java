@@ -119,12 +119,12 @@ public class AppChooserPreference extends Preference
 			{
 				return defaultIntent;
 			}
-
+			Log.v(App.TAG, value);
 			return Intent.parseUri(value, Intent.URI_INTENT_SCHEME);
 		}
 		catch (URISyntaxException e)
 		{
-			Log.e(App.TAG, e.getMessage());
+			Log.e(App.TAG, "error in parse uri");
 			return defaultIntent;
 		}
 	}

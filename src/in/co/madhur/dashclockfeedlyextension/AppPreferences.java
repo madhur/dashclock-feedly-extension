@@ -32,7 +32,7 @@ public class AppPreferences
 		ENABLE_SOUND("enable_sound"),
 		ENABLE_VIBRATE("enable_vibrate"),
 		ENABLE_LED("enable_led"),
-		CLICK_INTENT("widget_click_intent"),
+		WIDGET_CLICK_INTENT("widget_click_intent"),
 		NOTIFICATION_CLICK_INTENT("notification_click_intent"),
 		SYNC_INTERVAL("sync_interval"),
 		MINIMUM_UNREAD("minimum_unread"),
@@ -90,7 +90,7 @@ public class AppPreferences
 
 	public Intent GetWidgetIntent()
 	{
-		return AppChooserPreference.getIntentValue(getMetadata(Keys.CLICK_INTENT), null);
+		return AppChooserPreference.getIntentValue(getMetadata(Keys.WIDGET_CLICK_INTENT), null);
 	}
 
 	public Intent GetNotificationIntent()

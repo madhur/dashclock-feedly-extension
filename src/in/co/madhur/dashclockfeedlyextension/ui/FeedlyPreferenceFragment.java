@@ -64,8 +64,9 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 		addPreferencesFromResource(R.xml.settings_layout);
 
 		appPreferences = new AppPreferences(getActivity());
-		
-		// we cannot show widgets pre-honeycomb since we dont support them on those versions
+
+		// we cannot show widgets pre-honeycomb since we dont support them on
+		// those versions
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB)
 		{
 			getPreferenceScreen().removePreference(findPreference(Keys.WIDGET_OPTIONS.key));
@@ -115,26 +116,29 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 		findPreference(Keys.MINIMUM_UNREAD.key).setOnPreferenceChangeListener(listPreferenceChangeListerner);
 		findPreference(Keys.PICK_THEME.key).setOnPreferenceChangeListener(listPreferenceChangeListerner);
 
-		CharSequence intentSummary = AppChooserPreference.getDisplayValue(getActivity(), appPreferences.getMetadata(Keys.CLICK_INTENT));
-		findPreference(Keys.CLICK_INTENT.key).setSummary(TextUtils.isEmpty(intentSummary)
+		CharSequence intentSummary = AppChooserPreference.getDisplayValue(getActivity(), appPreferences.getMetadata(Keys.WIDGET_CLICK_INTENT));
+		findPreference(Keys.WIDGET_CLICK_INTENT.key).setSummary(TextUtils.isEmpty(intentSummary)
 				|| intentSummary.equals(getString(R.string.pref_shortcut_default)) ? ""
 				: intentSummary);
 
-		intentSummary = AppChooserPreference.getDisplayValue(getActivity(), appPreferences.getMetadata(Keys.NOTIFICATION_CLICK_INTENT));
-		findPreference(Keys.NOTIFICATION_CLICK_INTENT.key).setSummary(TextUtils.isEmpty(intentSummary)
-				|| intentSummary.equals(getString(R.string.pref_shortcut_default)) ? ""
-				: intentSummary);
+		CharSequence intentSummary1 = AppChooserPreference.getDisplayValue(getActivity(), appPreferences.getMetadata(Keys.NOTIFICATION_CLICK_INTENT));
+		findPreference(Keys.NOTIFICATION_CLICK_INTENT.key).setSummary(TextUtils.isEmpty(intentSummary1)
+				|| intentSummary1.equals(getString(R.string.pref_shortcut_default)) ? ""
+				: intentSummary1);
 
-		findPreference(Keys.CLICK_INTENT.key).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
+		findPreference(Keys.WIDGET_CLICK_INTENT.key).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener()
 		{
 
 			@Override
 			public boolean onPreferenceChange(Preference preference, Object newValue)
 			{
 				CharSequence intentSummary = AppChooserPreference.getDisplayValue(getActivity(), newValue.toString());
-				getPreferenceScreen().findPreference(Keys.CLICK_INTENT.key).setSummary(TextUtils.isEmpty(intentSummary)
+				getPreferenceScreen().findPreference(Keys.WIDGET_CLICK_INTENT.key).setSummary(TextUtils.isEmpty(intentSummary)
 						|| intentSummary.equals(getResources().getString(R.string.pref_shortcut_default)) ? ""
 						: intentSummary);
+				
+				WidgetSettingsChanged();
+				
 				return true;
 			}
 
@@ -211,6 +215,8 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 		findPreference(Keys.WIDGET_BACKGROUND_COLOR.key).setOnPreferenceChangeListener(widgetChangeListener);
 		findPreference(Keys.WIDGET_COUNT_COLOR.key).setOnPreferenceChangeListener(widgetChangeListener);
 		findPreference(Keys.WIDGET_TITLE_COLOR.key).setOnPreferenceChangeListener(widgetChangeListener);
+		findPreference(Keys.WIDGET_SORT_ORDER.key).setOnPreferenceChangeListener(widgetChangeListener);
+		findPreference(Keys.ENABLE_WIDGET_HEADER.key).setOnPreferenceChangeListener(widgetChangeListener);
 		findPreference(Keys.WIDGET_TEXT_SIZE.key).setOnPreferenceChangeListener(new OnPreferenceChangeListener()
 		{
 

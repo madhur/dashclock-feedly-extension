@@ -106,6 +106,7 @@ public abstract class FeedlyWidgetProvider extends AppWidgetProvider
 		{
 
 			remoteViews.setViewVisibility(R.id.empty_view, View.GONE);
+			remoteViews.setTextViewText(R.id.empty_view, context.getString(R.string.no_unread_items));
 
 			Intent svcIntent = new Intent(context, FeedlyWidgetsService.class);
 			svcIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);

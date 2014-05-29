@@ -97,5 +97,6 @@
     <string name="most_unread_first">Most unread first</string>
     <string name="alphabetical">Alphabetical</string>
     <string name="sync_started">Synchronization started</string>
+    <string name="no_unread_items">No unread items</string>
     
 </resources>

@@ -353,6 +353,7 @@ public class MainFragment extends Fragment
 			super.onPreExecute();
 			progressBar.setVisibility(View.VISIBLE);
 			listView.setVisibility(View.GONE);
+			statusText.setVisibility(View.GONE);
 
 			Configuration.Builder builder = new Builder();
 			builder.setDuration(Configuration.DURATION_INFINITE);
