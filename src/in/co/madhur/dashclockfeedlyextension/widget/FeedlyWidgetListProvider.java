@@ -7,8 +7,6 @@ import java.util.List;
 import in.co.madhur.dashclockfeedlyextension.App;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences;
 import in.co.madhur.dashclockfeedlyextension.R;
-import in.co.madhur.dashclockfeedlyextension.Utils;
-import in.co.madhur.dashclockfeedlyextension.AppPreferences.Keys;
 import in.co.madhur.dashclockfeedlyextension.service.ResultData;
 import in.co.madhur.dashclockfeedlyextension.service.StringFormatter;
 import in.co.madhur.dashclockfeedlyextension.service.WidgetData;
