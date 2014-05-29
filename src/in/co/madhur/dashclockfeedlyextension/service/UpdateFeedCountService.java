@@ -2,6 +2,7 @@ package in.co.madhur.dashclockfeedlyextension.service;
 
 import in.co.madhur.dashclockfeedlyextension.App;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences;
+import in.co.madhur.dashclockfeedlyextension.R;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences.Keys;
 import in.co.madhur.dashclockfeedlyextension.Consts;
 import in.co.madhur.dashclockfeedlyextension.Consts.UPDATESOURCE;
@@ -17,6 +18,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 public class UpdateFeedCountService extends WakefulIntentService
 {
@@ -44,6 +46,10 @@ public class UpdateFeedCountService extends WakefulIntentService
 		if (!TextUtils.isEmpty(source))
 		{
 			Log.d(App.TAG, "Starting update because of " + source);
+		}
+		else if(source.equalsIgnoreCase(UPDATESOURCE.ALARM.key))
+		{
+			Toast.makeText(this, getString(R.string.sync_started), Toast.LENGTH_SHORT).show();
 		}
 
 		appPreferences = new AppPreferences(this);

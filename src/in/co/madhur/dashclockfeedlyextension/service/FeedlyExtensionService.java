@@ -1,7 +1,5 @@
 package in.co.madhur.dashclockfeedlyextension.service;
 
-import java.util.Date;
-
 import in.co.madhur.dashclockfeedlyextension.App;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences;
 import in.co.madhur.dashclockfeedlyextension.Consts;
@@ -17,7 +15,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.widget.Toast;
 
 public class FeedlyExtensionService extends DashClockExtension
 {
@@ -70,8 +67,6 @@ public class FeedlyExtensionService extends DashClockExtension
 			expandedBody = String.format(getString(R.string.lastupdate_display_format), Utils.GetFormattedDate(data.getLastUpdated(), this));
 		}
 
-		Log.d(App.TAG, "Dashclock" + expandedBody);
-
 		UpdateData(String.valueOf(data.getUnreadCount()), data.getTitle(), expandedBody, appPreferences.GetWidgetIntent());
 
 	}
@@ -101,8 +96,6 @@ public class FeedlyExtensionService extends DashClockExtension
 		@Override
 		public void onReceive(Context context, Intent intent)
 		{
-			Toast.makeText(context, "on recieve dashclock "
-					+ intent.getAction(), Toast.LENGTH_SHORT).show();
 			onUpdateData(DashClockExtension.UPDATE_REASON_CONTENT_CHANGED);
 		}
 	}

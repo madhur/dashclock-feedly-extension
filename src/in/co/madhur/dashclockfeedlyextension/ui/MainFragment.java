@@ -63,7 +63,6 @@ public class MainFragment extends Fragment
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		Log.v(App.TAG, "Fragment oncreate");
 		setHasOptionsMenu(true);
 
 		Bundle data = getArguments();
@@ -78,7 +77,6 @@ public class MainFragment extends Fragment
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		Log.v(App.TAG, "Fragment oncreateView");
 		View v = inflater.inflate(R.layout.activity_main, container, false);
 
 		progressBar = (ProgressBar) v.findViewById(R.id.pbHeaderProgress);

@@ -19,26 +19,29 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService.RemoteViewsFactory;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-public class FeedlyWidgetListProvider implements RemoteViewsFactory {
+public class FeedlyWidgetListProvider implements RemoteViewsFactory
+{
 	private Context context;
 	private List<WidgetData> widgetData;
 	private ResultData data;
 	private WidgetConfig widgetConfig;
 
-	public FeedlyWidgetListProvider(Context context) {
+	public FeedlyWidgetListProvider(Context context)
+	{
 		this.context = context;
 		widgetConfig = new WidgetConfig();
 	}
 
 	@Override
-	public void onCreate() {
-		Log.v(App.TAG, "FeedlyWidgetListProvider:  onCreate  ;");
+	public void onCreate()
+	{
 
 		PullData();
 
 	}
 
-	private void PullData() {
+	private void PullData()
+	{
 		data = new StringFormatter(context).GetResultData(context);
 
 		if (data != null)
@@ -56,7 +59,8 @@ public class FeedlyWidgetListProvider implements RemoteViewsFactory {
 	}
 
 	@Override
-	public void onDataSetChanged() {
+	public void onDataSetChanged()
+	{
 		Log.v(App.TAG, "FeedlyWidgetListProvider:  onDataSetChanged  ;");
 
 		PullData();
@@ -64,41 +68,42 @@ public class FeedlyWidgetListProvider implements RemoteViewsFactory {
 	}
 
 	@Override
-	public void onDestroy() {
+	public void onDestroy()
+	{
 		Log.v(App.TAG, "FeedlyWidgetListProvider:  onDestroy  ;");
 	}
 
 	@Override
-	public int getCount() {
+	public int getCount()
+	{
 		return widgetData.size();
 	}
 
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	@Override
-	public RemoteViews getViewAt(int position) {
-		RemoteViews view = new RemoteViews(context.getPackageName(),
-				R.layout.widget_row);
+	public RemoteViews getViewAt(int position)
+	{
+		RemoteViews view = new RemoteViews(context.getPackageName(), R.layout.widget_row);
 		WidgetData rowData = widgetData.get(position);
 
-		if (rowData != null && view != null) {
+		if (rowData != null && view != null)
+		{
 			view.setTextViewText(R.id.TitleTextView, rowData.getTitle());
-			view.setTextViewText(R.id.CountTextView,
-					String.valueOf(rowData.getCount()));
+			view.setTextViewText(R.id.CountTextView, String.valueOf(rowData.getCount()));
 
 			view.setTextColor(R.id.TitleTextView, widgetConfig.getTitleColor());
 			view.setTextColor(R.id.CountTextView, widgetConfig.getCountColor());
 
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-				view.setTextViewTextSize(R.id.TitleTextView,
-						TypedValue.COMPLEX_UNIT_SP, widgetConfig.getTextSize());
-				view.setTextViewTextSize(R.id.CountTextView,
-						TypedValue.COMPLEX_UNIT_SP, widgetConfig.getTextSize());
-			} else {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+			{
+				view.setTextViewTextSize(R.id.TitleTextView, TypedValue.COMPLEX_UNIT_SP, widgetConfig.getTextSize());
+				view.setTextViewTextSize(R.id.CountTextView, TypedValue.COMPLEX_UNIT_SP, widgetConfig.getTextSize());
+			}
+			else
+			{
 
-				view.setFloat(R.id.TitleTextView, "setTextSize",
-						widgetConfig.getTextSize());
-				view.setFloat(R.id.CountTextView, "setTextSize",
-						widgetConfig.getTextSize());
+				view.setFloat(R.id.TitleTextView, "setTextSize", widgetConfig.getTextSize());
+				view.setFloat(R.id.CountTextView, "setTextSize", widgetConfig.getTextSize());
 			}
 		}
 
@@ -106,22 +111,26 @@ public class FeedlyWidgetListProvider implements RemoteViewsFactory {
 	}
 
 	@Override
-	public RemoteViews getLoadingView() {
+	public RemoteViews getLoadingView()
+	{
 		return null;
 	}
 
 	@Override
-	public int getViewTypeCount() {
+	public int getViewTypeCount()
+	{
 		return 1;
 	}
 
 	@Override
-	public long getItemId(int position) {
+	public long getItemId(int position)
+	{
 		return position;
 	}
 
 	@Override
-	public boolean hasStableIds() {
+	public boolean hasStableIds()
+	{
 		return false;
 	}
 

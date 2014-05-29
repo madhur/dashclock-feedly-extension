@@ -14,11 +14,14 @@ public class FeedUpdateReceiver extends BroadcastReceiver
 	@Override
 	public void onReceive(Context context, Intent intent)
 	{
-		if(Connection.isConnected(context))
+		if (Connection.isConnected(context))
 		{
-			Intent serviceIntent=new Intent();
+			Intent serviceIntent = new Intent();
 			serviceIntent.setClass(context, UpdateFeedCountService.class);
-			serviceIntent.putExtra(Consts.UPDATE_SOURCE, UPDATESOURCE.ALARM.key);
+			if (intent.getStringExtra(Consts.UPDATE_SOURCE) != null)
+			{
+				serviceIntent.putExtra(Consts.UPDATE_SOURCE, intent.getStringExtra(Consts.UPDATE_SOURCE));
+			}
 			context.startService(serviceIntent);
 		}
 

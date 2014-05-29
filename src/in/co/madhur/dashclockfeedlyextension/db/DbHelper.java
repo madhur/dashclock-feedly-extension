@@ -501,7 +501,6 @@ public class DbHelper
 			return false;
 		}
 		
-		Log.v(App.TAG, "Fetch is required");
 		return true;
 	}
 

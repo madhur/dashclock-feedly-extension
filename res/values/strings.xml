@@ -96,5 +96,6 @@
     <string name="sort_order">Widget sort order</string>
     <string name="most_unread_first">Most unread first</string>
     <string name="alphabetical">Alphabetical</string>
+    <string name="sync_started">Synchronization started</string>
     
 </resources>

@@ -194,7 +194,6 @@ public abstract class FeedlyListViewAdapter extends BaseExpandableListAdapter im
 		check_states.clear();
 		for(Category category: getCategories())
 		{
-			Log.v(App.TAG, "Adding " + category.getLabel());
 			for(Subscription sub: categorySubscriptions.get(category))
 			{
 				check_states.put(sub.getId(), true);
@@ -213,7 +212,6 @@ public abstract class FeedlyListViewAdapter extends BaseExpandableListAdapter im
 		
 		for(Category category: getCategories())
 		{
-			Log.v(App.TAG, "Adding " + category.getLabel());
 			check_states.put(category.getId(), true);
 			AddSeekState(category.getId());
 		}

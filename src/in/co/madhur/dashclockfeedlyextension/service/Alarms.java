@@ -37,12 +37,12 @@ public class Alarms
 		int prefInterval=appPreferences.GetSyncInterval();
 		long recurInterval=prefInterval*60*60*1000;
 		
-		alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 0, recurInterval, GetPendingIntent(context) );
+		alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 0, recurInterval, GetPendingIntent(context, UPDATESOURCE.ALARM) );
 	}
 	
 	public void cancel()
 	{
-		GetAlarmManager(context).cancel(GetPendingIntent(context));
+		GetAlarmManager(context).cancel(GetPendingIntent(context, UPDATESOURCE.ALARM));
 	}
 	
 	
@@ -52,10 +52,11 @@ public class Alarms
 		
 	}
 	
-	public PendingIntent GetPendingIntent(Context context)
+	public PendingIntent GetPendingIntent(Context context, UPDATESOURCE source)
 	{
 		Intent updateIntent=new Intent();
 		updateIntent.setAction(Consts.UPDATE_COUNT_ACTION);
+		updateIntent.putExtra(Consts.UPDATE_SOURCE, source.key);
 		return PendingIntent.getBroadcast(context, REQUEST_CODE, updateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 	}
 	
