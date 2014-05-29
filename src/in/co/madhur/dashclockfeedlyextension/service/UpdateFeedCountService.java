@@ -14,6 +14,7 @@ import com.commonsware.cwac.wakeful.WakefulIntentService;
 import com.infospace.android.oauth2.WebApiHelper;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
@@ -26,7 +27,7 @@ public class UpdateFeedCountService extends WakefulIntentService
 	private DbHelper dbHelper;
 	private AppPreferences appPreferences;
 	private Markers markers;
-	private final int NOTIFICATION_ID=0;
+	private final int NOTIFICATION_ID = 0;
 
 	public UpdateFeedCountService()
 	{
@@ -47,9 +48,18 @@ public class UpdateFeedCountService extends WakefulIntentService
 		{
 			Log.d(App.TAG, "Starting update because of " + source);
 		}
-		else if(source.equalsIgnoreCase(UPDATESOURCE.ALARM.key))
+		if (source.equalsIgnoreCase(UPDATESOURCE.WIDGET_REFRESH_BUTTON.key))
 		{
-			Toast.makeText(this, getString(R.string.sync_started), Toast.LENGTH_SHORT).show();
+			Handler mHandler = new Handler(getMainLooper());
+			mHandler.post(new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					Toast.makeText(getApplicationContext(), getString(R.string.sync_started), Toast.LENGTH_SHORT).show();
+				}
+			});
+
 		}
 
 		appPreferences = new AppPreferences(this);
@@ -67,8 +77,10 @@ public class UpdateFeedCountService extends WakefulIntentService
 
 			RefreshTokenIfRequired();
 
-			// Sync is always performed on accept/logout button irrespective of scheduled
-			// Regular sync and network change sync are constrained by sync schedule
+			// Sync is always performed on accept/logout button irrespective of
+			// scheduled
+			// Regular sync and network change sync are constrained by sync
+			// schedule
 			if (source.equalsIgnoreCase(UPDATESOURCE.ALARM.key)
 					|| source.equalsIgnoreCase(UPDATESOURCE.NETWORK_CHANGE.key))
 			{

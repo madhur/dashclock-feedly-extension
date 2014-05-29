@@ -44,7 +44,6 @@ public abstract class FeedlyWidgetProvider extends AppWidgetProvider
 	{
 		super.onReceive(context, intent);
 
-		Toast.makeText(context, "Updating widget", Toast.LENGTH_SHORT).show();
 		// widgets are not supported pre-honeycomb
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 		{

@@ -28,6 +28,7 @@ import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -145,8 +146,10 @@ public class MainFragment extends Fragment
 				break;
 
 			case R.id.action_settings:
-
-				getActivity().getSupportFragmentManager().beginTransaction().replace(android.R.id.content, new FeedlyPreferenceFragment()).addToBackStack("settings").commit();
+				Intent i=new Intent();
+				i.setClass(getActivity(), SettingsActivity.class);
+				startActivity(i);
+				//getActivity().getSupportFragmentManager().beginTransaction().replace(android.R.id.content, new FeedlyPreferenceFragment()).addToBackStack("settings").commit();
 				break;
 
 			case R.id.action_accept:
