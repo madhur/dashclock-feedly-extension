@@ -1,6 +1,7 @@
 package in.co.madhur.dashclockfeedlyextension.service;
 
 import in.co.madhur.dashclockfeedlyextension.App;
+import in.co.madhur.dashclockfeedlyextension.AppPreferences;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences.Keys;
 
 import com.crittercism.app.Crittercism;
@@ -28,7 +29,7 @@ public class LaunchService extends Service
 		super.onStartCommand(intent, flags, startId);
 
 		Intent launchIntent;
-		launchIntent = AppChooserPreference.getIntentValue(Keys.NOTIFICATION_CLICK_INTENT.key, null);
+		launchIntent = new AppPreferences(this).GetWidgetIntent();
 		if (launchIntent != null)
 		{
 			Log.v(App.TAG, launchIntent.getAction());
