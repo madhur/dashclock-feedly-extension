@@ -119,8 +119,6 @@ public class AppChooserPreference extends Preference
 			{
 				return defaultIntent;
 			}
-			Log.v(App.TAG, value );
-			Log.v(App.TAG, Intent.parseUri(value, Intent.URI_INTENT_SCHEME).toString());
 			return Intent.parseUri(value, Intent.URI_INTENT_SCHEME);
 		}
 		catch (URISyntaxException e)

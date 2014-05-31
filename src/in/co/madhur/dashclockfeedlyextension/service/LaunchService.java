@@ -2,16 +2,10 @@ package in.co.madhur.dashclockfeedlyextension.service;
 
 import in.co.madhur.dashclockfeedlyextension.App;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences;
-import in.co.madhur.dashclockfeedlyextension.AppPreferences.Keys;
-
 import com.crittercism.app.Crittercism;
-import com.google.android.apps.dashclock.configuration.AppChooserPreference;
-
 import android.app.Service;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.IBinder;
-import android.text.TextUtils;
 import android.util.Log;
 
 public class LaunchService extends Service
@@ -29,7 +23,7 @@ public class LaunchService extends Service
 		super.onStartCommand(intent, flags, startId);
 
 		Intent launchIntent;
-		launchIntent = new AppPreferences(this).GetWidgetIntent();
+		launchIntent = new AppPreferences(this).GetNotificationIntent();
 		if (launchIntent != null)
 		{
 			Log.v(App.TAG, launchIntent.getAction());

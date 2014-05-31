@@ -23,7 +23,6 @@ public class FeedlyWidgetListProvider implements RemoteViewsFactory
 {
 	private Context context;
 	private List<WidgetData> widgetData;
-	private ResultData data;
 	private WidgetConfig widgetConfig;
 
 	public FeedlyWidgetListProvider(Context context)
@@ -42,20 +41,19 @@ public class FeedlyWidgetListProvider implements RemoteViewsFactory
 
 	private void PullData()
 	{
-		data = new StringFormatter(context).GetResultData(context);
+		ResultData data = new StringFormatter(context).GetResultData(context);
 
 		if (data != null)
 			widgetData = data.getWidgetData();
 		else
 			widgetData = new ArrayList<WidgetData>();
-
-		if (widgetConfig.getSortOrder() == 0)
-			Collections.sort(widgetData, new CountSorter());
-		else if (widgetConfig.getSortOrder() == 1)
-			Collections.sort(widgetData, new NameSorter());
-
+		
 		widgetConfig.RefreshData(new AppPreferences(context));
 
+		if (widgetConfig.getSortOrder() == 0)
+			Collections.sort(widgetData, Collections.reverseOrder(new CountSorter()));
+		else if (widgetConfig.getSortOrder() == 1)
+			Collections.sort(widgetData, new NameSorter());
 	}
 
 	@Override
