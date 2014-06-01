@@ -12,6 +12,7 @@ import in.co.madhur.dashclockfeedlyextension.service.StringFormatter;
 import in.co.madhur.dashclockfeedlyextension.service.WidgetData;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 import android.util.TypedValue;
@@ -24,11 +25,13 @@ public class FeedlyWidgetListProvider implements RemoteViewsFactory
 	private Context context;
 	private List<WidgetData> widgetData;
 	private WidgetConfig widgetConfig;
-
+	private Intent blankIntent;
+	
 	public FeedlyWidgetListProvider(Context context)
 	{
 		this.context = context;
 		widgetConfig = new WidgetConfig();
+		blankIntent=new Intent();
 	}
 
 	@Override
@@ -104,6 +107,8 @@ public class FeedlyWidgetListProvider implements RemoteViewsFactory
 				view.setFloat(R.id.CountTextView, "setTextSize", widgetConfig.getTextSize());
 			}
 		}
+		
+		view.setOnClickFillInIntent(R.id.widget_row, blankIntent);
 
 		return view;
 	}

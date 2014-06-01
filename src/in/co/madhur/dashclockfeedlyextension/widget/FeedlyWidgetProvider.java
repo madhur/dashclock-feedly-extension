@@ -122,7 +122,11 @@ public abstract class FeedlyWidgetProvider extends AppWidgetProvider
 			remoteViews.setTextViewText(R.id.updatedTextView, String.format(context.getString(R.string.lastupdate_display_format), Utils.GetFormattedDate(appPreferences.GetLastSuccessfulSync(), context)));
 
 			if (appPreferences.GetWidgetIntent() != null)
-				remoteViews.setOnClickFillInIntent(R.id.widgetListView, appPreferences.GetWidgetIntent());
+			{
+				remoteViews.setPendingIntentTemplate(R.id.widgetListView, GetWidgetPendingIntent(context, appPreferences));
+				//remoteViews.setOnClickFillInIntent(R.id.widgetListView, appPreferences.GetWidgetIntent());
+				
+			}
 
 		}
 
@@ -191,6 +195,14 @@ public abstract class FeedlyWidgetProvider extends AppWidgetProvider
 		return pendingIntent;
 
 	}
+	
+	private PendingIntent GetWidgetPendingIntent(Context context, AppPreferences appPreferences)
+	{
+		Intent intent =appPreferences.GetWidgetIntent();
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+		return pendingIntent;
+		
+	}
 
 	private PendingIntent GetPendingIntent(Intent intent, Context context)
 	{
@@ -202,14 +214,6 @@ public abstract class FeedlyWidgetProvider extends AppWidgetProvider
 		}
 
 		return null;
-	}
-
-	// convenience method to count the number of installed widgets
-	private int widgetsInstalled(Context context)
-	{
-		ComponentName thisWidget = new ComponentName(context, FeedlyWidgetProvider.class);
-		AppWidgetManager mgr = AppWidgetManager.getInstance(context);
-		return mgr.getAppWidgetIds(thisWidget).length;
 	}
 
 }
