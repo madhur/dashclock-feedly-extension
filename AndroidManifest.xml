@@ -49,7 +49,7 @@
 
         <receiver
             android:name=".widget.FeedlyLargeWidgetProvider"
-            android:label="Feedly Large" >
+            android:label="Feed Notifier Large" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -65,7 +65,7 @@
         </receiver>
         <receiver
             android:name=".widget.FeedlyMediumWidgetProvider"
-            android:label="Feedly Medium" >
+            android:label="Feed Notifier Medium" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -81,7 +81,7 @@
         </receiver>
         <receiver
             android:name=".widget.FeedlySmallWidgetProvider"
-            android:label="Feedly Small" >
+            android:label="Feed Notifier Small" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
