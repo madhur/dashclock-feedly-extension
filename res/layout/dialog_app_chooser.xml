@@ -17,6 +17,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:paddingLeft="@attr/padding_medium"
+    android:paddingRight="@attr/padding_medium"
+    android:minHeight="?android:listPreferredItemHeight"
     android:layout_height="match_parent">
 
     <LinearLayout android:id="@android:id/tabs"
