@@ -21,7 +21,6 @@ import com.google.android.apps.dashclock.ui.SimplePagedTabsHelper;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;

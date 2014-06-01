@@ -82,29 +82,43 @@ public class MainFragment extends Fragment
 
 		progressBar = (ProgressBar) v.findViewById(R.id.pbHeaderProgress);
 		listView = (ExpandableListView) v.findViewById(R.id.listview);
+		
+		appPreferences = new AppPreferences(getActivity());
+		
 		statusText = (TextView) v.findViewById(R.id.statusMessage);
-
+		
+		final IThemeable themeAble=(IThemeable) getActivity();
+		
 		listView.setOnGroupClickListener(new OnGroupClickListener()
 		{
 			@Override
 			public boolean onGroupClick(ExpandableListView parent, View clickedView, int groupPosition, long rowId)
 			{
 				ImageView groupIndicator = (ImageView) clickedView.findViewById(R.id.group_indicator);
+				
 				if (parent.isGroupExpanded(groupPosition))
 				{
 					parent.collapseGroup(groupPosition);
-					groupIndicator.setImageResource(R.drawable.expander_open_holo_dark);
+					
+					if(themeAble.GetTheme()==0)
+						groupIndicator.setImageResource(R.drawable.expander_open_holo_dark);
+					else if(themeAble.GetTheme()==1)
+						groupIndicator.setImageResource(R.drawable.expander_open_holo_light);
 				}
 				else
 				{
 					parent.expandGroup(groupPosition);
-					groupIndicator.setImageResource(R.drawable.expander_close_holo_dark);
+
+					if(themeAble.GetTheme()==0)
+						groupIndicator.setImageResource(R.drawable.expander_close_holo_dark);
+					else if (themeAble.GetTheme()==1)
+						groupIndicator.setImageResource(R.drawable.expander_close_holo_light);
 				}
 				return true;
 			}
 		});
 
-		appPreferences = new AppPreferences(getActivity());
+		
 		if (!appPreferences.IsTokenPresent())
 		{
 			StartLoginProcedure();

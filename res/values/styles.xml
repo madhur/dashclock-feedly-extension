@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme for API 14+. This theme completely replaces
@@ -11,38 +11,37 @@
 
     -->
 
-   
-
-   
     <style name="AppBaseTheme" parent="android:Theme.Holo">
         <!-- API 14 theme customizations can go here. -->
     </style>
 
+
     <style name="Black" parent="@style/Theme.AppCompat">
 
         <!-- API 14 theme customizations can go here. -->
-        <!-- <item name="android:windowBackground">@color/pitch_black</item>-->
-        
+        <!-- <item name="android:windowBackground">@color/pitch_black</item> -->
+
         <item name="actionSearchIcon">@drawable/ic_action_search</item>
         <item name="actionAcceptIcon">@drawable/ic_action_accept</item>
         <item name="actionRefreshIcon">@drawable/navigation_refresh</item>
-        
         <item name="widgetRefreshIcon">@drawable/ic_action_refresh</item>
         <item name="widgetSettingsIcon">@drawable/ic_action_settings</item>
         <item name="widgetFeedlyIcon">@drawable/ic_notification</item>
+         <item name="groupIndicatorIcon">@drawable/group_indicator</item>
+   
     </style>
 
     <style name="Light" parent="@style/Theme.AppCompat.Light">
 
         <!-- API 14 theme customizations can go here. -->
-<!--         <item name="android:windowBackground">@color/white_opaque</item> -->
-            <item name="actionSearchIcon">@drawable/ic_action_search_light</item>
-            <item name="actionAcceptIcon">@drawable/ic_action_accept_light</item>
-            <item name="actionRefreshIcon">@drawable/navigation_refresh_light</item>
-            
-            <item name="widgetRefreshIcon">@drawable/ic_action_refresh_light</item>
-            <item name="widgetSettingsIcon">@drawable/ic_action_settings_light</item>
-            <item name="widgetFeedlyIcon">@drawable/ic_notification_light</item>
+        <!-- <item name="android:windowBackground">@color/white_opaque</item> -->
+        <item name="actionSearchIcon">@drawable/ic_action_search_light</item>
+        <item name="actionAcceptIcon">@drawable/ic_action_accept_light</item>
+        <item name="actionRefreshIcon">@drawable/navigation_refresh_light</item>
+        <item name="widgetRefreshIcon">@drawable/ic_action_refresh_light</item>
+        <item name="widgetSettingsIcon">@drawable/ic_action_settings_light</item>
+        <item name="widgetFeedlyIcon">@drawable/ic_notification_light</item>
+       <item name="groupIndicatorIcon">@drawable/group_indicator_light</item>
     </style>
 
 </resources>

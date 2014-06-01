@@ -21,7 +21,6 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public abstract class FeedlyWidgetProvider extends AppWidgetProvider

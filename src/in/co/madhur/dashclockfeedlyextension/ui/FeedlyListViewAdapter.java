@@ -6,14 +6,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import in.co.madhur.dashclockfeedlyextension.App;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences;
 import in.co.madhur.dashclockfeedlyextension.ISaveable;
 import in.co.madhur.dashclockfeedlyextension.api.Category;
 import in.co.madhur.dashclockfeedlyextension.api.FeedlyData;
 import in.co.madhur.dashclockfeedlyextension.api.Subscription;
 import android.content.Context;
-import android.util.Log;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckBox;
 import android.widget.Filter;

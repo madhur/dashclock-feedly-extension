@@ -31,6 +31,7 @@
         <attr name="widgetRefreshIcon" format="reference" />
         <attr name="widgetSettingsIcon" format="reference" />
         <attr name="widgetFeedlyIcon" format="reference" />
+         <attr name="groupIndicatorIcon" format="reference" />
     </declare-styleable>
 
     <item name="padding_small" type="attr">5dp</item>

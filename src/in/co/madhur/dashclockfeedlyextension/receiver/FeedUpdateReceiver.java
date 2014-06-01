@@ -1,7 +1,6 @@
 package in.co.madhur.dashclockfeedlyextension.receiver;
 
 import in.co.madhur.dashclockfeedlyextension.Consts;
-import in.co.madhur.dashclockfeedlyextension.Consts.UPDATESOURCE;
 import in.co.madhur.dashclockfeedlyextension.service.Connection;
 import in.co.madhur.dashclockfeedlyextension.service.UpdateFeedCountService;
 import android.content.BroadcastReceiver;

@@ -5,8 +5,9 @@ import in.co.madhur.dashclockfeedlyextension.R;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
-public abstract class BaseActivity extends ActionBarActivity
+public abstract class BaseActivity extends ActionBarActivity implements IThemeable
 {
+	protected int currentTheme;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -15,19 +16,28 @@ public abstract class BaseActivity extends ActionBarActivity
 		super.onCreate(savedInstanceState);
 	}
 	
+	@Override
 	public void SetTheme()
 	{
 		AppPreferences appPreferences=new AppPreferences(this);
-		if(appPreferences.GetTheme()==0)
+		currentTheme=appPreferences.GetTheme();
+		
+		if(currentTheme==0)
 		{
 			this.setTheme(R.style.Black);
 		}
-		else if(appPreferences.GetTheme()==1)
+		else if(currentTheme==1)
 		{
 			this.setTheme(R.style.Light);
 			
 		}
 		
+	}
+	
+	@Override
+	public int GetTheme()
+	{
+		return currentTheme;
 	}
 
 }
