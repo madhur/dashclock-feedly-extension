@@ -19,9 +19,6 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="?android:listPreferredItemPaddingLeft"
-    android:paddingRight="?android:listPreferredItemPaddingRight"
-    android:minHeight="?android:listPreferredItemHeight"
     android:gravity="center_vertical">
 
     <!--suppress AndroidLintUseCompoundDrawables -->
