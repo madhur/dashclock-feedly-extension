@@ -2,7 +2,7 @@
 
     <item android:id="@+id/action_search"
         app:showAsAction="collapseActionView|always"
-          android:icon="@drawable/ic_action_search"
+          android:icon="?attr/actionSearchIcon"
           android:orderInCategory="50"
            app:actionViewClass="android.support.v7.widget.SearchView" 
           android:title="@string/action_search"/>
@@ -49,14 +49,14 @@
         android:id="@+id/action_settings"
         android:orderInCategory="105"
         app:showAsAction="never"
-        android:icon="@drawable/action_settings"
+        android:icon="@drawable/ic_action_settings"
         android:title="@string/action_settings"/>
     
      <item
         android:id="@+id/action_refresh"
         android:orderInCategory="107"
         app:showAsAction="always"
-        android:icon="@drawable/navigation_refresh"
+        android:icon="?attr/actionRefreshIcon"
         android:title="@string/action_refresh"/>
      
 
@@ -64,7 +64,7 @@
         android:id="@+id/action_accept"
         android:orderInCategory="108"
         app:showAsAction="always"
-        android:icon="@drawable/navigation_accept"
+        android:icon="?attr/actionAcceptIcon"
         android:title="@string/action_accept"/>
             
               <item

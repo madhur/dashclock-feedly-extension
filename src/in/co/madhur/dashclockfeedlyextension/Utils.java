@@ -14,5 +14,5 @@ public final class Utils
 		java.text.DateFormat dateFormat = android.text.format.DateFormat.getTimeFormat(context);
 		return dateFormat.format(dateObj);
 	}
-
+	
 }

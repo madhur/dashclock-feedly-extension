@@ -137,6 +137,20 @@ public abstract class FeedlyWidgetProvider extends AppWidgetProvider
 	{
 
 		remoteViews.setInt(R.id.widget_host, "setBackgroundColor", appPreferences.GetColor(Keys.WIDGET_BACKGROUND_COLOR));
+		
+		if(appPreferences.GetTheme()==0)
+		{
+			remoteViews.setImageViewResource(R.id.widget_icon, R.drawable.ic_notification);
+			remoteViews.setImageViewResource(R.id.widget_refresh, R.drawable.ic_action_refresh);
+			remoteViews.setImageViewResource(R.id.widget_settings, R.drawable.ic_action_settings);
+		}
+		else if(appPreferences.GetTheme()==1)
+		{
+			remoteViews.setImageViewResource(R.id.widget_icon, R.drawable.ic_notification_light);
+			remoteViews.setImageViewResource(R.id.widget_refresh, R.drawable.ic_action_refresh_light);
+			remoteViews.setImageViewResource(R.id.widget_settings, R.drawable.ic_action_settings_light);
+			
+		}
 
 		if (appPreferences.IsWidgetHeaderEnabled())
 		{
@@ -158,7 +172,6 @@ public abstract class FeedlyWidgetProvider extends AppWidgetProvider
 			remoteViews.setViewVisibility(R.id.widget_settings, View.GONE);
 		}
 
-		remoteViews.setTextColor(R.id.CountTextView, appPreferences.GetColor(Keys.WIDGET_COUNT_COLOR));
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
 		{
@@ -168,6 +181,8 @@ public abstract class FeedlyWidgetProvider extends AppWidgetProvider
 		{
 			remoteViews.setFloat(R.id.updatedTextView, "setTextSize", appPreferences.GetFontSize());
 		}
+		
+		remoteViews.setTextColor(R.id.updatedTextView, appPreferences.GetColor(Keys.WIDGET_TITLE_COLOR));
 
 	}
 

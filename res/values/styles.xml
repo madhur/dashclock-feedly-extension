@@ -1,22 +1,48 @@
 <resources>
 
     <!--
-        Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        Base application theme for API 14+. This theme completely replaces
+        AppBaseTheme from BOTH res/values/styles.xml and
+        res/values-v11/styles.xml on API 14+ devices.
+
+<style name="PopupMenu" parent="@style/Widget.Holo.ListPopupWindow">
+    <item name="android:popupBackground">@android:color/background_dark</item>
+</style>
+
     -->
-    <style name="AppBaseTheme" parent="android:Theme.Light">
-        <!--
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        -->
+
+   
+
+   
+    <style name="AppBaseTheme" parent="android:Theme.Holo">
+        <!-- API 14 theme customizations can go here. -->
     </style>
 
-    <!-- Application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    <style name="Black" parent="@style/Theme.AppCompat">
+
+        <!-- API 14 theme customizations can go here. -->
+        <!-- <item name="android:windowBackground">@color/pitch_black</item>-->
+        
+        <item name="actionSearchIcon">@drawable/ic_action_search</item>
+        <item name="actionAcceptIcon">@drawable/ic_action_accept</item>
+        <item name="actionRefreshIcon">@drawable/navigation_refresh</item>
+        
+        <item name="widgetRefreshIcon">@drawable/ic_action_refresh</item>
+        <item name="widgetSettingsIcon">@drawable/ic_action_settings</item>
+        <item name="widgetFeedlyIcon">@drawable/ic_notification</item>
     </style>
-    
-   
+
+    <style name="Light" parent="@style/Theme.AppCompat.Light">
+
+        <!-- API 14 theme customizations can go here. -->
+<!--         <item name="android:windowBackground">@color/white_opaque</item> -->
+            <item name="actionSearchIcon">@drawable/ic_action_search_light</item>
+            <item name="actionAcceptIcon">@drawable/ic_action_accept_light</item>
+            <item name="actionRefreshIcon">@drawable/navigation_refresh_light</item>
+            
+            <item name="widgetRefreshIcon">@drawable/ic_action_refresh_light</item>
+            <item name="widgetSettingsIcon">@drawable/ic_action_settings_light</item>
+            <item name="widgetFeedlyIcon">@drawable/ic_notification_light</item>
+    </style>
 
 </resources>

@@ -43,6 +43,18 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 			return true;
 		}
 	};
+	
+	private final OnPreferenceChangeListener widgetListListener=new OnPreferenceChangeListener()
+	{
+		
+		@Override
+		public boolean onPreferenceChange(Preference preference, Object newValue)
+		{
+			UpdateLabel((ListPreference) preference, newValue.toString());
+			WidgetSettingsChanged();
+			return true;
+		}
+	};
 
 	private final OnPreferenceChangeListener widgetChangeListener = new OnPreferenceChangeListener()
 	{
@@ -109,6 +121,7 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 
 	}
 
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	protected void SetListeners()
 	{
 
@@ -201,33 +214,16 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 			}
 		});
 
-		findPreference(Keys.PICK_THEME.key).setOnPreferenceClickListener(new OnPreferenceClickListener()
-		{
-
-			@Override
-			public boolean onPreferenceClick(Preference preference)
-			{
-				// TODO Auto-generated method stub
-				return false;
-			}
-		});
-
+		
+		findPreference(Keys.PICK_THEME.key).setOnPreferenceChangeListener(widgetListListener);
+		
+		
 		findPreference(Keys.WIDGET_BACKGROUND_COLOR.key).setOnPreferenceChangeListener(widgetChangeListener);
 		findPreference(Keys.WIDGET_COUNT_COLOR.key).setOnPreferenceChangeListener(widgetChangeListener);
 		findPreference(Keys.WIDGET_TITLE_COLOR.key).setOnPreferenceChangeListener(widgetChangeListener);
 		findPreference(Keys.WIDGET_SORT_ORDER.key).setOnPreferenceChangeListener(widgetChangeListener);
 		findPreference(Keys.ENABLE_WIDGET_HEADER.key).setOnPreferenceChangeListener(widgetChangeListener);
-		findPreference(Keys.WIDGET_TEXT_SIZE.key).setOnPreferenceChangeListener(new OnPreferenceChangeListener()
-		{
-
-			@Override
-			public boolean onPreferenceChange(Preference preference, Object newValue)
-			{
-				UpdateLabel((ListPreference) preference, newValue.toString());
-				WidgetSettingsChanged();
-				return true;
-			}
-		});
+		findPreference(Keys.WIDGET_TEXT_SIZE.key).setOnPreferenceChangeListener(widgetListListener);
 
 	}
 

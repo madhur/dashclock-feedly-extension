@@ -228,6 +228,12 @@ public class AppPreferences
 		return seek_states;
 
 	}
+	
+	public int GetTheme()
+	{
+		String s=sharedPreferences.getString(Keys.PICK_THEME.key, context.getString(R.string.default_theme));
+		return Integer.parseInt(s);
+	}
 
 	public String getMetadata(Keys key)
 	{

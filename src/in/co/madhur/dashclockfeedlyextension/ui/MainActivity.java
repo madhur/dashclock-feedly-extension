@@ -10,9 +10,8 @@ import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.annotation.TargetApi;
 import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
-import android.support.v7.app.ActionBarActivity;
 
-public class MainActivity extends ActionBarActivity implements OnBackStackChangedListener, LoginListener
+public class MainActivity extends BaseActivity implements OnBackStackChangedListener, LoginListener
 
 {
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -36,7 +35,7 @@ public class MainActivity extends ActionBarActivity implements OnBackStackChange
 		PreferenceManager.setDefaultValues(this, R.xml.settings_layout, false);
 
 	}
-
+	
 	private void SetupStrictMode()
 	{
 		if (App.DEBUG)

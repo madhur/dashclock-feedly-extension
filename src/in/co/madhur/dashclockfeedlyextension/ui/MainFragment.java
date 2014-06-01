@@ -148,7 +148,9 @@ public class MainFragment extends Fragment
 			case R.id.action_settings:
 				Intent i=new Intent();
 				i.setClass(getActivity(), SettingsActivity.class);
+				getActivity().finish();
 				startActivity(i);
+				
 				//getActivity().getSupportFragmentManager().beginTransaction().replace(android.R.id.content, new FeedlyPreferenceFragment()).addToBackStack("settings").commit();
 				break;
 

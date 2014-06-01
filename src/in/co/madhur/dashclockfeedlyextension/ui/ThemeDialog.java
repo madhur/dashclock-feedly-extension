@@ -25,7 +25,7 @@ public class ThemeDialog extends DialogFragment
 				switch (which)
 				{
 					case 0:
-							getActivity().setTheme(R.style.Dark);
+					//		getActivity().setTheme(R.style.Dark);
 						break;
 
 					case 1:
@@ -37,7 +37,7 @@ public class ThemeDialog extends DialogFragment
 						break;
 
 					case 3:
-						getActivity().setTheme(R.style.Sepia);
+						// getActivity().setTheme(R.style.Sepia);
 						break;
 						
 						
@@ -46,7 +46,7 @@ public class ThemeDialog extends DialogFragment
 				}
 				
 				dialog.dismiss();
-				getActivity().recreate();
+				//getActivity().recreate();
 			}
 		});
 		return builder.create();

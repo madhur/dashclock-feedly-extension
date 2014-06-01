@@ -1,11 +1,48 @@
 <resources>
 
     <!--
-        Base application theme for API 11+. This theme completely replaces
-        AppBaseTheme from res/values/styles.xml on API 11+ devices.
+        Base application theme for API 14+. This theme completely replaces
+        AppBaseTheme from BOTH res/values/styles.xml and
+        res/values-v11/styles.xml on API 14+ devices.
+
+<style name="PopupMenu" parent="@style/Widget.Holo.ListPopupWindow">
+    <item name="android:popupBackground">@android:color/background_dark</item>
+</style>
+
     -->
+
+   
+
+   
     <style name="AppBaseTheme" parent="android:Theme.Holo">
-        <!-- API 11 theme customizations can go here. -->
+        <!-- API 14 theme customizations can go here. -->
+    </style>
+
+    <style name="Black" parent="@style/Theme.AppCompat">
+
+        <!-- API 14 theme customizations can go here. -->
+        <!-- <item name="android:windowBackground">@color/pitch_black</item>-->
+        
+        <item name="actionSearchIcon">@drawable/ic_action_search</item>
+        <item name="actionAcceptIcon">@drawable/ic_action_accept</item>
+        <item name="actionRefreshIcon">@drawable/navigation_refresh</item>
+        
+        <item name="widgetRefreshIcon">@drawable/ic_action_refresh</item>
+        <item name="widgetSettingsIcon">@drawable/ic_action_settings</item>
+        <item name="widgetFeedlyIcon">@drawable/ic_notification</item>
+    </style>
+
+    <style name="Light" parent="@style/Theme.AppCompat.Light">
+
+        <!-- API 14 theme customizations can go here. -->
+<!--         <item name="android:windowBackground">@color/white_opaque</item> -->
+            <item name="actionSearchIcon">@drawable/ic_action_search_light</item>
+            <item name="actionAcceptIcon">@drawable/ic_action_accept_light</item>
+            <item name="actionRefreshIcon">@drawable/navigation_refresh_light</item>
+            
+            <item name="widgetRefreshIcon">@drawable/ic_action_refresh_light</item>
+            <item name="widgetSettingsIcon">@drawable/ic_action_settings_light</item>
+            <item name="widgetFeedlyIcon">@drawable/ic_notification_light</item>
     </style>
 
 </resources>
