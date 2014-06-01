@@ -66,11 +66,22 @@ public class MainFragment extends Fragment
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 
+		// Check if it has been instantiated through Login dialog, if yes, we need a force refresh action to first time sync
 		Bundle data = getArguments();
 		if (data != null)
 		{
 
 			forceRefresh = data.getBoolean("refresh");
+		}
+		
+		
+		// Setup alarm if it doesn't exist
+		Alarms alarms=new Alarms(getActivity());
+		
+		if(!alarms.DoesAlarmExist())
+		{
+			if(alarms.ShouldSchedule())
+				alarms.Schedule();
 		}
 
 	}

@@ -1,5 +1,6 @@
 package in.co.madhur.dashclockfeedlyextension.service;
 
+import in.co.madhur.dashclockfeedlyextension.App;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences;
 import in.co.madhur.dashclockfeedlyextension.Consts;
 import in.co.madhur.dashclockfeedlyextension.Consts.UPDATESOURCE;
@@ -8,12 +9,14 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 public class Alarms
 {
 	int REQUEST_CODE=0;
 	private Context context;
 	private AppPreferences appPreferences;
+	int LOWEST_RECUR_INTERVAL=1;
 	
 	public Alarms(Context context, AppPreferences appPreferences)
 	{
@@ -34,10 +37,24 @@ public class Alarms
 		
 		AlarmManager alarmManager=GetAlarmManager(context);
 		
-		int prefInterval=appPreferences.GetSyncInterval();
-		long recurInterval=prefInterval*60*60*1000;
+		//int prefInterval=appPreferences.GetSyncInterval();
+		long recurInterval=LOWEST_RECUR_INTERVAL*60*60*1000;
 		
 		alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 0, recurInterval, GetPendingIntent(context, UPDATESOURCE.ALARM) );
+	}
+	
+	public boolean DoesAlarmExist()
+	{
+		PendingIntent existingIntent=PendingIntent.getBroadcast(context, REQUEST_CODE, GetAlarmIntent(UPDATESOURCE.ALARM), PendingIntent.FLAG_NO_CREATE);
+		
+		if(existingIntent!=null)
+		{
+			Log.d(App.TAG, "Alarm exists");
+			return true;
+		}
+		
+		Log.d(App.TAG, "Alarm doesn't exist , scheduling");
+		return false;
 	}
 	
 	public void cancel()
@@ -54,10 +71,16 @@ public class Alarms
 	
 	public PendingIntent GetPendingIntent(Context context, UPDATESOURCE source)
 	{
+		
+		return PendingIntent.getBroadcast(context, REQUEST_CODE, GetAlarmIntent(source), PendingIntent.FLAG_UPDATE_CURRENT);
+	}
+	
+	private Intent GetAlarmIntent(UPDATESOURCE source)
+	{
 		Intent updateIntent=new Intent();
 		updateIntent.setAction(Consts.UPDATE_COUNT_ACTION);
 		updateIntent.putExtra(Consts.UPDATE_SOURCE, source.key);
-		return PendingIntent.getBroadcast(context, REQUEST_CODE, updateIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+		return updateIntent;
 	}
 	
 	public  void StartUpdate(UPDATESOURCE source)
