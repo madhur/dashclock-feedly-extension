@@ -67,7 +67,6 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 		}
 	};
 
-	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	@Override
 	public void onCreate(Bundle paramBundle)
 	{
@@ -264,6 +263,11 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 				initializeActionBar((PreferenceScreen) preference);
 			}
 		}
+
+		if (preference != null)
+			if (preference instanceof PreferenceScreen)
+				if (((PreferenceScreen) preference).getDialog() != null)
+					((PreferenceScreen) preference).getDialog().getWindow().getDecorView().setBackgroundDrawable(getActivity().getWindow().getDecorView().getBackground().getConstantState().newDrawable());
 
 		return false;
 	}

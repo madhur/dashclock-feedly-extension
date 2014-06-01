@@ -47,21 +47,23 @@ public class UpdateFeedCountService extends WakefulIntentService
 		if (!TextUtils.isEmpty(source))
 		{
 			Log.d(App.TAG, "Starting update because of " + source);
-		}
-		if (source.equalsIgnoreCase(UPDATESOURCE.WIDGET_REFRESH_BUTTON.key))
-		{
-			Handler mHandler = new Handler(getMainLooper());
-			mHandler.post(new Runnable()
+			
+			if (source.equalsIgnoreCase(UPDATESOURCE.WIDGET_REFRESH_BUTTON.key))
 			{
-				@Override
-				public void run()
+				Handler mHandler = new Handler(getMainLooper());
+				mHandler.post(new Runnable()
 				{
-					Toast.makeText(getApplicationContext(), getString(R.string.sync_started), Toast.LENGTH_SHORT).show();
-				}
-			});
+					@Override
+					public void run()
+					{
+						Toast.makeText(getApplicationContext(), getString(R.string.sync_started), Toast.LENGTH_SHORT).show();
+					}
+				});
+
+			}
 
 		}
-
+		
 		appPreferences = new AppPreferences(this);
 		if (!appPreferences.IsTokenPresent())
 		{
