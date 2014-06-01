@@ -158,6 +158,9 @@ public class AppPreferences
 		edit.putString(context.getString(R.string.feedly_api_access_token), empty);
 		edit.putString(context.getString(R.string.feedly_api_refresh_token), empty);
 		edit.putString(context.getString(R.string.feedly_api_expires_in), empty);
+		edit.putString(Keys.SELECTED_VALUES_NOTIFICATIONS.key, "");
+		edit.putString(Keys.NOTIFICATION_SEEK_STATES.key, "");
+		
 		edit.putLong(Keys.LAST_SUCCESSFUL_SYNC.key, 0);
 		edit.commit();
 

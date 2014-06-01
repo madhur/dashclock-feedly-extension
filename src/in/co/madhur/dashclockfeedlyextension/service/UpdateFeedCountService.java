@@ -47,7 +47,7 @@ public class UpdateFeedCountService extends WakefulIntentService
 		if (!TextUtils.isEmpty(source))
 		{
 			Log.d(App.TAG, "Starting update because of " + source);
-			
+
 			if (source.equalsIgnoreCase(UPDATESOURCE.WIDGET_REFRESH_BUTTON.key))
 			{
 				Handler mHandler = new Handler(getMainLooper());
@@ -63,7 +63,7 @@ public class UpdateFeedCountService extends WakefulIntentService
 			}
 
 		}
-		
+
 		appPreferences = new AppPreferences(this);
 		if (!appPreferences.IsTokenPresent())
 		{
@@ -83,14 +83,20 @@ public class UpdateFeedCountService extends WakefulIntentService
 			// scheduled
 			// Regular sync and network change sync are constrained by sync
 			// schedule
-			if (source.equalsIgnoreCase(UPDATESOURCE.ALARM.key)
-					|| source.equalsIgnoreCase(UPDATESOURCE.NETWORK_CHANGE.key))
+
+			if (source != null)
 			{
-				if (!CheckLastSync())
+
+				if (source.equalsIgnoreCase(UPDATESOURCE.ALARM.key)
+						|| source.equalsIgnoreCase(UPDATESOURCE.NETWORK_CHANGE.key))
 				{
-					Log.d(App.TAG, "Successful sync within time interval. aborting");
-					return;
+					if (!CheckLastSync())
+					{
+						Log.d(App.TAG, "Successful sync within time interval. aborting");
+						return;
+					}
 				}
+
 			}
 
 			if (!GetUnreadCountsAndSave())

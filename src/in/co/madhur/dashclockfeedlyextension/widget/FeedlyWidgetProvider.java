@@ -91,36 +91,34 @@ public abstract class FeedlyWidgetProvider extends AppWidgetProvider
 		RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.feedly_appwidget);
 
 		SetupLookAndFeel(context, remoteViews, appPreferences);
+		
+		Intent svcIntent = new Intent(context, FeedlyWidgetsService.class);
+		svcIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+		svcIntent.setData(Uri.parse(svcIntent.toUri(Intent.URI_INTENT_SCHEME)));
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+		{
+			remoteViews.setRemoteAdapter(R.id.widgetListView, svcIntent);
+		}
+		else
+		{
+			remoteViews.setRemoteAdapter(appWidgetId, R.id.widgetListView, svcIntent);
+		}
+		
+		remoteViews.setEmptyView(R.id.widgetListView, R.id.empty_view);
+
 
 		if (!appPreferences.IsTokenPresent())
 		{
 			remoteViews.setTextViewText(R.id.empty_view, context.getString(R.string.login_required_desc));
 
-			remoteViews.setViewVisibility(R.id.empty_view, View.VISIBLE);
-
 			remoteViews.setTextViewText(R.id.updatedTextView, "");
-
+			
 		}
 		else
 		{
 
-			remoteViews.setViewVisibility(R.id.empty_view, View.GONE);
 			remoteViews.setTextViewText(R.id.empty_view, context.getString(R.string.no_unread_items));
-
-			Intent svcIntent = new Intent(context, FeedlyWidgetsService.class);
-			svcIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-			svcIntent.setData(Uri.parse(svcIntent.toUri(Intent.URI_INTENT_SCHEME)));
-
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-			{
-				remoteViews.setRemoteAdapter(R.id.widgetListView, svcIntent);
-			}
-			else
-			{
-				remoteViews.setRemoteAdapter(appWidgetId, R.id.widgetListView, svcIntent);
-			}
-			remoteViews.setEmptyView(R.id.widgetListView, R.id.empty_view);
-
 			remoteViews.setTextViewText(R.id.updatedTextView, String.format(context.getString(R.string.lastupdate_display_format), Utils.GetFormattedDate(appPreferences.GetLastSuccessfulSync(), context)));
 
 			if (appPreferences.GetWidgetIntent() != null)
