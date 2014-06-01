@@ -7,5 +7,7 @@
     <bool name="enable_sound">true</bool>
     <bool name="enable_vibrate">true</bool>
     <bool name="enable_led">true</bool>
+    
+    <bool name="allowUseDefault">false</bool>
 
 </resources>

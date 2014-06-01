@@ -50,6 +50,7 @@ import android.widget.TextView;
 
 import in.co.madhur.dashclockfeedlyextension.App;
 import in.co.madhur.dashclockfeedlyextension.R;
+import in.co.madhur.dashclockfeedlyextension.ui.IThemeable;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -245,7 +246,9 @@ public class AppChooserPreference extends Preference
 		{
 			// Force Holo Light since ?android:actionBarXX would use dark action
 			// bar
-			Context layoutContext = new ContextThemeWrapper(getActivity(), android.R.style.Theme_Holo_Light);
+			
+			IThemeable themeAble=(IThemeable) getActivity();
+			Context layoutContext = new ContextThemeWrapper(getActivity(), themeAble.GetTheme());
 
 			LayoutInflater layoutInflater = LayoutInflater.from(layoutContext);
 			View rootView = layoutInflater.inflate(R.layout.dialog_app_chooser, null);
