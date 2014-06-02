@@ -15,6 +15,10 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
@@ -137,7 +141,13 @@ public abstract class FeedlyWidgetProvider extends AppWidgetProvider
 	private void SetupLookAndFeel(Context context, RemoteViews remoteViews, AppPreferences appPreferences)
 	{
 
-		remoteViews.setInt(R.id.widget_host, "setBackgroundColor", appPreferences.GetColor(Keys.WIDGET_BACKGROUND_COLOR));
+		 LayerDrawable   widgetDrawable=(LayerDrawable) context.getResources().getDrawable(R.drawable.widget_drawable);
+		 final GradientDrawable shape = (GradientDrawable)   widgetDrawable.findDrawableByLayerId(R.id.shape_id);
+		   shape.setColor( appPreferences.GetColor(Keys.WIDGET_BACKGROUND_COLOR));
+		    
+		//remoteViews.setInt(R.id.widget_host, "setBackgroundColor", appPreferences.GetColor(Keys.WIDGET_BACKGROUND_COLOR));
+		   
+			remoteViews.setInt(R.id.widget_host, "setBackgroundColor", R.drawable.widget_drawable);
 		
 		if(appPreferences.GetTheme()==0)
 		{
