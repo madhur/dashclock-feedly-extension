@@ -7,8 +7,8 @@ import android.app.Application;
 public class App extends Application
 {
 
-	public static final String TAG = "Feedly";
-	public static final String LOG = "feedly.log";
+	public static final String TAG = "FeedNotifier";
+	//public static final String LOG = "feednotifier.log";
 
 	public static final boolean DEBUG = true;
 	public static final boolean LOCAL_LOGV = DEBUG;

@@ -6,6 +6,7 @@ import in.co.madhur.dashclockfeedlyextension.Consts;
 import in.co.madhur.dashclockfeedlyextension.R;
 import in.co.madhur.dashclockfeedlyextension.Utils;
 
+import com.crittercism.app.Crittercism;
 import com.google.android.apps.dashclock.api.DashClockExtension;
 import com.google.android.apps.dashclock.api.ExtensionData;
 
@@ -37,6 +38,18 @@ public class FeedlyExtensionService extends DashClockExtension
 
 		changeReceiver = new FeedChangeReceiver();
 		LocalBroadcastManager.getInstance(this).registerReceiver(changeReceiver, filter);
+	}
+
+	@Override
+	public void onDestroy()
+	{
+		super.onDestroy();
+
+		if (changeReceiver != null)
+		{
+			LocalBroadcastManager.getInstance(this).unregisterReceiver(changeReceiver);
+		}
+
 	}
 
 	@Override
@@ -81,6 +94,7 @@ public class FeedlyExtensionService extends DashClockExtension
 		{
 
 			Log.e(App.TAG, "Exception while publishing:" + e.getMessage());
+			Crittercism.logHandledException(e);
 		}
 
 	}

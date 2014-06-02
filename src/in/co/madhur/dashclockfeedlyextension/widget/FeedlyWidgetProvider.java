@@ -161,7 +161,7 @@ public abstract class FeedlyWidgetProvider extends AppWidgetProvider
 			remoteViews.setViewVisibility(R.id.widget_settings, View.VISIBLE);
 
 			remoteViews.setOnClickPendingIntent(R.id.widget_icon, GetPendingIntent(context.getPackageManager().getLaunchIntentForPackage(context.getPackageName()), context));
-			remoteViews.setOnClickPendingIntent(R.id.widget_refresh, new Alarms(context).GetPendingIntent(context, UPDATESOURCE.WIDGET_REFRESH_BUTTON));
+			remoteViews.setOnClickPendingIntent(R.id.widget_refresh, new Alarms(context).GetPendingIntentWidget(context));
 			remoteViews.setOnClickPendingIntent(R.id.widget_settings, GetSettingsPendingIntent(context));
 
 		}

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import in.co.madhur.dashclockfeedlyextension.App;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences;
 import in.co.madhur.dashclockfeedlyextension.R;
 import in.co.madhur.dashclockfeedlyextension.service.ResultData;
@@ -14,7 +13,6 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 import android.util.TypedValue;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService.RemoteViewsFactory;
@@ -62,16 +60,9 @@ public class FeedlyWidgetListProvider implements RemoteViewsFactory
 	@Override
 	public void onDataSetChanged()
 	{
-		Log.v(App.TAG, "FeedlyWidgetListProvider:  onDataSetChanged  ;");
 
 		PullData();
 
-	}
-
-	@Override
-	public void onDestroy()
-	{
-		Log.v(App.TAG, "FeedlyWidgetListProvider:  onDestroy  ;");
 	}
 
 	@Override
@@ -135,6 +126,12 @@ public class FeedlyWidgetListProvider implements RemoteViewsFactory
 	public boolean hasStableIds()
 	{
 		return false;
+	}
+
+	@Override
+	public void onDestroy()
+	{
+		
 	}
 
 }

@@ -42,7 +42,8 @@ public class UpdateFeedCountService extends WakefulIntentService
 	@Override
 	protected void doWakefulWork(Intent intent)
 	{
-
+		Log.d(App.TAG, "Starting update...");
+		
 		String source = intent.getStringExtra(Consts.UPDATE_SOURCE);
 		if (!TextUtils.isEmpty(source))
 		{
