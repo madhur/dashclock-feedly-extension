@@ -14,6 +14,8 @@ import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
 public class MainActivity extends BaseActivity implements OnBackStackChangedListener, LoginListener
 
 {
+	private boolean isActivityActive=true;
+	
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -50,6 +52,13 @@ public class MainActivity extends BaseActivity implements OnBackStackChangedList
 		}
 
 	}
+	
+	@Override
+	protected void onDestroy()
+	{
+		super.onDestroy();
+		setActivityActive(false);
+	}
 
 	@Override
 	public void onBackStackChanged()
@@ -81,6 +90,16 @@ public class MainActivity extends BaseActivity implements OnBackStackChangedList
 		data.putBoolean("refresh", true);
 		mainFragment.setArguments(data);
 		getSupportFragmentManager().beginTransaction().replace(android.R.id.content, mainFragment).commit();
+	}
+
+	public boolean isActivityActive()
+	{
+		return isActivityActive;
+	}
+
+	public void setActivityActive(boolean isActivityActive)
+	{
+		this.isActivityActive = isActivityActive;
 	}
 
 }

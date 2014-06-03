@@ -43,7 +43,7 @@
     <!-- Default values -->
 
     <string name="sync_interval_default">1</string>
-    <string name="minimum_unread_default">10</string>
+    <string name="minimum_unread_default">1</string>
     <string name="pick_theme_default">0</string>
     <string name="sort_order_default">0</string>
     <string name="font_medium_default">14</string>

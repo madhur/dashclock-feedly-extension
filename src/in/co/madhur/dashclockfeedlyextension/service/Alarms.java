@@ -13,7 +13,7 @@ import android.util.Log;
 
 public class Alarms
 {
-	int REQUEST_CODE=0, REQUEST_CODE_ALARM=1;
+	int REQUEST_CODE_WIDGET=0, REQUEST_CODE_ALARM=1;
 	private Context context;
 	private AppPreferences appPreferences;
 	int LOWEST_RECUR_INTERVAL=1;
@@ -40,12 +40,12 @@ public class Alarms
 		//int prefInterval=appPreferences.GetSyncInterval();
 		long recurInterval=LOWEST_RECUR_INTERVAL*60*60*1000;
 		
-		alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 0, recurInterval, GetPendingIntentAlarm(context, UPDATESOURCE.ALARM) );
+		alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 0, recurInterval, GetPendingIntentAlarm(context) );
 	}
 	
 	public boolean DoesAlarmExist()
 	{
-		PendingIntent existingIntent=PendingIntent.getBroadcast(context, REQUEST_CODE, GetIntent(UPDATESOURCE.ALARM), PendingIntent.FLAG_NO_CREATE);
+		PendingIntent existingIntent=PendingIntent.getBroadcast(context, REQUEST_CODE_ALARM, GetIntent(UPDATESOURCE.ALARM), PendingIntent.FLAG_NO_CREATE);
 		
 		if(existingIntent!=null)
 		{
@@ -59,7 +59,7 @@ public class Alarms
 	
 	public void cancel()
 	{
-		GetAlarmManager(context).cancel(GetPendingIntentAlarm(context, UPDATESOURCE.ALARM));
+		GetAlarmManager(context).cancel(GetPendingIntentAlarm(context));
 	}
 	
 	
@@ -69,14 +69,14 @@ public class Alarms
 		
 	}
 	
-	private PendingIntent GetPendingIntentAlarm(Context context, UPDATESOURCE source)
+	private PendingIntent GetPendingIntentAlarm(Context context)
 	{
-		return PendingIntent.getBroadcast(context, REQUEST_CODE, GetIntent(source), PendingIntent.FLAG_UPDATE_CURRENT);
+		return PendingIntent.getBroadcast(context, REQUEST_CODE_ALARM, GetIntent(UPDATESOURCE.ALARM), PendingIntent.FLAG_UPDATE_CURRENT);
 	}
 	
 	public PendingIntent GetPendingIntentWidget(Context context)
 	{
-		return PendingIntent.getBroadcast(context, REQUEST_CODE_ALARM, GetIntent(UPDATESOURCE.WIDGET_REFRESH_BUTTON), PendingIntent.FLAG_ONE_SHOT);
+		return PendingIntent.getBroadcast(context, REQUEST_CODE_WIDGET, GetIntent(UPDATESOURCE.WIDGET_REFRESH_BUTTON), PendingIntent.FLAG_ONE_SHOT);
 	}
 	
 	private Intent GetIntent(UPDATESOURCE source)

@@ -66,21 +66,21 @@ public class MainFragment extends Fragment
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 
-		// Check if it has been instantiated through Login dialog, if yes, we need a force refresh action to first time sync
+		// Check if it has been instantiated through Login dialog, if yes, we
+		// need a force refresh action to first time sync
 		Bundle data = getArguments();
 		if (data != null)
 		{
 
 			forceRefresh = data.getBoolean("refresh");
 		}
-		
-		
+
 		// Setup alarm if it doesn't exist
-		Alarms alarms=new Alarms(getActivity());
-		
-		if(!alarms.DoesAlarmExist())
+		Alarms alarms = new Alarms(getActivity());
+
+		if (!alarms.DoesAlarmExist())
 		{
-			if(alarms.ShouldSchedule())
+			if (alarms.ShouldSchedule())
 				alarms.Schedule();
 		}
 
@@ -93,43 +93,42 @@ public class MainFragment extends Fragment
 
 		progressBar = (ProgressBar) v.findViewById(R.id.pbHeaderProgress);
 		listView = (ExpandableListView) v.findViewById(R.id.listview);
-		
+
 		appPreferences = new AppPreferences(getActivity());
-		
+
 		statusText = (TextView) v.findViewById(R.id.statusMessage);
-		
-		final IThemeable themeAble=(IThemeable) getActivity();
-		
+
+		final IThemeable themeAble = (IThemeable) getActivity();
+
 		listView.setOnGroupClickListener(new OnGroupClickListener()
 		{
 			@Override
 			public boolean onGroupClick(ExpandableListView parent, View clickedView, int groupPosition, long rowId)
 			{
 				ImageView groupIndicator = (ImageView) clickedView.findViewById(R.id.group_indicator);
-				
+
 				if (parent.isGroupExpanded(groupPosition))
 				{
 					parent.collapseGroup(groupPosition);
-					
-					if(themeAble.GetTheme()==0)
+
+					if (themeAble.GetTheme() == 0)
 						groupIndicator.setImageResource(R.drawable.expander_open_holo_dark);
-					else if(themeAble.GetTheme()==1)
+					else if (themeAble.GetTheme() == 1)
 						groupIndicator.setImageResource(R.drawable.expander_open_holo_light);
 				}
 				else
 				{
 					parent.expandGroup(groupPosition);
 
-					if(themeAble.GetTheme()==0)
+					if (themeAble.GetTheme() == 0)
 						groupIndicator.setImageResource(R.drawable.expander_close_holo_dark);
-					else if (themeAble.GetTheme()==1)
+					else if (themeAble.GetTheme() == 1)
 						groupIndicator.setImageResource(R.drawable.expander_close_holo_light);
 				}
 				return true;
 			}
 		});
 
-		
 		if (!appPreferences.IsTokenPresent())
 		{
 			StartLoginProcedure();
@@ -171,12 +170,14 @@ public class MainFragment extends Fragment
 				break;
 
 			case R.id.action_settings:
-				Intent i=new Intent();
+				Intent i = new Intent();
 				i.setClass(getActivity(), SettingsActivity.class);
 				getActivity().finish();
 				startActivity(i);
-				
-				//getActivity().getSupportFragmentManager().beginTransaction().replace(android.R.id.content, new FeedlyPreferenceFragment()).addToBackStack("settings").commit();
+
+				// getActivity().getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
+				// new
+				// FeedlyPreferenceFragment()).addToBackStack("settings").commit();
 				break;
 
 			case R.id.action_accept:
@@ -411,27 +412,27 @@ public class MainFragment extends Fragment
 					{
 						if (sub.getCategories().size() == 0)
 						{
-							//Create a new category "Uncategorized", if not created, with a unique id
+							// Create a new category "Uncategorized", if not
+							// created, with a unique id
 							if (!isuncatSet)
 							{
 								Category uncategorizedCat = new Category();
 								uncategorizedCat.setLabel(Consts.UNCATEGORIZED);
 								uncategorizedCat.setId(String.format(Consts.UNCAT_ID, profile.getId()));
 								categories.add(uncategorizedCat);
-								
-								isuncatSet=true;
+
+								isuncatSet = true;
 							}
-							
-							ArrayList<Category> uncatList=new ArrayList<Category>();
-							uncatList.add(categories.get(categories.size()-1));
+
+							ArrayList<Category> uncatList = new ArrayList<Category>();
+							uncatList.add(categories.get(categories.size() - 1));
 							sub.setCategories(uncatList);
-							
 
 						}
 					}
 
 					// Dump all the information to db
-					
+
 					dbHelper.TruncateProfile();
 					dbHelper.WriteProfile(profile);
 
@@ -441,7 +442,9 @@ public class MainFragment extends Fragment
 					dbHelper.TruncateSubscriptions();
 					dbHelper.WriteSubscriptions(subscriptions);
 
-					// Create a helper Category -> Subscription map for list adapter so that we don't hit the disk again while scrolling in list.
+					// Create a helper Category -> Subscription map for list
+					// adapter so that we don't hit the disk again while
+					// scrolling in list.
 					for (Category category : categories)
 					{
 						categorySubscriptions.put(category, dbHelper.GetSubScriptionsForCategory(category.getId()));
@@ -478,7 +481,10 @@ public class MainFragment extends Fragment
 		{
 			super.onPostExecute(result);
 
-			UpdateUI(result);
+			if (getActivity()!=null)
+			{
+				UpdateUI(result);
+			}
 		}
 
 	}
