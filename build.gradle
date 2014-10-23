@@ -4,124 +4,113 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.10+'
-        
+        classpath 'com.android.tools.build:gradle:0.13.2'
+
     }
 }
-
 apply plugin: 'android'
-
 repositories {
     mavenCentral()
-
-      maven {
-        url "https://repo.commonsware.com.s3.amazonaws.com"
-    }
+    maven { url 'https://repo.commonsware.com.s3.amazonaws.com' }
 }
-
-
-android 
-{
-    buildToolsVersion "19.1"
-    compileSdkVersion 19
-    
-     sourceSets 
-     {
-        main 
+android
         {
-            manifest.srcFile 'AndroidManifest.xml'
-            java.srcDirs = ['src']
-            resources.srcDirs = ['src']
-           
-            renderscript.srcDirs = ['src']
-            res.srcDirs = ['res']
-            assets.srcDirs = ['assets']
+            buildToolsVersion '21.0.2'
+            compileSdkVersion 19
+
+            sourceSets
+                    {
+                        main
+                                {
+                                    manifest.srcFile 'AndroidManifest.xml'
+                                    java.srcDirs = ['src']
+                                    resources.srcDirs = ['src']
+
+                                    renderscript.srcDirs = ['src']
+                                    res.srcDirs = ['res']
+                                    assets.srcDirs = ['assets']
+                                }
+
+                        instrumentTest.setRoot('tests')
+                    }
+
+            packagingOptions
+                    {
+                        exclude 'META-INF/NOTICE'
+                        exclude 'META-INF/LICENSE'
+                    }
+
+            lintOptions {
+                abortOnError false
+            }
+
+
+
+
+
+            dependencies {
+
+
+                compile project(':android_oauth2_webview')
+                compile project(':android-support-v4-preferencefragment')
+                compile 'com.squareup:otto:1.3.3'
+
+
+                compile 'com.fasterxml.jackson.core:jackson-core:2.3.0-rc1'
+                compile 'com.fasterxml.jackson.core:jackson-databind:2.3.0-rc1'
+                compile 'com.fasterxml.jackson.core:jackson-annotations:2.3.0-rc1'
+                compile 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
+                compile 'com.squareup:otto:1.3.3'
+                compile 'com.squareup.retrofit:retrofit:1.5.1'
+                compile('com.commonsware.cwac:wakeful:1.0.1')
+                        {
+                            exclude module: 'support-v4'
+                        }
+                compile('com.android.support:appcompat-v7:19.0.0')
+                        {
+                            exclude module: 'support-v4'
+                        }
+
+
+                compile('de.keyboardsurfer.android.widget:crouton:1.8.4')
+                        {
+
+                            exclude group: 'com.google.android', module: 'support-v4'
+                            exclude module: 'support-v4'
+
+                        }
+
+
+
+
+                compile files('libs/crittercism_v4_5_1_sdkonly.jar')
+
+
+            }
+
+
+
+            signingConfigs {
+                release {
+                    storeFile file(System.getenv("KEYSTORE"))
+                    storePassword System.getenv("KEYSTORE_PASSWORD")
+                    keyAlias System.getenv("KEY_ALIAS")
+                    keyPassword System.getenv("KEY_PASSWORD")
+                }
+            }
+
+            buildTypes {
+                release {
+                    signingConfig signingConfigs.release
+                }
+            }
+
+
+            defaultConfig {
+            }
         }
 
-        instrumentTest.setRoot('tests')
-    }
-
-          packagingOptions 
-          {
-             exclude 'META-INF/NOTICE'
-             exclude 'META-INF/LICENSE'
-          }
-
-           lintOptions {
-        abortOnError false
-    }
-       
-
-    
-    
-    
-    dependencies {
-   
-
-    compile project(':android_oauth2_webview')
+dependencies {
     compile project(':android-support-v4-preferencefragment')
-    compile 'com.squareup:otto:1.3.3'
-    
-     
-    compile 'com.fasterxml.jackson.core:jackson-core:2.3.0-rc1'
-    compile 'com.fasterxml.jackson.core:jackson-databind:2.3.0-rc1'
-    compile 'com.fasterxml.jackson.core:jackson-annotations:2.3.0-rc1'
-     compile 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
-     compile 'com.squareup:otto:1.3.3'
-     compile 'com.squareup.retrofit:retrofit:1.5.1'
-      compile ('com.commonsware.cwac:wakeful:1.0.1')
-      {
-      exclude module: 'support-v4'
-    }
-      compile ('com.android.support:appcompat-v7:+')
-    {
-      exclude module: 'support-v4'
-    }
-     
-   
-   compile('de.keyboardsurfer.android.widget:crouton:1.8.4')
-    {
-  
-    exclude group: 'com.google.android', module: 'support-v4'
-    exclude module: 'support-v4'
-
-  }
-
-
-  
-    
-     compile files('libs/crittercism_v4_5_1_sdkonly.jar')
-    
-    
-    
+    compile project(':android_oauth2_webview')
 }
-
-    
-
-  signingConfigs {
-    release {
-        storeFile file(System.getenv("KEYSTORE"))
-        storePassword System.getenv("KEYSTORE_PASSWORD")
-        keyAlias System.getenv("KEY_ALIAS")
-        keyPassword System.getenv("KEY_PASSWORD")
-    }
-    }
-    
-     buildTypes {
-    release {
-        signingConfig signingConfigs.release
-    }
-}
- 
-    
-} 
-
-subprojects {
-    gradle.projectsEvaluated {
-        tasks.withType(Compile) {
-            options.compilerArgs << "-Xlint:deprecation"
-        }
-    }
-}
-
-
