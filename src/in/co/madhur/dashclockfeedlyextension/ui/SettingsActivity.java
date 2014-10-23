@@ -4,6 +4,11 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Window;
+
+import in.co.madhur.dashclockfeedlyextension.R;
 
 public class SettingsActivity extends BaseActivity
 {
@@ -11,12 +16,16 @@ public class SettingsActivity extends BaseActivity
 	@Override
 	protected void onCreate(Bundle arg0)
 	{
+        supportRequestWindowFeature(Window.FEATURE_ACTION_BAR);
+
 		super.onCreate(arg0);
 		
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		
-		getSupportFragmentManager().beginTransaction().replace(android.R.id.content, new FeedlyPreferenceFragment()).commit();
-	}
+        setContentView(R.layout.settings_layout);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
+        setSupportActionBar(toolbar);
+
+    }
 	
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@Override

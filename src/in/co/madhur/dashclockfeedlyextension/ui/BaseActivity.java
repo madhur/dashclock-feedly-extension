@@ -4,6 +4,7 @@ import in.co.madhur.dashclockfeedlyextension.AppPreferences;
 import in.co.madhur.dashclockfeedlyextension.R;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 
 public abstract class BaseActivity extends ActionBarActivity implements IThemeable
 {
@@ -14,6 +15,8 @@ public abstract class BaseActivity extends ActionBarActivity implements IThemeab
 	{
 		SetTheme();
 		super.onCreate(savedInstanceState);
+
+
 	}
 	
 	@Override

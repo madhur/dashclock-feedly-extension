@@ -33,7 +33,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -65,6 +67,8 @@ public class MainFragment extends Fragment
 	{
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
+
+
 
 		// Check if it has been instantiated through Login dialog, if yes, we
 		// need a force refresh action to first time sync
@@ -99,6 +103,10 @@ public class MainFragment extends Fragment
 		statusText = (TextView) v.findViewById(R.id.statusMessage);
 
 		final IThemeable themeAble = (IThemeable) getActivity();
+
+        Toolbar toolbar = (Toolbar) v.findViewById(R.id.my_awesome_toolbar);
+        ((ActionBarActivity)getActivity()).setSupportActionBar(toolbar);
+
 
 		listView.setOnGroupClickListener(new OnGroupClickListener()
 		{
@@ -175,9 +183,7 @@ public class MainFragment extends Fragment
 				getActivity().finish();
 				startActivity(i);
 
-				// getActivity().getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
-				// new
-				// FeedlyPreferenceFragment()).addToBackStack("settings").commit();
+
 				break;
 
 			case R.id.action_accept:

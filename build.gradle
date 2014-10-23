@@ -16,7 +16,7 @@ repositories {
 android
         {
             buildToolsVersion '21.0.2'
-            compileSdkVersion 19
+            compileSdkVersion 21
 
             sourceSets
                     {
@@ -66,7 +66,7 @@ android
                         {
                             exclude module: 'support-v4'
                         }
-                compile('com.android.support:appcompat-v7:19.0.0')
+                compile('com.android.support:appcompat-v7:21.0.0')
                         {
                             exclude module: 'support-v4'
                         }

@@ -254,7 +254,7 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 		super.onPreferenceTreeClick(preferenceScreen, preference);
 
 		// This code cannot run pre honeycomb
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT)
 		{
 			// If the user has clicked on a preference screen, set up the action
 			// bar
@@ -281,7 +281,10 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 		if (dialog != null)
 		{
 			// Inialize the action bar
-			dialog.getActionBar().setDisplayHomeAsUpEnabled(true);
+			if(dialog.getActionBar()!=null)
+                dialog.getActionBar().setDisplayHomeAsUpEnabled(true);
+
+            
 
 			// Apply custom home button area click listener to close the
 			// PreferenceScreen because PreferenceScreens are dialogs which

@@ -26,6 +26,8 @@ public class SplashFragment extends Fragment implements OnClickListener
 		 loginButton=(Button) v.findViewById(R.id.login_button);
 		 
 		 loginButton.setOnClickListener(this);
+
+
 		 
 		 return v;
 	}
