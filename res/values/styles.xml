@@ -29,6 +29,8 @@
         <item name="widgetFeedlyIcon">@drawable/ic_notification</item>
          <item name="groupIndicatorIcon">@drawable/group_indicator</item>
         <item name="windowActionBar">false</item>
+
+
    
     </style>
 

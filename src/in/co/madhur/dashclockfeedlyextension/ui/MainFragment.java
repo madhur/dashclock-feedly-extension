@@ -1,28 +1,5 @@
 package in.co.madhur.dashclockfeedlyextension.ui;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.infospace.android.oauth2.WebApiHelper;
-
-import de.keyboardsurfer.android.widget.crouton.Configuration;
-import de.keyboardsurfer.android.widget.crouton.Configuration.Builder;
-
-import in.co.madhur.dashclockfeedlyextension.App;
-import in.co.madhur.dashclockfeedlyextension.AppPreferences;
-import in.co.madhur.dashclockfeedlyextension.Consts;
-import in.co.madhur.dashclockfeedlyextension.Consts.UPDATESOURCE;
-import in.co.madhur.dashclockfeedlyextension.R;
-import in.co.madhur.dashclockfeedlyextension.api.Category;
-import in.co.madhur.dashclockfeedlyextension.api.Feedly;
-import in.co.madhur.dashclockfeedlyextension.api.FeedlyData;
-import in.co.madhur.dashclockfeedlyextension.api.Profile;
-import in.co.madhur.dashclockfeedlyextension.api.Subscription;
-import in.co.madhur.dashclockfeedlyextension.db.DbHelper;
-import in.co.madhur.dashclockfeedlyextension.service.Alarms;
-import in.co.madhur.dashclockfeedlyextension.service.Connection;
 import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.app.SearchableInfo;
@@ -44,12 +21,35 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnGroupClickListener;
+import android.widget.Filter.FilterListener;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ExpandableListView.OnGroupClickListener;
-import android.widget.Filter.FilterListener;
+
+import com.infospace.android.oauth2.WebApiHelper;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import de.keyboardsurfer.android.widget.crouton.Configuration;
+import de.keyboardsurfer.android.widget.crouton.Configuration.Builder;
+import in.co.madhur.dashclockfeedlyextension.App;
+import in.co.madhur.dashclockfeedlyextension.AppPreferences;
+import in.co.madhur.dashclockfeedlyextension.Consts;
+import in.co.madhur.dashclockfeedlyextension.Consts.UPDATESOURCE;
+import in.co.madhur.dashclockfeedlyextension.R;
+import in.co.madhur.dashclockfeedlyextension.api.Category;
+import in.co.madhur.dashclockfeedlyextension.api.Feedly;
+import in.co.madhur.dashclockfeedlyextension.api.FeedlyData;
+import in.co.madhur.dashclockfeedlyextension.api.Profile;
+import in.co.madhur.dashclockfeedlyextension.api.Subscription;
+import in.co.madhur.dashclockfeedlyextension.db.DbHelper;
+import in.co.madhur.dashclockfeedlyextension.service.Alarms;
+import in.co.madhur.dashclockfeedlyextension.service.Connection;
 
 public class MainFragment extends Fragment
 {
@@ -104,9 +104,6 @@ public class MainFragment extends Fragment
 
 		final IThemeable themeAble = (IThemeable) getActivity();
 
-        Toolbar toolbar = (Toolbar) v.findViewById(R.id.my_awesome_toolbar);
-        ((ActionBarActivity)getActivity()).setSupportActionBar(toolbar);
-
 
 		listView.setOnGroupClickListener(new OnGroupClickListener()
 		{
@@ -151,7 +148,12 @@ public class MainFragment extends Fragment
 
 		}
 
-		return v;
+
+        Toolbar toolbar = (Toolbar) v.findViewById(R.id.my_awesome_toolbar);
+        ((ActionBarActivity)getActivity()).setSupportActionBar(toolbar);
+
+
+        return v;
 	}
 
 	private void GetFeedlyData(boolean forceRefresh)
