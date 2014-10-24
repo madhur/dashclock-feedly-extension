@@ -28,6 +28,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crittercism.app.Crittercism;
 import com.infospace.android.oauth2.WebApiHelper;
 
 import java.util.ArrayList;
@@ -478,10 +479,23 @@ public class MainFragment extends Fragment
 			}
 			catch (Exception e)
 			{
-				Log.e(App.TAG, e.getMessage());
-				e.printStackTrace();
-				return new FeedlyData(e.getMessage());
-			}
+                Crittercism.logHandledException(e);
+                String msg;
+                
+                if(e.getMessage()!=null)
+                {
+                    msg=e.getMessage();
+                }
+                else
+                {
+                     msg = "Unknown error occurred";
+                }
+
+                Log.e(App.TAG, msg);
+                e.printStackTrace();
+                return new FeedlyData(msg);
+
+            }
 		}
 
 		@Override
