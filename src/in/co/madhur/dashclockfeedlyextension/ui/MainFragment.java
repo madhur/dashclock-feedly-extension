@@ -182,7 +182,7 @@ public class MainFragment extends Fragment
 			case R.id.action_settings:
 				Intent i = new Intent();
 				i.setClass(getActivity(), SettingsActivity.class);
-				getActivity().finish();
+				//getActivity().finish();
 				startActivity(i);
 
 
