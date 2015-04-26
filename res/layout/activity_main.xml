@@ -1,3 +1,8 @@
+<LinearLayout
+    android:layout_height="wrap_content" android:layout_width="match_parent" android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<include layout="@layout/toolbar"></include>
+
 <FrameLayout android:id="@+id/mainframe" xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,7 +13,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
    >
  
-  
+
+
      <TextView
         android:id="@+id/statusMessage"
         android:layout_width="wrap_content"
@@ -35,3 +41,4 @@
         />
     
 </FrameLayout>
+</LinearLayout>

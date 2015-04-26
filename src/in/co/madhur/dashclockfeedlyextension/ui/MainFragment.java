@@ -1,13 +1,41 @@
 package in.co.madhur.dashclockfeedlyextension.ui;
 
+
+import android.app.AlertDialog;
+import android.app.Fragment;
+import android.app.SearchManager;
+import android.app.SearchableInfo;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnGroupClickListener;
+import android.widget.Filter.FilterListener;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.crittercism.app.Crittercism;
+import com.infospace.android.oauth2.WebApiHelper;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.infospace.android.oauth2.WebApiHelper;
-
-
 
 import in.co.madhur.dashclockfeedlyextension.App;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences;
@@ -22,31 +50,6 @@ import in.co.madhur.dashclockfeedlyextension.api.Subscription;
 import in.co.madhur.dashclockfeedlyextension.db.DbHelper;
 import in.co.madhur.dashclockfeedlyextension.service.Alarms;
 import in.co.madhur.dashclockfeedlyextension.service.Connection;
-import android.app.AlertDialog;
-import android.app.SearchManager;
-import android.app.SearchableInfo;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.SearchView;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ExpandableListView;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ExpandableListView.OnGroupClickListener;
-import android.widget.Filter.FilterListener;
 
 public class MainFragment extends Fragment
 {
@@ -64,6 +67,8 @@ public class MainFragment extends Fragment
 	{
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
+
+
 
 		// Check if it has been instantiated through Login dialog, if yes, we
 		// need a force refresh action to first time sync
@@ -98,6 +103,7 @@ public class MainFragment extends Fragment
 		statusText = (TextView) v.findViewById(R.id.statusMessage);
 
 		final IThemeable themeAble = (IThemeable) getActivity();
+
 
 		listView.setOnGroupClickListener(new OnGroupClickListener()
 		{
@@ -142,7 +148,12 @@ public class MainFragment extends Fragment
 
 		}
 
-		return v;
+
+        Toolbar toolbar = (Toolbar) v.findViewById(R.id.my_awesome_toolbar);
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+
+
+        return v;
 	}
 
 	private void GetFeedlyData(boolean forceRefresh)
@@ -171,12 +182,10 @@ public class MainFragment extends Fragment
 			case R.id.action_settings:
 				Intent i = new Intent();
 				i.setClass(getActivity(), SettingsActivity.class);
-				getActivity().finish();
+				//getActivity().finish();
 				startActivity(i);
 
-				// getActivity().getSupportFragmentManager().beginTransaction().replace(android.R.id.content,
-				// new
-				// FeedlyPreferenceFragment()).addToBackStack("settings").commit();
+
 				break;
 
 			case R.id.action_accept:
@@ -231,6 +240,7 @@ public class MainFragment extends Fragment
 	{
 		AboutDialog dialog = new AboutDialog();
 		dialog.show(getFragmentManager(), Consts.ABOUT_TAG);
+
 
 	}
 
@@ -468,10 +478,23 @@ public class MainFragment extends Fragment
 			}
 			catch (Exception e)
 			{
-				Log.e(App.TAG, e.getMessage());
-				e.printStackTrace();
-				return new FeedlyData(e.getMessage());
-			}
+                Crittercism.logHandledException(e);
+                String msg;
+                
+                if(e.getMessage()!=null)
+                {
+                    msg=e.getMessage();
+                }
+                else
+                {
+                     msg = "Unknown error occurred";
+                }
+
+                Log.e(App.TAG, msg);
+                e.printStackTrace();
+                return new FeedlyData(msg);
+
+            }
 		}
 
 		@Override

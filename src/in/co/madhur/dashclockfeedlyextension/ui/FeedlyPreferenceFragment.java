@@ -1,13 +1,5 @@
 package in.co.madhur.dashclockfeedlyextension.ui;
 
-import in.co.madhur.dashclockfeedlyextension.AppPreferences;
-import in.co.madhur.dashclockfeedlyextension.Consts;
-import in.co.madhur.dashclockfeedlyextension.R;
-import in.co.madhur.dashclockfeedlyextension.AppPreferences.Keys;
-import in.co.madhur.dashclockfeedlyextension.service.Alarms;
-
-import com.google.android.apps.dashclock.configuration.AppChooserPreference;
-
 import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Intent;
@@ -18,8 +10,9 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
-import android.support.v4.preference.PreferenceFragment;
+
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,6 +20,14 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+
+import com.google.android.apps.dashclock.configuration.AppChooserPreference;
+
+import in.co.madhur.dashclockfeedlyextension.AppPreferences;
+import in.co.madhur.dashclockfeedlyextension.AppPreferences.Keys;
+import in.co.madhur.dashclockfeedlyextension.Consts;
+import in.co.madhur.dashclockfeedlyextension.R;
+import in.co.madhur.dashclockfeedlyextension.service.Alarms;
 
 public class FeedlyPreferenceFragment extends PreferenceFragment
 {
@@ -82,6 +83,8 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 		{
 			getPreferenceScreen().removePreference(findPreference(Keys.WIDGET_OPTIONS.key));
 		}
+
+
 
 	}
 
@@ -178,6 +181,7 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 				AboutDialog dialog = new AboutDialog();
 				dialog.show(getFragmentManager(), Consts.ABOUT_TAG);
 
+
 				return true;
 			}
 		});
@@ -254,7 +258,7 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 		super.onPreferenceTreeClick(preferenceScreen, preference);
 
 		// This code cannot run pre honeycomb
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT)
 		{
 			// If the user has clicked on a preference screen, set up the action
 			// bar
@@ -281,7 +285,10 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 		if (dialog != null)
 		{
 			// Inialize the action bar
-			dialog.getActionBar().setDisplayHomeAsUpEnabled(true);
+			if(dialog.getActionBar()!=null)
+                dialog.getActionBar().setDisplayHomeAsUpEnabled(true);
+
+            
 
 			// Apply custom home button area click listener to close the
 			// PreferenceScreen because PreferenceScreens are dialogs which

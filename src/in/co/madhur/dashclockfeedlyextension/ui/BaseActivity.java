@@ -1,11 +1,12 @@
 package in.co.madhur.dashclockfeedlyextension.ui;
 
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+
 import in.co.madhur.dashclockfeedlyextension.AppPreferences;
 import in.co.madhur.dashclockfeedlyextension.R;
-import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 
-public abstract class BaseActivity extends ActionBarActivity implements IThemeable
+public abstract class BaseActivity extends AppCompatActivity implements IThemeable
 {
 	protected int currentTheme;
 	
@@ -14,6 +15,8 @@ public abstract class BaseActivity extends ActionBarActivity implements IThemeab
 	{
 		SetTheme();
 		super.onCreate(savedInstanceState);
+
+
 	}
 	
 	@Override

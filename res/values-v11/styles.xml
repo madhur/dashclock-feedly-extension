@@ -28,7 +28,8 @@
         <item name="widgetSettingsIcon">@drawable/ic_action_settings</item>
         <item name="widgetFeedlyIcon">@drawable/ic_notification</item>
          <item name="groupIndicatorIcon">@drawable/group_indicator</item>
-   
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="Light" parent="@style/Theme.AppCompat.Light">
@@ -42,6 +43,8 @@
         <item name="widgetSettingsIcon">@drawable/ic_action_settings_light</item>
         <item name="widgetFeedlyIcon">@drawable/ic_notification_light</item>
        <item name="groupIndicatorIcon">@drawable/group_indicator_light</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
 </resources>

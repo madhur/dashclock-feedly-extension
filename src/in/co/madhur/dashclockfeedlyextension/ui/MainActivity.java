@@ -1,105 +1,102 @@
 package in.co.madhur.dashclockfeedlyextension.ui;
 
-import com.infospace.android.oauth2.LoginListener;
-
-import in.co.madhur.dashclockfeedlyextension.App;
-import in.co.madhur.dashclockfeedlyextension.R;
+import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
-import android.annotation.TargetApi;
 import android.support.v4.app.FragmentManager.OnBackStackChangedListener;
+
+import com.infospace.android.oauth2.LoginListener;
+
+import in.co.madhur.dashclockfeedlyextension.App;
+import in.co.madhur.dashclockfeedlyextension.R;
 
 public class MainActivity extends BaseActivity implements OnBackStackChangedListener, LoginListener
 
 {
-	private boolean isActivityActive=true;
-	
-	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
-		//SetupStrictMode();
+    private boolean isActivityActive = true;
 
-		super.onCreate(savedInstanceState);
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        //SetupStrictMode();
 
-		getSupportActionBar().setDisplayUseLogoEnabled(true);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        super.onCreate(savedInstanceState);
 
-		getSupportFragmentManager().beginTransaction().replace(android.R.id.content, new MainFragment()).commit();
 
-		// Listen for changes in the back stack
-		getSupportFragmentManager().addOnBackStackChangedListener(this);
-		// Handle when activity is recreated like on orientation Change
-		shouldDisplayHomeUp();
-		
-		PreferenceManager.setDefaultValues(this, R.xml.settings_layout, false);
+        getFragmentManager().beginTransaction().replace(android.R.id.content, new MainFragment()).commit();
 
-	}
-	
-	private void SetupStrictMode()
-	{
-		if (App.DEBUG)
-		{
-			StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork() // or
-			// .detectAll()
-			// for
-			// all
-			// detectable
-			// problems
-			.penaltyLog().build());
-		}
+        // Listen for changes in the back stack
+        getSupportFragmentManager().addOnBackStackChangedListener(this);
+        // Handle when activity is recreated like on orientation Change
 
-	}
-	
-	@Override
-	protected void onDestroy()
-	{
-		super.onDestroy();
-		setActivityActive(false);
-	}
 
-	@Override
-	public void onBackStackChanged()
-	{
-		shouldDisplayHomeUp();
-	}
+        if (getSupportActionBar() != null) {
 
-	public void shouldDisplayHomeUp()
-	{
-		// Enable Up button only if there are entries in the back stack
-		boolean canback = getSupportFragmentManager().getBackStackEntryCount() > 0;
-		getSupportActionBar().setDisplayHomeAsUpEnabled(canback);
-	}
+            getSupportActionBar().setDisplayUseLogoEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-	@Override
-	public boolean onSupportNavigateUp()
-	{
-		// This method is called when the up button is pressed. Just the pop
-		// back stack.
-		getSupportFragmentManager().popBackStack();
-		return true;
-	}
+            shouldDisplayHomeUp();
+        }
 
-	@Override
-	public void Login()
-	{
-		MainFragment mainFragment=new MainFragment();
-		Bundle data=new Bundle();
-		data.putBoolean("refresh", true);
-		mainFragment.setArguments(data);
-		getSupportFragmentManager().beginTransaction().replace(android.R.id.content, mainFragment).commit();
-	}
+        PreferenceManager.setDefaultValues(this, R.xml.settings_layout, false);
 
-	public boolean isActivityActive()
-	{
-		return isActivityActive;
-	}
+    }
 
-	public void setActivityActive(boolean isActivityActive)
-	{
-		this.isActivityActive = isActivityActive;
-	}
+    private void SetupStrictMode() {
+        if (App.DEBUG) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads().detectDiskWrites().detectNetwork() // or
+                    // .detectAll()
+                    // for
+                    // all
+                    // detectable
+                    // problems
+                    .penaltyLog().build());
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        setActivityActive(false);
+    }
+
+    @Override
+    public void onBackStackChanged() {
+        shouldDisplayHomeUp();
+    }
+
+    public void shouldDisplayHomeUp() {
+        // Enable Up button only if there are entries in the back stack
+        boolean canback = getSupportFragmentManager().getBackStackEntryCount() > 0;
+        getSupportActionBar().setDisplayHomeAsUpEnabled(canback);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        // This method is called when the up button is pressed. Just the pop
+        // back stack.
+        getSupportFragmentManager().popBackStack();
+        return true;
+    }
+
+    @Override
+    public void Login() {
+        MainFragment mainFragment = new MainFragment();
+        Bundle data = new Bundle();
+        data.putBoolean("refresh", true);
+        mainFragment.setArguments(data);
+        getFragmentManager().beginTransaction().replace(android.R.id.content, mainFragment).commit();
+    }
+
+    public boolean isActivityActive() {
+        return isActivityActive;
+    }
+
+    public void setActivityActive(boolean isActivityActive) {
+        this.isActivityActive = isActivityActive;
+    }
 
 }
