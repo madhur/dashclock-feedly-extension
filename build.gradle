@@ -4,19 +4,19 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.13.2'
+        classpath 'com.android.tools.build:gradle:1.1.0'
 
     }
 }
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 repositories {
     mavenCentral()
     maven { url 'https://repo.commonsware.com.s3.amazonaws.com' }
 }
 android
         {
-            buildToolsVersion '21.0.2'
-            compileSdkVersion 19
+            buildToolsVersion '22.0.1'
+            compileSdkVersion 22
 
             sourceSets
                     {
@@ -66,20 +66,10 @@ android
                         {
                             exclude module: 'support-v4'
                         }
-                compile('com.android.support:appcompat-v7:19.0.0')
+                compile('com.android.support:appcompat-v7:22.1.0')
                         {
                             exclude module: 'support-v4'
                         }
-
-
-                compile('de.keyboardsurfer.android.widget:crouton:1.8.4')
-                        {
-
-                            exclude group: 'com.google.android', module: 'support-v4'
-                            exclude module: 'support-v4'
-
-                        }
-
 
 
 

@@ -7,8 +7,7 @@ import java.util.Map;
 
 import com.infospace.android.oauth2.WebApiHelper;
 
-import de.keyboardsurfer.android.widget.crouton.Configuration;
-import de.keyboardsurfer.android.widget.crouton.Configuration.Builder;
+
 
 import in.co.madhur.dashclockfeedlyextension.App;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences;
@@ -383,8 +382,7 @@ public class MainFragment extends Fragment
 			listView.setVisibility(View.GONE);
 			statusText.setVisibility(View.GONE);
 
-			Configuration.Builder builder = new Builder();
-			builder.setDuration(Configuration.DURATION_INFINITE);
+
 
 		}
 
