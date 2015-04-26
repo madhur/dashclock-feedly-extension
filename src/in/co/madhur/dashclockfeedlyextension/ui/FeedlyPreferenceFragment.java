@@ -12,7 +12,6 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
-
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -85,10 +84,12 @@ public class FeedlyPreferenceFragment extends PreferenceFragment
 		}
 
 
+     
 
 	}
 
-	@Override
+
+    @Override
 	public void onResume()
 	{
 		super.onResume();
