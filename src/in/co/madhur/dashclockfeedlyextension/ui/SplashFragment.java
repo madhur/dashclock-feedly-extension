@@ -4,6 +4,7 @@ package in.co.madhur.dashclockfeedlyextension.ui;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,9 +33,9 @@ public class SplashFragment extends Fragment implements OnClickListener
 
 
         Toolbar toolbar = (Toolbar) v.findViewById(R.id.my_awesome_toolbar);
-        ((ActionBarActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
-        ((ActionBarActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         return v;
     }
@@ -49,8 +50,7 @@ public class SplashFragment extends Fragment implements OnClickListener
 
                 WebApiHelper.register(getActivity());
 
-
-                getFragmentManager().beginTransaction().replace(android.R.id.content, new AuthenticationFragment()).commit();
+                getFragmentManager().beginTransaction().replace(android.R.id.content, new AuthenticationFragment()).addToBackStack(null).commit();
 
             } else
             {

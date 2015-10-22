@@ -138,13 +138,13 @@ public class AppPreferences
 
 	}
 
-	public int GetSyncInterval()
+	public double GetSyncInterval()
 	{
 
-		int interval;
+		double interval;
 
 		String s = sharedPreferences.getString(Keys.SYNC_INTERVAL.key, context.getResources().getString(R.string.sync_interval_default));
-		interval = Integer.parseInt(s);
+		interval = Double.parseDouble(s);
 
 		return interval;
 

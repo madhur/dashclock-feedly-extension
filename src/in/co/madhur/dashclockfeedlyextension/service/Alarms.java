@@ -16,7 +16,7 @@ public class Alarms
 	int REQUEST_CODE_WIDGET=0, REQUEST_CODE_ALARM=1;
 	private Context context;
 	private AppPreferences appPreferences;
-	int LOWEST_RECUR_INTERVAL=1;
+	double LOWEST_RECUR_INTERVAL=0.25;
 	
 	public Alarms(Context context, AppPreferences appPreferences)
 	{
@@ -38,9 +38,9 @@ public class Alarms
 		AlarmManager alarmManager=GetAlarmManager(context);
 		
 		//int prefInterval=appPreferences.GetSyncInterval();
-		long recurInterval=LOWEST_RECUR_INTERVAL*60*60*1000;
+		double recurInterval=LOWEST_RECUR_INTERVAL*60*60*1000;
 		
-		alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 0, recurInterval, GetPendingIntentAlarm(context) );
+		alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 0, (long) recurInterval, GetPendingIntentAlarm(context) );
 	}
 	
 	public boolean DoesAlarmExist()

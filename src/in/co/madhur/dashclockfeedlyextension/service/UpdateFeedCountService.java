@@ -175,8 +175,8 @@ public class UpdateFeedCountService extends WakefulIntentService
 			return true;
 
 		// Else see if we are not doing too much sync within the sync interval
-		int syncIntervalHour = appPreferences.GetSyncInterval();
-		long syncIntervalMillisec = syncIntervalHour * 60 * 60 * 1000;
+		double syncIntervalHour = appPreferences.GetSyncInterval();
+		double syncIntervalMillisec = syncIntervalHour * 60 * 60 * 1000;
 		if (System.currentTimeMillis() - lastSync > syncIntervalMillisec)
 			return true;
 
