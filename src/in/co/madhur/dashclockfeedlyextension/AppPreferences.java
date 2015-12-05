@@ -47,6 +47,7 @@ public class AppPreferences
 		WIDGET_TEXT_SIZE("widget_text_size"),
 		WIDGET_OPTIONS("widget_options"),
 		ENABLE_WIDGET_HEADER("enable_widget_header"),
+		NOTIFICATION_RINGTONE("ringtone_pref"),
 		WIDGET_SORT_ORDER("widget_sort_order");
 		
 

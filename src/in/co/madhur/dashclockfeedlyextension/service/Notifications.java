@@ -2,6 +2,7 @@ package in.co.madhur.dashclockfeedlyextension.service;
 
 import java.util.ArrayList;
 
+import in.co.madhur.dashclockfeedlyextension.AppPreferences;
 import in.co.madhur.dashclockfeedlyextension.R;
 import in.co.madhur.dashclockfeedlyextension.AppPreferences.Keys;
 import android.app.Notification;
@@ -10,6 +11,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 
@@ -34,6 +36,10 @@ public class Notifications
 		noti.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher));
 		noti.setNumber(number);
 		noti.setContentIntent(GetNotificationIntent());
+
+		String notifSound = GetNotificationSound();
+		if(notifSound.length()>0)
+			noti.setSound(Uri.parse(notifSound));
 		
 		return noti;
 	}
@@ -65,10 +71,16 @@ public class Notifications
 		for (String line : lines)
 			inboxStyle.addLine(line);
 
+
 		// Moves the big view style object into the notification object.
 		builder.setStyle(inboxStyle);
 
 		return builder;
+	}
+
+	private String GetNotificationSound()
+	{
+		return new AppPreferences(context).getMetadata(Keys.NOTIFICATION_RINGTONE);
 	}
 
 

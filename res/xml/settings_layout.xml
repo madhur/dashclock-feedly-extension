@@ -61,6 +61,10 @@
             android:summary="@string/enable_led_desc"
             android:title="@string/enable_led" />
 
+        <RingtonePreference android:defaultValue="content://settings/system/notification_sound" android:dependency="enable_notifications" android:key="ringtone_pref" android:ringtoneType="notification" android:showDefault="true" android:showSilent="true" android:title="@string/notification_ringtone" android:summary="@string/ringtone_notif">
+
+        </RingtonePreference>
+
         <com.google.android.apps.dashclock.configuration.AppChooserPreference
             android:key="notification_click_intent"
             android:title="@string/click_behave_title" />
@@ -99,21 +103,32 @@
             android:key="widget_background_color"
             android:summary="@string/widget_background_color_desc"
             android:title="@string/widget_background_color" >
-    		alphaSlider="true"                              
+    		alphaSlider="true"                              
+
+
+
         </net.margaritov.preference.colorpicker.ColorPickerPreference>
         <net.margaritov.preference.colorpicker.ColorPickerPreference
             android:defaultValue="@integer/widget_title_color"
             android:key="widget_title_color"
             android:summary="@string/widget_title_color_desc"
             android:title="@string/widget_title_color" >
-    		alphaSlider="true"                                      
+    		alphaSlider="true"                              
+        
+
+
         </net.margaritov.preference.colorpicker.ColorPickerPreference>
         <net.margaritov.preference.colorpicker.ColorPickerPreference
             android:defaultValue="@integer/widget_count_color"
             android:key="widget_count_color"
             android:summary="@string/widget_count_color_desc"
             android:title="@string/widget_count_color" >
-    alphaSlider="true"                              
+    alphaSlider="true"                              
+
+
+
+
+
         </net.margaritov.preference.colorpicker.ColorPickerPreference>
     </PreferenceScreen>
 

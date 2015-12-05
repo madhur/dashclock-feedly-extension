@@ -98,5 +98,7 @@
     <string name="alphabetical">Alphabetical</string>
     <string name="sync_started">Synchronization started</string>
     <string name="no_unread_items">No unread items</string>
-    
+    <string name="notification_ringtone">Notification Ringtone</string>
+    <string name="ringtone_notif">Ringtone of the notification</string>
+
 </resources>
