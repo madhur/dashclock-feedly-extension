@@ -1,23 +1,26 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven { url 'https://maven.google.com' }
+        jcenter()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.1.0'
+        classpath 'com.android.tools.build:gradle:3.3.2'
 
     }
 }
 apply plugin: 'com.android.application'
 repositories {
     mavenCentral()
-    maven { url 'https://repo.commonsware.com.s3.amazonaws.com' }
+    maven { url 'https://maven.google.com' }
+    jcenter()
 }
 android
         {
 
-            buildToolsVersion '22.0.1'
-            compileSdkVersion 23
+
+            compileSdkVersion 26
 
 
             sourceSets
@@ -33,7 +36,7 @@ android
                                     assets.srcDirs = ['assets']
                                 }
 
-                        instrumentTest.setRoot('tests')
+
                     }
 
             packagingOptions
@@ -64,10 +67,7 @@ android
                 compile 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
 
                 compile 'com.squareup.retrofit:retrofit:1.5.1'
-                compile('com.commonsware.cwac:wakeful:1.0.1')
-                        {
-                            exclude module: 'support-v4'
-                        }
+
 
                 compile('com.android.support:appcompat-v7:22.1.0')
 
@@ -86,7 +86,7 @@ android
 
             signingConfigs {
                 release {
-                    storeFile file("/Users/madhur/Madhur-key.keystore")
+                    storeFile file(System.getenv("KEYSTORE"))
                     storePassword System.getenv("KEYSTORE_PASSWORD")
                     keyAlias System.getenv("KEY_ALIAS")
                     keyPassword System.getenv("KEY_PASSWORD")
@@ -101,6 +101,8 @@ android
 
 
             defaultConfig {
+            minSdkVersion 16
+                targetSdkVersion 26
             }
         }
 

@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-     android:paddingBottom="@attr/padding_medium"
-    android:paddingTop="@attr/padding_medium" 
+     android:paddingBottom="@dimen/padding_medium"
+    android:paddingTop="@dimen/padding_medium"
     
     >
 
@@ -16,7 +16,7 @@
         android:ellipsize="marquee"
         android:maxLines="3"
         android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
-       android:paddingRight="@attr/padding_large"
+       android:paddingRight="@dimen/padding_large"
         android:textSize="17sp" />
 
     <TextView
@@ -26,7 +26,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@id/lblListItem"
         android:layout_toLeftOf="@+id/ChildCheckBox"
-         android:paddingRight="@attr/padding_large"
+         android:paddingRight="@dimen/padding_large"
         android:ellipsize="marquee"
         android:maxLines="3"
         android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:focusable="false"
-        android:paddingRight="@attr/padding_medium"
+        android:paddingRight="@dimen/padding_medium"
         android:scaleX="2.0"
         android:scaleY="2.0" />
 
@@ -53,7 +53,7 @@
         android:max="100"
         android:paddingBottom="0dp"
         android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
-        android:paddingTop="@attr/padding_large" >
+        android:paddingTop="@dimen/padding_large" >
     </SeekBar>
 
     <TextView
@@ -62,8 +62,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@id/WebsiteLabel"
-        android:paddingRight="@attr/padding_xlarge"
-        android:paddingTop="@attr/padding_xlarge"
+        android:paddingRight="@dimen/padding_xlarge"
+        android:paddingTop="@dimen/padding_xlarge"
          />
 
 </RelativeLayout>

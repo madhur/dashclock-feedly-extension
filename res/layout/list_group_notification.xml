@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="@attr/padding_medium"
-    android:paddingTop="@attr/padding_medium" >
+    android:paddingBottom="@dimen/padding_medium"
+    android:paddingTop="@dimen/padding_medium" >
 
     
     <ImageView
@@ -28,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/lblListHeader"
-        android:paddingLeft="@attr/padding_small"
+        android:paddingLeft="@dimen/padding_small"
         android:textSize="17sp" />
 
     <CheckBox
@@ -37,7 +37,7 @@
         android:layout_height="fill_parent"
         android:layout_alignParentRight="true"
         android:focusable="false"
-        android:paddingRight="@attr/padding_medium"
+        android:paddingRight="@dimen/padding_medium"
         android:scaleX="2"
         android:scaleY="2" />
 
@@ -53,7 +53,7 @@
         android:max="100"
         android:paddingBottom="0dp"
         android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
-        android:paddingTop="@attr/padding_large" >
+        android:paddingTop="@dimen/padding_large" >
     </SeekBar>
 
     <TextView
@@ -61,8 +61,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:paddingRight="@attr/padding_xlarge"
-        android:paddingTop="@attr/padding_xmedium" 
+        android:paddingRight="@dimen/padding_xlarge"
+        android:paddingTop="@dimen/padding_xmedium"
         android:layout_below="@id/GroupCheckBox"
         
         />

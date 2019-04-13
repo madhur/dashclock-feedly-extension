@@ -3,8 +3,8 @@
     android:id="@+id/widget_host"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@attr/padding_small"
-    android:paddingRight="@attr/padding_small" >
+    android:paddingLeft="@dimen/padding_small"
+    android:paddingRight="@dimen/padding_small" >
 
     <ImageButton
         android:id="@+id/widget_icon"
@@ -18,7 +18,7 @@
 
     <TextView
         android:id="@+id/updatedTextView"
-        android:paddingTop="@attr/padding_medium"
+        android:paddingTop="@dimen/padding_medium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/widget_icon" />

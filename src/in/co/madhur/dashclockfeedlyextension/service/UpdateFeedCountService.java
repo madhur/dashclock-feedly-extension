@@ -10,18 +10,19 @@ import in.co.madhur.dashclockfeedlyextension.api.Feedly;
 import in.co.madhur.dashclockfeedlyextension.api.Markers;
 import in.co.madhur.dashclockfeedlyextension.db.DbHelper;
 
-import com.commonsware.cwac.wakeful.WakefulIntentService;
 import com.infospace.android.oauth2.WebApiHelper;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.v4.app.JobIntentService;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-public class UpdateFeedCountService extends WakefulIntentService
+public class UpdateFeedCountService extends JobIntentService
 {
 	private WebApiHelper apiHelper;
 	private DbHelper dbHelper;
@@ -31,16 +32,20 @@ public class UpdateFeedCountService extends WakefulIntentService
 
 	public UpdateFeedCountService()
 	{
-		super("UpdateFeedCountService");
+
+	}
+
+	@Override
+	protected void onHandleWork(@NonNull Intent intent) {
+		doWakefulWork(intent);
 	}
 
 	public UpdateFeedCountService(String name)
 	{
-		super("UpdateFeedCountService");
+
 	}
 
-	@Override
-	protected void doWakefulWork(Intent intent)
+	private void doWakefulWork(Intent intent)
 	{
 		Log.d(App.TAG, "Starting update...");
 		

@@ -32,8 +32,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/splash_image"
         android:layout_centerHorizontal="true"
-        android:paddingTop="@attr/padding_large"
-        android:layout_marginTop="@attr/padding_large"
+        android:paddingTop="@dimen/padding_large"
+        android:layout_marginTop="@dimen/padding_large"
         android:text="@string/intro_text" />
 
     <Button
